@@ -1,0 +1,184 @@
+@font-face {
+    font-family: Utsukushi;
+    src: url("/font/UtsukushiFONT.otf") format("opentype");
+}
+
+@font-face {
+    font-family: 'Futura Light';
+    src: url("/font/futura-light.otf") format("opentype");
+}
+
+body {
+    background-color: white;
+    margin: 0;
+    font-family: 'Futura Light', 'Josefin Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+    height: 100vh; 
+    overflow: hidden;
+}
+
+.viewport {
+    height: 100vh;
+    width: 100vw;
+    background-color: black;
+    transition: background 0.25s ease-in;
+    overflow: auto;   /* don't think it should be done like this */
+}
+
+.bigBubble {
+    margin: 10vh 5vw;
+    height: 80vh;
+    width: 90vw;
+    display: flex;
+    justify-content: center;
+    /*background-color: white;*/
+    border-radius: 5em;
+}
+
+.content {
+    width: 100%;
+    align-self: center;
+}
+
+.row {
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+}
+
+/*fonts*/
+
+.jp {
+    font-weight: 400;
+    font-family: 'Utsukushi';
+    letter-spacing: -0.06em;
+}
+
+.en {
+    font-weight: 100;
+    letter-spacing: 0.16em;
+    color: white;
+    /*text-shadow: #fff 0px 1px 1px;*/
+}
+
+.muse .en {
+    color: black;
+}
+
+.large.jp {
+    font-size: 6em;
+}
+
+.large.en {
+    font-size: 5.75em;
+}
+
+.multicolour span:nth-child(1) {
+    color: rgb(235, 116, 60);
+}
+.multicolour span:nth-child(2) {
+    color: rgb(84, 166, 216);
+}
+.multicolour span:nth-child(3) {
+    color: rgb(146, 146, 146);
+}
+.multicolour span:nth-child(4) {
+    color: rgb(37, 83, 169);
+}
+.multicolour span:nth-child(5) {
+    color: rgb(246, 205, 56);
+}
+.multicolour span:nth-child(6) {
+    color: rgb(200, 34, 44);
+}
+.multicolour span:nth-child(7) {
+    color: rgb(92, 56, 141);
+}
+.multicolour span:nth-child(8) {
+    color: rgb(130, 167, 59);
+}
+.multicolour span:nth-child(9) {
+    color: rgb(194, 78, 127);
+}.multicolour span:nth-child(10) {
+    color: rgb(236, 0, 140);
+}
+
+/* muse on stage!~! */
+.musicStart .normies,
+.muse.backstage {
+    visibility: hidden;
+    opacity: 0;
+    max-height: 0;
+    padding: 0;
+    margin: 0;
+}
+
+.musicStart .muse {
+    opacity: 1;
+    max-height: 100vh;
+    visibility: visible;
+}
+
+.musicStart.viewport {
+    background-color: white;
+}
+
+.muse .logo {
+    padding-top: 1.5em;
+    font-size: 5.75em;
+}
+
+.muse, .normies {
+    transition: opacity 0.5s ease-in;
+}
+
+/* kotobomb */
+.kotobomb {
+    position: absolute;
+    display: block;
+    left: 0;
+    bottom: 0;
+}
+
+.kotobomb img {
+    display: block;
+    max-width:300px;
+	height:auto;
+    position:relative;
+}
+
+.kotobomb.hiding > img {
+    transition: 0.2s;
+    left: -200px;
+    bottom: -200px;
+}
+
+.kotobomb:hover > img {
+    transition: 0.2s;
+    left: 0;
+    bottom: 0;
+    cursor: pointer;
+}
+
+.nav > ul {
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+.nav > ul > li {
+    display: block;
+    padding: 0px 10px;
+}
+
+.nav a {
+    font-size: 2em;
+    text-decoration: none;
+    color: #666666;
+}
+
+.nav a:hover {
+    color: #CCC;
+    border-bottom: 1px solid #ccc;
+}
