@@ -9,6 +9,7 @@
   "author": "neilsonwong",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^2.5.6",
     "express": "^4.14.0",
     "lame": "^1.2.4",
     "serve-favicon": "^2.3.2",
