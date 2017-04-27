@@ -182,3 +182,82 @@ body {
     color: #CCC;
     border-bottom: 1px solid #ccc;
 }
+
+
+/* blog styles */
+
+.blog.bigBubble {
+    flex-direction: column;
+}
+
+.blog_peek {
+    max-width: 650px;
+    max-height: 300px;
+    display: flex;
+    color: white;
+    overflow: hidden;
+}
+
+.blog_title {
+    width: 650px;
+    font-size: 4em;
+    margin: auto;
+    color: white;
+}
+
+.blog_peek_list {
+    width: 650px;
+    margin: auto;
+}
+
+.peek_left {
+    flex-basis: 150px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 1em;
+    box-sizing: border-box;
+}
+
+.peek_right {
+    flex-basis: 500px;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.peek_title {
+    font-size: 2em;
+}
+
+.peek_date {
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+    border-radius: 5px;
+    margin-left: auto;
+    background-color: grey;
+}
+
+.peek_date_month {
+    font-size: 1.25em;
+    font-weight: 400;
+    text-align: center;
+}
+
+.peek_date_day {
+    font-size: 1.25em;
+    font-weight: 700;
+    text-align: center;
+}
+
+.peek_tags {
+    padding-top: 0.5em;
+    text-align: right;
+}
+
+.peek_tags > div {
+    display: inline-block;
+}
+
+.peek_text {
+    width: 100%;
+}
