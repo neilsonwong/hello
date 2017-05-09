@@ -40,7 +40,8 @@ BufferLoader.prototype.loadBuffer = function (url, index) {
     request.send();
 }
 
-BufferLoader.prototype.load = function () {
-    for (var i = 0; i < this.urlList.length; ++i)
+BufferLoader.prototype.load = function() {
+    for (var i = 0; i < this.urlList.length; ++i){
         this.loadBuffer(this.urlList[i], i);
+    }
 }
