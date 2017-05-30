@@ -10,37 +10,14 @@ $(function() {
         encodeURI('/mp3/02.Over the clouds.mp3')
     ];
 
-    function makeButtons(urlList) {
-        urlList.forEach(function(url, i) {
-            var btn = $('<button>', {
-                id: 'sound' + i,
-                html: decodeURI(url).substring(5)
-            });
-            btn.click(audio.playPause.bind(audio, url));
-            $('.player').append(btn);
-        });
-    };
-
-    $('#magic').click(function() {
-        playPauseAll();
-    });
-
-
-    function playPauseAll() {
-        urls.forEach(function(url) {
-            audio.playPause(url);
-        });
-    }
-
     function init() {
         audioMaster = new Audio(audioCtx);
         visualizer = new Visualizer(audioCtx);
         audioMaster.inject(visualizer.get());
 
-        makeButtons(urls);
         audioMaster.load(urls, function() {
-            console.log("done loading");
-            visualizer.visualize();
+            visualizer.run();
+            audioMaster.play(urls[1]);
         });
     }
 
