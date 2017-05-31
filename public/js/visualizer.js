@@ -5,6 +5,7 @@ function Visualizer(audioContext, options) {
     this.binCount = 0;
     this.screenHeight = $(window).height();
     this.screenWidth = $(window).width();
+    console.log(this.screenWidth + ", " + this.screenHeight);
     this.dataArray = [];
     this.fps = 60;
 }
@@ -16,7 +17,8 @@ Visualizer.prototype.get = function() {
 Visualizer.prototype.run = function() {
     this.clear();
 
-    this.analyser.fftSize = 256;
+    //if nothing shows up, up the fft size
+    this.analyser.fftSize = 512;
     this.binCount = this.analyser.frequencyBinCount;
     this.dataArray = new Uint8Array(this.binCount);
 
@@ -30,8 +32,9 @@ Visualizer.prototype.clear = function() {
 };
 
 Visualizer.prototype.init = function() {
-    this.numOfBars = 64;
-    this.barWidth = Math.floor(this.screenWidth / (this.numOfBars)) - 1;
+    //if nothing shows up, down the numOfBars
+    this.numOfBars = 128;
+    this.barWidth = this.screenWidth / (this.numOfBars) - 1;
     this.barMaxHeight = Math.floor(this.screenHeight / 3);
     this.volumeModifier = 1;
     this.setupElements();
@@ -48,17 +51,6 @@ Visualizer.prototype.setupElements = function() {
     this.visualizer.style.height = h;
 
     for (var i = 0; i < this.numOfBars; i++) {
-
-        // var bar = document.createElement('div'),
-        //     barWrapper = document.createElement('div');
-
-        // bar.className = 'bar';
-        // barWrapper.className = 'bar-wrapper';
-        // barWrapper.style.left = i*24 + "px";
-
-        // barWrapper.appendChild(bar);
-        // this.visualizer.appendChild(barWrapper);
-
         let nbar = document.createElement('div');
         nbar.className = 'nbar';
         nbar.style.width = w;
@@ -79,17 +71,10 @@ Visualizer.prototype.getWaveform = function() {
     var value;
 
     this.analyser.getByteFrequencyData(this.dataArray);
-    // return this.dataArray;
     
     for (var i = 0; i < waveformLength; i++) {
-        value = this.dataArray[i];
-
-        value = value - 128;
-        value = value / 128;
-
-        spectrum.push(value);
+        spectrum.push((this.dataArray[i] - 128) / 128);
     }
-
     return spectrum;
 };
 
@@ -99,12 +84,14 @@ Visualizer.prototype.onWaveform = function(waveform) {
 
     for (var j = 0; j < this.numOfBars; j++) {
         var magnitude = 1 - (Math.floor(sampleAvgs[j]*1000)/1000);
+        // console.log(sampleAvgs[j]);
 
         bars[j].style[prefix.css + 'transform'] = ["scaleY(", magnitude, ") translate3d(0,0,0)"].join("");
     }
 };
 
 function sampleArray(arrayToSample, numOfSamples, modifier, decimalDigits) {
+    console.log(arrayToSample.length);
     var arrayMiddle = arrayToSample.length/ 2,
         sampleLength = Math.floor((arrayMiddle) / numOfSamples),
         sampleAvgs = [],

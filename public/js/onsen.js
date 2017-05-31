@@ -17,7 +17,7 @@ $(function() {
 
         audioMaster.load(urls, function() {
             visualizer.run();
-            audioMaster.play(urls[0]);
+            audioMaster.play(urls[1]);
         });
     }
 
