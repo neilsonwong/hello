@@ -3,10 +3,10 @@ function Visualizer(audioContext, options) {
     this.analyser = audioContext.createAnalyser();
     this.visualizer = document.querySelector('.visualizer');
     this.binCount = 0;
-    this.barWidth = 20;
-    this.screenHeight = 500;
-    this.screenWidth = 1920;
+    this.screenHeight = $(window).height();
+    this.screenWidth = $(window).width();
     this.dataArray = [];
+    this.fps = 60;
 }
 
 Visualizer.prototype.get = function() {
@@ -31,27 +31,42 @@ Visualizer.prototype.clear = function() {
 
 Visualizer.prototype.init = function() {
     this.numOfBars = 64;
+    this.barWidth = Math.floor(this.screenWidth / (this.numOfBars)) - 1;
+    this.barMaxHeight = Math.floor(this.screenHeight / 3);
     this.volumeModifier = 1;
     this.setupElements();
 }
 
 Visualizer.prototype.setupElements = function() {
     this.visualizer.innerHTML = '';
+    let w = this.barWidth + "px";
+    let h = this.barMaxHeight + "px";
     console.log(this.numOfBars);
+    console.log(w);
+    console.log(h);
+
+    this.visualizer.style.height = h;
 
     for (var i = 0; i < this.numOfBars; i++) {
-        var bar = document.createElement('div'),
-            barWrapper = document.createElement('div');
 
-        bar.className = 'bar';
-        barWrapper.className = 'bar-wrapper';
-        barWrapper.style.left = i*24 + "px";
+        // var bar = document.createElement('div'),
+        //     barWrapper = document.createElement('div');
 
-        barWrapper.appendChild(bar);
-        this.visualizer.appendChild(barWrapper);
+        // bar.className = 'bar';
+        // barWrapper.className = 'bar-wrapper';
+        // barWrapper.style.left = i*24 + "px";
+
+        // barWrapper.appendChild(bar);
+        // this.visualizer.appendChild(barWrapper);
+
+        let nbar = document.createElement('div');
+        nbar.className = 'nbar';
+        nbar.style.width = w;
+        nbar.style.height = h;
+        this.visualizer.appendChild(nbar);
     }
 
-    this.bars = document.getElementsByClassName('bar');
+    this.bars = document.getElementsByClassName('nbar');
 };
 
 Visualizer.prototype.getData = function() {
@@ -64,6 +79,7 @@ Visualizer.prototype.getWaveform = function() {
     var value;
 
     this.analyser.getByteFrequencyData(this.dataArray);
+    // return this.dataArray;
     
     for (var i = 0; i < waveformLength; i++) {
         value = this.dataArray[i];
@@ -84,8 +100,7 @@ Visualizer.prototype.onWaveform = function(waveform) {
     for (var j = 0; j < this.numOfBars; j++) {
         var magnitude = 1 - (Math.floor(sampleAvgs[j]*1000)/1000);
 
-        bars[j].parentNode.style[prefix.css + 'transform'] = ["scaleY(", magnitude, ") translate3d(0,0,0)"].join("");
-        // bars[j].parentNode.style['height'] = this.dataArray[j]/2 + "px";
+        bars[j].style[prefix.css + 'transform'] = ["scaleY(", magnitude, ") translate3d(0,0,0)"].join("");
     }
 };
 
@@ -133,55 +148,3 @@ var prefix = (function () {
     js: pre[0].toUpperCase() + pre.substr(1)
   };
 })();
-
-/*
-Visualizer.prototype.visualize = function visualize() {
-    var self = this;
-    var WIDTH = "1920px"; //this.canvas.width;
-    var HEIGHT = "300px"; //this.canvas.height;
-
-    this.analyser.fftSize = 2048;
-    var bufferLength = this.analyser.frequencyBinCount;
-    var dataArray = new Uint8Array(bufferLength);
-    this.analyser.getByteTimeDomainData(dataArray);
-
-    //
-    this.canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
-
-    function draw() {
-
-        drawVisual = requestAnimationFrame(draw);
-
-        analyser.getByteTimeDomainData(dataArray);
-
-        canvasCtx.fillStyle = 'rgb(200, 200, 200)';
-        canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
-
-        canvasCtx.lineWidth = 2;
-        canvasCtx.strokeStyle = 'rgb(0, 0, 0)';
-
-        canvasCtx.beginPath();
-
-        var sliceWidth = canvas.width * 1.0 / bufferLength;
-        var x = 0;
-
-        for (var i = 0; i < bufferLength; i++) {
-
-            var v = dataArray[i] / 128.0;
-            var y = v * canvas.height / 2;
-
-            if (i === 0) {
-                canvasCtx.moveTo(x, y);
-            }
-            else {
-                canvasCtx.lineTo(x, y);
-            }
-
-            x += sliceWidth;
-        }
-    }
-
-
-    draw();
-}
-*/

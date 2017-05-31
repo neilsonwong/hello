@@ -302,3 +302,26 @@ body {
 .about_bubble {
     justify-content: flex-end;
 }
+
+/* onsen */
+.visualizer {
+    bottom: 0px;
+    position: absolute;
+}
+
+.nbar {
+    display: inline-block;
+    background-color: #666;
+    margin-right: 1px;
+
+    -webkit-transform: scaleY(0);
+    -moz-transform: scaleY(0);
+    transform: scaleY(0);
+
+    -webkit-transition: -webkit-transform 50ms linear;
+    -moz-transition: -moz-transform 50ms linear;
+    -o-transition: -o-transform 50ms linear;
+    transition: transform 50ms linear;
+
+    transform-origin: 50% 100% 0;
+}
