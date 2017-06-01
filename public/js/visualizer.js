@@ -91,7 +91,6 @@ Visualizer.prototype.onWaveform = function(waveform) {
 };
 
 function sampleArray(arrayToSample, numOfSamples, modifier, decimalDigits) {
-    console.log(arrayToSample.length);
     var arrayMiddle = arrayToSample.length/ 2,
         sampleLength = Math.floor((arrayMiddle) / numOfSamples),
         sampleAvgs = [],

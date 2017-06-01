@@ -1,24 +1,27 @@
+var timeline = null;
+
 $(function() {
     // init audio context so our page is ready
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
     var audioCtx = new AudioContext(); 
+    var audioMaster = null;
 
-    var audio;
-
-    var urls = [
-        encodeURI('/mp3/01 三日月.mp3'),
-        encodeURI('/mp3/02.Over the clouds.mp3')
-    ];
+    timeline = new Timeline();
 
     function init() {
         audioMaster = new Audio(audioCtx);
         visualizer = new Visualizer(audioCtx);
         audioMaster.inject(visualizer.get());
+        timeline.init(audioMaster);
+        visualizer.run();
 
-        audioMaster.load(urls, function() {
-            visualizer.run();
-            audioMaster.play(urls[1]);
-        });
+        // audioMaster.load(urls[0], function() {
+        //     audioMaster.load(urls[1], function() {
+        //         visualizer.run();
+                // audioMaster.playPause(urls[0]);
+                // audioMaster.playPause(urls[1]);
+            // });
+        // });
     }
 
     init();
