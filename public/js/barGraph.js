@@ -21,12 +21,13 @@ BarGraph.prototype.setupBars = function(){
 		bar.className = "bar";
 		bar.style.width = w;
 		bar.style.height = h;
+        bar.style[prefix.css + 'transform'] = ["scaleY(0) translate3d(0,0,0)"];
 	    this.container.appendChild(bar);
 	}
 	this.bars = this.container.getElementsByClassName('bar');
 }
 
-Visualizer.prototype.onResize = function(){
+BarGraph.prototype.onResize = function(){
     console.log("resizing")
     this.screenHeight = $(window).height();
     this.screenWidth = $(window).width();

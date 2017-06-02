@@ -61,7 +61,7 @@ Audio.prototype.start = function(url, oldPause){
 
     //attach nodes to sound
     var i;
-    for(i = 0; i < this.audioNodes.length; ++i){
+    for (i = 0; i < this.audioNodes.length; ++i){
         sound.connect(this.audioNodes[i]);
     }
     sound.connect(this.context.destination);    //speaker output
