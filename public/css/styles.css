@@ -358,3 +358,15 @@ body {
     right: 20px;
     top: 50%;
 }
+
+.songBars {
+    margin-left: 10px;
+}
+
+.songBars .bar {
+    display: inline-block;
+    background-color: #666;
+    margin-right: 10px;
+
+    transform-origin: 50% 0 0;
+}

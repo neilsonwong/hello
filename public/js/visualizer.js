@@ -63,8 +63,10 @@ Visualizer.prototype.setupElements = function() {
 
     this.visualizer.style.height = h;
 
+    let nbar;
+
     for (var i = 0; i < this.numOfBars; i++) {
-        let nbar = document.createElement('div');
+        nbar = document.createElement('div');
         nbar.className = 'nbar';
         nbar.style.width = w;
         nbar.style.height = h;
