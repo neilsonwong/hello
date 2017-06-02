@@ -29,6 +29,7 @@ Visualizer.prototype.run = function() {
 
 Visualizer.prototype.clear = function() {
     this.visualizer.innerHTML = '';
+    $(window).resize(this.onResize.bind(this));
 };
 
 Visualizer.prototype.init = function() {
@@ -38,15 +39,27 @@ Visualizer.prototype.init = function() {
     this.barMaxHeight = Math.floor(this.screenHeight / 3);
     this.volumeModifier = 1;
     this.setupElements();
-}
+};
+
+Visualizer.prototype.onResize = function(){
+    console.log("resizing")
+    this.screenHeight = $(window).height();
+    this.screenWidth = $(window).width();
+    this.barWidth = this.screenWidth / (this.numOfBars) - 1;
+    this.barMaxHeight = Math.floor(this.screenHeight / 3);
+
+    let w = this.barWidth + "px";
+    let h = this.barMaxHeight + "px";
+
+    console.log(w + "," + h);
+    $(".nbar").css("width",w).css("height", h);
+    $(".visualizer").css("height", h);
+};
 
 Visualizer.prototype.setupElements = function() {
     this.visualizer.innerHTML = '';
     let w = this.barWidth + "px";
     let h = this.barMaxHeight + "px";
-    console.log(this.numOfBars);
-    console.log(w);
-    console.log(h);
 
     this.visualizer.style.height = h;
 
@@ -63,7 +76,7 @@ Visualizer.prototype.setupElements = function() {
 
 Visualizer.prototype.getData = function() {
     this.onWaveform(this.getWaveform());
-}
+};
 
 Visualizer.prototype.getWaveform = function() {
     var spectrum = [];

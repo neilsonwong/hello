@@ -1,17 +1,21 @@
 function Timeline() {
-	this.day = -1;
-	this.month = -1;
-	this.year = -1;
+	this.date = null;
 	this.offset = -1;
 	this.urlList = [];
 }
 
 Timeline.prototype.init = function(audioMaster){
-	this.day = 1;
-	this.month = 11;
-	this.year = 2011;
+	this.date = new Date(2011, 10, 1);
 	this.offset = 0;
 	this.audioDevice = audioMaster;
+	setInterval(this.updateDate.bind(this), 1000);
+}
+
+Timeline.prototype.updateDate = function(){
+	this.date.setDate(this.date.getDate()+1);
+	$(".dateDay").html(this.date.getDate());
+	$(".dateMonth").html(this.date.getMonth()+1);
+	$(".dateYear").html(this.date.getFullYear());
 }
 
 Timeline.prototype.load = function(url, callback){

@@ -14,14 +14,6 @@ $(function() {
         audioMaster.inject(visualizer.get());
         timeline.init(audioMaster);
         visualizer.run();
-
-        // audioMaster.load(urls[0], function() {
-        //     audioMaster.load(urls[1], function() {
-        //         visualizer.run();
-                // audioMaster.playPause(urls[0]);
-                // audioMaster.playPause(urls[1]);
-            // });
-        // });
     }
 
     init();
