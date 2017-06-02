@@ -13,9 +13,11 @@ Timeline.prototype.init = function(audioMaster){
 
 Timeline.prototype.updateDate = function(){
 	this.date.setDate(this.date.getDate()+1);
-	$(".dateDay").html(this.date.getDate());
-	$(".dateMonth").html(this.date.getMonth()+1);
-	$(".dateYear").html(this.date.getFullYear());
+	$(".dateBox").html([
+		this.date.getDate(),
+        this.date.getMonth()+1,
+		this.date.getFullYear()
+	].join("/"));
 }
 
 Timeline.prototype.load = function(url, callback){
