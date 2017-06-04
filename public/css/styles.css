@@ -335,7 +335,7 @@ body {
 
 .timeline .line {
     width: 100%;
-    height: 20px;
+    height: 10px;
     position: absolute;
     top: 50%;
     background-color: #666;
@@ -367,6 +367,18 @@ body {
     display: inline-block;
     background-color: #666;
     margin-right: 10px;
+
+    transform-origin: 50% 0 0;
+}
+
+.artistBars {
+    margin-right: 10px;
+}
+
+.artistBars .bar {
+    display: inline-block;
+    background-color: #666;
+    margin-left: 10px;
 
     transform-origin: 50% 0 0;
 }

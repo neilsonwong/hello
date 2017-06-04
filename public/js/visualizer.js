@@ -29,7 +29,6 @@ Visualizer.prototype.run = function() {
 
 Visualizer.prototype.clear = function() {
     this.visualizer.innerHTML = '';
-    $(window).resize(this.onResize.bind(this));
 };
 
 Visualizer.prototype.init = function() {
@@ -42,7 +41,6 @@ Visualizer.prototype.init = function() {
 };
 
 Visualizer.prototype.onResize = function(){
-    console.log("resizing")
     this.screenHeight = $(window).height();
     this.screenWidth = $(window).width();
     this.barWidth = this.screenWidth / (this.numOfBars) - 1;
