@@ -12,11 +12,17 @@ app.use(express.static('public'))
 app.use('/mp3', express.static('mp3'));
 
 app.get('/', function(req, res){
-    res.render("pages/index");
+    res.render("pages/index", {
+        page: "home",
+        title: "hello" 
+    });
 });
 
 app.get('/about', function(req, res){
-    res.render("pages/about");
+    res.render("pages/index", {
+        page: "about",
+        title: "about" 
+    });
 });
 
 app.get('/onsen', function(req, res){
@@ -26,6 +32,16 @@ app.get('/onsen', function(req, res){
 app.get('/blog', function(req, res){
     res.render("pages/blog");
 });
+
+app.get('/partial/:page', function(req, res){
+	res.render("partials/"+req.params.page, {
+		page: req.params.page,
+		title: req.params.page
+	});
+});
+
+function render(res, page) {
+}
 
 // app.get(encodeURI('/mp3/01 三日月.mp3'), function(req, res){
 //     console.log("mikazuki");

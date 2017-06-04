@@ -1,57 +1,18 @@
-
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>hello</title>
-    <meta name="description" content="hello">
+    <title><%= title %></title>
+    <meta name="description" content=<%= title %>>
     <link rel="stylesheet" href="css/styles.css?v=1.0">
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
 </head>
 <body>
-    <div class="viewport">
-        <% include ../partials/nav %>
-        <div class="bigBubble">
-            <div class="content">
-                <center>
-                    <div class="normies">
-                        <div class="large multicolour jp row">
-                            <span>み</span>
-                            <span>ん</span>
-                            <span>な</span>
-                            <span>さ</span>
-                            <span>ん</span>
-                            <span>こ</span>
-                            <span>ん</span>
-                            <span>に</span>
-                            <span>ち</span>
-                            <span>わ</span>
-                        </div>
-                        <div class="large thin en row">Hello everyone.</div>
-                    </div>
-                    <div class="muse backstage">
-                        <div class="large multicolour jp row">
-                            <span>み</span>
-                            <span>ん</span>
-                            <span>な</span>
-                            <span>で</span>
-                            <span>叶</span>
-                            <span>え</span>
-                            <span>た</span>
-                            <span>物</span>
-                            <span>語</span>
-                        </div>
-                        <div class="large thin en row">Thanks to you.</div>
-                        <div class="large logo"><img src="images/lovelive.png"/></div>
-                    </div>
-                </center>
-            </div>
-        </div>
-    </div>
-    <div id="kotori" class="kotobomb hiding">
-        <img src="images/kotobomb.png" />
+    <div id="page">
+        <%- include("../partials/" + page) %>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="js/index.js"></script>>
+    <script src="js/util.js"></script>
 </body>
 </html>
