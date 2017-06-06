@@ -336,7 +336,7 @@ body {
 
 .timeline .line {
     width: 100%;
-    height: 20px;
+    height: 10px;
     position: absolute;
     top: 50%;
     background-color: #666;

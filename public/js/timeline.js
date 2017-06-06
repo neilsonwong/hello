@@ -7,13 +7,15 @@ function Timeline() {
 }
 
 Timeline.prototype.init = function(audioMaster){
-	this.date = new Date(2011, 10, 1);
+	this.date = new Date(2011, 10, 23);
 	this.updateDate();
 	this.offset = 0;
 	this.audioDevice = audioMaster;
-	this.getPlayList();
-	this.loadOffset = 3;
-	timeline.load(this.playlist.slice(0, 3).map(v => v.url));
+	this.getPlayList(() => {
+		this.loadOffset = 3;
+		console.log(this.playlist.slice(0, 3).map(v => v.url));
+		timeline.load(this.playlist.slice(0, 3).map(v => v.url));
+	});
 }
 
 Timeline.prototype.start = function(){
@@ -87,9 +89,15 @@ Timeline.prototype.current = function(){
 	return this.playlist[this.offset];
 }
 
-Timeline.prototype.getPlayList = function(){
-	this.playlist = STUB_urls;
-	this.loadOffset = 0;
+Timeline.prototype.getPlayList = function(callback){
+	$.get("onsen/playlist", (data) => {
+		console.log(data);
+		this.playlist = data;
+		this.loadOffset = 0;
+		if (callback){
+			return callback();
+		}
+	});
 }
 
 function tl_start(){
@@ -111,57 +119,3 @@ function audio_next(){
 function audio_loadNext(){
     timeline.load(this.playlist[this.loadOffset++].url);
 }
-
-var STUB_urls = [
-	{
-		url: encodeURI('/mp3/01 三日月.mp3'),
-		count: 20,
-		duration: 7000,
-		img: null
-	},
-	{
-	    url: encodeURI('/mp3/02.Over the clouds.mp3'),
-		count: 25,
-		duration: 7000,
-		img: null
-	},
-	{
-		url: encodeURI('/mp3/01 三日月.mp3'),
-		count: 20,
-		duration: 7000,
-		img: null
-
-	},
-	{
-	    url: encodeURI('/mp3/02.Over the clouds.mp3'),
-		count: 25,
-		duration: 7000,
-		img: null
-	},
-	{
-		url: encodeURI('/mp3/01 三日月.mp3'),
-		count: 20,
-		duration: 7000,
-		img: null
-
-	},
-	{
-	    url: encodeURI('/mp3/02.Over the clouds.mp3'),
-		count: 25,
-		duration: 7000,
-		img: null
-	},
-	{
-		url: encodeURI('/mp3/01 三日月.mp3'),
-		count: 20,
-		duration: 7000,
-		img: null
-
-	},
-	{
-	    url: encodeURI('/mp3/02.Over the clouds.mp3'),
-		count: 25,
-		duration: 7000,
-		img: null
-	},
-];

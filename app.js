@@ -2,6 +2,14 @@ let express = require("express");
 let app = express();
 let favicon = require('serve-favicon');
 let ms = require('mediaserver');
+let path = require('path');
+let config = require('./config');
+let Onsen = require("onsenbackend")(
+    config.lastfmAPIKey,
+    config.lastfmUsername,
+    config.beginningOfTime,
+    config.localMusicDir,
+    config.onsenDataLocation);
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
 
@@ -40,8 +48,12 @@ app.get('/partial/:page', function(req, res){
 	});
 });
 
-function render(res, page) {
-}
+app.get('/onsen/playlist', function(req, res){
+    res.set({ 'content-type': 'application/json; charset=utf-8' });
+    Onsen.getWeekly(() => {
+        res.sendFile(path.join(config.onsenDataLocation, "weekly.json"));
+    });
+});
 
 // app.get(encodeURI('/mp3/01 三日月.mp3'), function(req, res){
 //     console.log("mikazuki");
