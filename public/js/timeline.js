@@ -41,6 +41,10 @@ Timeline.prototype.updateDate = function(days){
 	].join("/"));
 }
 
+Timeline.prototype.loadNext = function(){
+	this.load(this.playlist[this.loadOffset++].url);
+}
+
 Timeline.prototype.load = function(url, callback){
 	if (!Array.isArray(url)){
 		url = [url];
@@ -75,6 +79,7 @@ Timeline.prototype.play = function(){
 Timeline.prototype.next = function(){
 	this.audioDevice.playPause(this.current().url);
 	++this.offset;
+	this.loadNext();
 	this.audioDevice.playPause(this.current().url);
 	this.progressWeek(this.current().duration);
 }
