@@ -40,6 +40,13 @@ app.get('/onsen', function(req, res){
     });
 });
 
+app.get('/lovelive', function(req, res){
+    res.render("pages/index", {
+        page: "lovelive",
+        title: "love live" 
+    });
+});
+
 app.get('/blog', function(req, res){
     res.render("pages/blog");
 });
