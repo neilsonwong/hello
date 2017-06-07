@@ -36,7 +36,7 @@ app.get('/about', function(req, res){
 app.get('/onsen', function(req, res){
     res.render("pages/index", {
         page: "onsen",
-        title: "音線" 
+        title: "音線"
     });
 });
 
@@ -48,7 +48,10 @@ app.get('/lovelive', function(req, res){
 });
 
 app.get('/blog', function(req, res){
-    res.render("pages/blog");
+    res.render("pages/index", {
+        page: "blog",
+        title: "rin's blog" 
+    });
 });
 
 let renderPartials = function(req, res){

@@ -55,9 +55,10 @@ $(function () {
 				renderPage(name, url);
 			}
 		};
+		
+		$("body").trigger("init-" + $("body").attr("id"));
 	}
 
 	bindSPA();
 
-	$("body").trigger("init-" + $("body").attr("id"));
 });
