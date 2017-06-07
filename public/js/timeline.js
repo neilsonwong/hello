@@ -7,6 +7,8 @@ function Timeline() {
 	this.urlSet = new Set();
 	this.stopped = false;
 	this.graphs = {};
+	this.fullSongMode = false;
+	this.secondaryAudioDevice = null;
 }
 
 Timeline.prototype.init = function(audioMaster){
@@ -22,8 +24,23 @@ Timeline.prototype.init = function(audioMaster){
 		this.load(this.playlist.slice(0, 3).map(v => v.url));
 	});
 
-	this.date = new Date(2011, 10, 23);
+	this.date = new Date(2011, 10, 22);
 	this.updateDate();
+}
+
+Timeline.toggleFullSongMode = function(){
+	let tmp = this.audioDevice;
+	if (this.secondaryAudioDevice){
+		//swap audio devices
+		this.audioDevice = secondaryAudioDevice;
+		this.secondaryAudioDevice = tmp;
+	}
+	else {
+		console.log("no secondary audio device exists");
+		return null;
+	}
+	this.fullSongMode = !this.fullSongMode;
+	return this.fullSongMode;
 }
 
 Timeline.prototype.start = function(){
@@ -65,12 +82,26 @@ Timeline.prototype.updateDate = function(days){
 		this.date.getDate(),
         this.date.getMonth()+1,
 		this.date.getFullYear()
-	].join("/"));
+	].join("."));
 	++this.acc;
 }
 
 Timeline.prototype.loadNext = function(){
-	this.load(this.playlist[this.loadOffset++].url);
+	if (this.loadOffset >= this.playlist.length){
+		return;
+	}
+	else {
+		this.load(this.playlist[this.loadOffset++].url);
+	}
+}
+
+Timeline.prototype.loadPrev= function(){
+	if (this.offset === 0){
+		return;
+	}
+	else {
+		this.load(this.playlist[this.offset-1].url);
+	}
 }
 
 Timeline.prototype.load = function(url, callback){
@@ -88,6 +119,12 @@ Timeline.prototype.load = function(url, callback){
 		this.urlSet.add(u);
 		return true;
 	});
+
+	if (!fullSongMode){
+		url = url.map((u) => {
+			return "/mp3/cut_mp3/" + u.substring(5);
+		});
+	}
 
 	this.audioDevice.load(url, () => {
 		url.forEach( e =>  {
@@ -119,8 +156,8 @@ Timeline.prototype.next = function(){
 	this.audioDevice.playPause(this.current().url);
 	++this.offset;
 
-	console.log(this.offset);
-	console.log(this.playlist.length);
+	// console.log(this.offset);
+	// console.log(this.playlist.length);
 	
 	//check if we are done
 	if (this.offset >= this.playlist.length){
@@ -136,7 +173,11 @@ Timeline.prototype.next = function(){
 }
 
 Timeline.prototype.prev = function(){
+	if (this.offset === 0){
+		return;
+	}
 	this.audioDevice.playPause(this.current().url);
+	this.loadPrev();
 	--this.offset;
 	this.audioDevice.playPause(this.current().url);
 }
