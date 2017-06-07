@@ -19,7 +19,7 @@ Timeline.prototype.init = function(audioMaster){
 	this.getPlayList(() => {
 		this.loadOffset = 3;
 		console.log(this.playlist.slice(0, 3).map(v => v.url));
-		timeline.load(this.playlist.slice(0, 3).map(v => v.url));
+		this.load(this.playlist.slice(0, 3).map(v => v.url));
 	});
 
 	this.date = new Date(2011, 10, 23);

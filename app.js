@@ -44,12 +44,20 @@ app.get('/blog', function(req, res){
     res.render("pages/blog");
 });
 
-app.get('/partial/:page', function(req, res){
-	res.render("partials/"+req.params.page, {
-		page: req.params.page,
-		title: req.params.page
-	});
+let renderPartials = function(req, res){
+    console.log("getting partial " + req.params.page);
+    res.render("partials/"+req.params.page, {
+        page: req.params.page,
+        title: req.params.page
+    });
+}
+
+app.get('/partial/', function(req, res){
+    req.params.page = "home";
+    renderPartials(req, res);
 });
+
+app.get('/partial/:page', renderPartials);
 
 app.get('/onsen/playlist', function(req, res){
     res.set({ 'content-type': 'application/json; charset=utf-8' });

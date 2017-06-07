@@ -1,25 +1,27 @@
 
 $(function() {
-    function init() {
+    function onsen_init() {
+        console.log("inside onsen init");
+
         // init audio context so our page is ready
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
-        var audioCtx = new AudioContext(); 
-        var audioMaster = null;
-
-        var timeline = new Timeline();
+        let audioCtx = new AudioContext(); 
+        let audioMaster = null;
+        let timeline = new Timeline();
+        let bg = new BarGraph(document.querySelector(".songBars"));
+        let bg2 = new BarGraph(document.querySelector(".artistBars"), {sortRight: true});
 
         audioMaster = new Audio(audioCtx);
         visualizer = new Visualizer(audioCtx);
-        bg = new BarGraph(document.querySelector(".songBars"));
-        bg2 = new BarGraph(document.querySelector(".artistBars"), {sortRight: true});
 
         audioMaster.inject(visualizer.get());
-        timeline.init(audioMaster);
-        visualizer.run();
+        Timeline.addResizeFunctions(visualizer, bg, bg2);
         timeline.addBarGraph(bg, "title");
         timeline.addBarGraph(bg2, "artist");
-        Timeline.addResizeFunctions(visualizer, bg, bg2);
-        
+
+        timeline.init(audioMaster);
+        visualizer.run();
+
         //bind functions to btn elements
         $("#btn-tl-start").on("click", timeline.start.bind(timeline));
         $("#btn-tl-playpause").on("click", timeline.manualPlayPause.bind(timeline));
@@ -27,5 +29,5 @@ $(function() {
         $("#btn-tl-next").on("click", timeline.next.bind(timeline));
     }
 
-    $("#onsen").load(init);
+    $("body").on("init-onsen", onsen_init);
 });

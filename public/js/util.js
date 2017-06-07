@@ -15,12 +15,20 @@ $(function () {
 
 			//change url & add history
 			window.history.pushState({}, "", url);
-			$("#"+name).load();			
+
+			if (($("#"+name).length !== 0)){
+				console.log("triggering " + name)
+				$("body").trigger("init-" + name);
+				// $("#"+name).trigger("init");
+			}
+			else {
+				console.log("#"+name+ " not found");
+			}
 		}
 	}
 
 	function bindSPA(){
-		$("[data-page]").click(function(e){
+		$("[data-page]").on("click", function(e){
 			let pageName = $(this).attr("data-page");
 			let partial = $(this).attr("data-url");
 			console.log("loading " + partial)
@@ -29,4 +37,7 @@ $(function () {
 	}
 
 	bindSPA();
+
+	let curPage = $("body").attr("id");
+	$("body").trigger("init-"+curPage);
 });
