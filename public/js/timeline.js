@@ -203,24 +203,3 @@ Timeline.addResizeFunctions = function(){
 		}
 	}
 };
-
-
-function tl_start(){
-	timeline.start();
-}
-
-function audio_playPause(){
-	timeline.manualPlayPause();
-}
-
-function audio_prev(){
-	timeline.prev();
-}
-
-function audio_next(){
-	timeline.next();
-}
-
-function audio_loadNext(){
-    timeline.load(this.playlist[this.loadOffset++].url);
-}

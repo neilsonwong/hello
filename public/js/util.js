@@ -15,7 +15,7 @@ $(function () {
 
 			//change url & add history
 			window.history.pushState({}, "", url);
-			
+			$("#"+name).load();			
 		}
 	}
 
