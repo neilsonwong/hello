@@ -7,12 +7,18 @@
     <link rel="stylesheet" href="css/styles.css?v=1.0">
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans" rel="stylesheet">
 </head>
-<body>
+<body id=<%= page%>>
+    <% include ../partials/nav %>
     <div id="page">
         <%- include("../partials/" + page) %>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    <script src="js/index.js"></script>>
     <script src="js/util.js"></script>
+    <script src="js/visualizer.js"></script>
+    <script src="js/bufferLoader.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/barGraph.js"></script>
+    <script src="js/onsen.js"></script>
 </body>
 </html>

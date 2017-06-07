@@ -1,5 +1,5 @@
 $(function () {
-	function renderPage(url){
+	function renderPage(name, url){
 		//check if current url
 		let newUrl = "partial/" + url;
 		$.get({
@@ -10,6 +10,7 @@ $(function () {
 		});
 
 		function reloadPartial(body){
+			$("body").attr("id", name);
 			$("#page").html(body);
 
 			//change url & add history
@@ -18,15 +19,11 @@ $(function () {
 	}
 
 	function bindSPA(){
-		console.log($("[data-page]"));
-		$("[data-page]").forEach((a) => {
-			$(a).click(function(e){
-				let partial = $(this).attr("data-page");
-				if (partial === ""){
-					partial = "home;"
-				}
-				return renderPage(partial);
-			});
+		$("[data-page]").click(function(e){
+			let pageName = $(this).attr("data-page");
+			let partial = $(this).attr("data-url");
+			console.log("loading " + partial)
+			return renderPage(pageName, partial);
 		});
 	}
 

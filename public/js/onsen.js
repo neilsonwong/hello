@@ -8,12 +8,11 @@ $(function() {
 
     timeline = new Timeline();
 
-    
     function init() {
         audioMaster = new Audio(audioCtx);
         visualizer = new Visualizer(audioCtx);
         bg = new BarGraph(document.querySelector(".songBars"));
-        bg2 = new BarGraph(document.querySelector(".artistBars"));
+        bg2 = new BarGraph(document.querySelector(".artistBars"), {sortRight: true});
 
         audioMaster.inject(visualizer.get());
         timeline.init(audioMaster);
@@ -23,7 +22,8 @@ $(function() {
         Timeline.addResizeFunctions(visualizer, bg, bg2);
     }
 
-    init();
+    if ($("#onsen").length !== 0)
+        init();
 
 
 });

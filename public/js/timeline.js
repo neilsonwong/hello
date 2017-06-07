@@ -6,6 +6,7 @@ function Timeline() {
 	this.playlist = [];
 	this.urlSet = new Set();
 	this.stopped = false;
+	this.graphs = {};
 }
 
 Timeline.prototype.init = function(audioMaster){
@@ -36,8 +37,6 @@ Timeline.prototype.progressWeek = function(duration, step){
 		return;
 	}
 
-	console.log(this.acc);
-	console.log(duration);
 	if (this.acc > 7){
 		console.log("next week!");
 		this.acc = 0;
@@ -149,9 +148,6 @@ Timeline.prototype.getPlayList = function(){
 }
 
 Timeline.prototype.addBarGraph = function(bg, property){
-	if (!this.graphs){
-		this.graphs = {};
-	}
 	this.graphs[property] = bg;
 }
 

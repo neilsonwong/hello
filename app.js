@@ -26,7 +26,10 @@ app.get('/about', function(req, res){
 });
 
 app.get('/onsen', function(req, res){
-    res.render("pages/onsen");
+    res.render("pages/index", {
+        page: "onsen",
+        title: "音線" 
+    });
 });
 
 app.get('/blog', function(req, res){

@@ -7,7 +7,7 @@ function Visualizer(audioContext, options) {
     this.screenWidth = $(window).width();
     console.log(this.screenWidth + ", " + this.screenHeight);
     this.dataArray = [];
-    this.fps = 60;
+    this.fps = 30;
 }
 
 Visualizer.prototype.get = function() {

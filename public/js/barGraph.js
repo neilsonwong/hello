@@ -1,10 +1,12 @@
-function BarGraph(container){
+function BarGraph(container, options){
 	this.data = {};
 	this.dataIndices = [];
 	this.container = container;
 	this.screenHeight = $(window).height();
     this.screenWidth = $(window).width();
     this.numOfBars = 12;
+	this.sortRight = (options && options.sortRight) || false;
+	console.log(this.sortRight);
 	this.setupBars();
 }
 
@@ -31,8 +33,8 @@ BarGraph.prototype.onResize = function(){
     console.log("resizing")
     this.screenHeight = $(window).height();
     this.screenWidth = $(window).width();
-    this.barWidth = this.screenWidth / (this.numOfBars) - 1;
-    this.barMaxHeight = Math.floor(this.screenHeight / 3);
+    this.barWidth = ((this.screenWidth / 3) / this.numOfBars) - 10;
+    this.barMaxHeight = Math.floor(this.screenHeight / 4);
 
     let w = this.barWidth + "px";
     let h = this.barMaxHeight + "px";
@@ -64,13 +66,11 @@ BarGraph.prototype.add = function(item, change){
 };
 
 BarGraph.prototype.redraw = function(){
-	console.log(this.dataIndices);
-	console.log(this.data);
-
 	let bars = this.bars;
 
-	for (var j = 0; j < this.numOfBars; j++) {
-		let magnitude = (this.data[this.dataIndices[j]] / this.data[this.dataIndices[0]]) || 0;
+	for (let j = 0; j < this.numOfBars; j++) {
+		let index = this.sortRight ? this.numOfBars -1 - j : j;
+		let magnitude = (this.data[this.dataIndices[index]] / this.data[this.dataIndices[0]]) || 0;
         bars[j].style[prefix.css + 'transform'] = ["scaleY(", magnitude, ") translate3d(0,0,0)"].join("");
     }
 };

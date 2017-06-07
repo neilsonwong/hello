@@ -161,6 +161,10 @@ body {
     cursor: pointer;
 }
 
+.nav {
+    z-index: 99;
+}
+
 .nav > ul {
     position: absolute;
     top: 0;
@@ -361,7 +365,10 @@ body {
 }
 
 .songBars {
-    margin-left: 10px;
+    position: absolute;
+    left: 10px;
+    width: 50%;
+    z-index: -10;
 }
 
 .songBars .bar {
@@ -373,7 +380,11 @@ body {
 }
 
 .artistBars {
-    margin-right: 10px;
+    position: absolute;
+    right: 10px;
+    width: 50%;
+    text-align: right;
+    z-index: -10;
 }
 
 .artistBars .bar {
@@ -382,4 +393,12 @@ body {
     margin-left: 10px;
 
     transform-origin: 50% 0 0;
+}
+
+#onsen nav {
+    opacity: 0.2;
+}
+
+#onsen nav:hover{
+    opacity: 1;
 }
