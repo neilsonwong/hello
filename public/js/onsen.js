@@ -24,6 +24,4 @@ $(function() {
 
     if ($("#onsen").length !== 0)
         init();
-
-
 });

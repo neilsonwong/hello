@@ -14,7 +14,8 @@ $(function () {
 			$("#page").html(body);
 
 			//change url & add history
-			window.history.pushState({}, "", url)
+			window.history.pushState({}, "", url);
+			
 		}
 	}
 
