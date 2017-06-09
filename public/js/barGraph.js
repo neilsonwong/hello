@@ -67,10 +67,16 @@ BarGraph.prototype.add = function(item, change){
 
 BarGraph.prototype.redraw = function(){
 	let bars = this.bars;
+	let index, key, val, magnitude;
 
 	for (let j = 0; j < this.numOfBars; j++) {
-		let index = this.sortRight ? this.numOfBars -1 - j : j;
-		let magnitude = (this.data[this.dataIndices[index]] / this.data[this.dataIndices[0]]) || 0;
+		index = this.sortRight ? this.numOfBars -1 - j : j;
+		key = this.dataIndices[index];
+		val = this.data[key];
+		magnitude = (val / this.data[this.dataIndices[0]]) || 0;
         bars[j].style[prefix.css + 'transform'] = ["scaleY(", magnitude, ") translate3d(0,0,0)"].join("");
+        $(bars[j])
+        	.attr("data-key", key)
+        	.attr("data-value", val);
     }
 };
