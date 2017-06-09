@@ -1,3 +1,5 @@
+"use strict";
+
 let express = require("express");
 let app = express();
 let favicon = require('serve-favicon');
@@ -18,6 +20,7 @@ app.set("view engine", "ejs");
 //statics
 app.use(express.static('public'))
 app.use('/mp3', express.static('mp3'));
+app.use('/cut', express.static('cut_mp3'));
 
 app.get('/', function(req, res){
     res.render("pages/index", {
@@ -74,6 +77,18 @@ app.get('/onsen/playlist', function(req, res){
     Onsen.getWeekly(() => {
         res.sendFile(path.join(config.onsenDataLocation, "weekly.json"));
     });
+});
+
+app.get('/onsen/cutcut', function(req, res){
+    Onsen.cutSongs(() => {
+        console.log("songs have been cut");
+    })
+});
+
+app.get('/onsen/copycopy', function(req, res){
+    Onsen.copyWeeklyToNewFolder("/home/rin/musicStorage", () => {
+        console.log("songs have been moved");
+    })
 });
 
 // app.get(encodeURI('/mp3/01 三日月.mp3'), function(req, res){

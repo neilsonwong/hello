@@ -2,7 +2,6 @@ function Timeline() {
 	this.date = null;
 	this.acc = 0;
 	this.offset = -1;
-	this.loadOffset = -1;
 	this.playlist = [];
 	this.urlSet = new Set();
 	this.stopped = false;
@@ -15,17 +14,14 @@ Timeline.prototype.init = function(audioMaster){
 	this.audioDevice = audioMaster;
     $(window).resize(Timeline.onResize);
 
-	this.offset = 0;
-	this.loadOffset = 3;
-
-	this.getPlayList(() => {
-		this.loadOffset = 3;
-		console.log(this.playlist.slice(0, 3).map(v => v.url));
-		this.load(this.playlist.slice(0, 3).map(v => v.url));
-	});
-
 	this.date = new Date(2011, 10, 22);
 	this.updateDate();
+
+	this.offset = 0;
+
+	this.getPlayList(() => {
+		this.loadSurrounding();
+	});
 }
 
 Timeline.toggleFullSongMode = function(){
@@ -86,21 +82,11 @@ Timeline.prototype.updateDate = function(days){
 	++this.acc;
 }
 
-Timeline.prototype.loadNext = function(){
-	if (this.loadOffset >= this.playlist.length){
-		return;
-	}
-	else {
-		this.load(this.playlist[this.loadOffset++].url);
-	}
-}
-
-Timeline.prototype.loadPrev= function(){
-	if (this.offset === 0){
-		return;
-	}
-	else {
-		this.load(this.playlist[this.offset-1].url);
+Timeline.prototype.loadSurrounding = function(){
+	let small = Math.max(0, this.offset - 3);
+	let big = Math.min(this.playlist.length, this.offset + 4);
+	for(let i = small; i < big; ++i){
+		this.load(this.getMp3Url(i));
 	}
 }
 
@@ -120,12 +106,6 @@ Timeline.prototype.load = function(url, callback){
 		return true;
 	});
 
-	if (!fullSongMode){
-		url = url.map((u) => {
-			return "/mp3/cut_mp3/" + u.substring(5);
-		});
-	}
-
 	this.audioDevice.load(url, () => {
 		url.forEach( e =>  {
 			console.log("loaded " + e);
@@ -138,7 +118,7 @@ Timeline.prototype.load = function(url, callback){
 }
 
 Timeline.prototype.playPause = function(){
-	this.audioDevice.playPause(this.current().url);
+	this.audioDevice.playPause(this.currentUrl());
 }
 
 Timeline.prototype.manualPlayPause = function(){
@@ -146,14 +126,14 @@ Timeline.prototype.manualPlayPause = function(){
 		this.start();
 	}
 	else {
-		this.audioDevice.playPause(this.current().url);
+		this.audioDevice.playPause(this.currentUrl());
 		this.stop();
 	}
 }
 
 Timeline.prototype.next = function(){
 	//actions to stop current
-	this.audioDevice.playPause(this.current().url);
+	this.audioDevice.playPause(this.currentUrl());
 	++this.offset;
 
 	// console.log(this.offset);
@@ -167,8 +147,8 @@ Timeline.prototype.next = function(){
 	
 	//stuff to do to init next
 	this.addInfo();
-	this.loadNext();
-	this.audioDevice.playPause(this.current().url);
+	this.loadSurrounding();
+	this.audioDevice.playPause(this.currentUrl());
 	this.progressWeek(this.current().duration);
 }
 
@@ -176,15 +156,23 @@ Timeline.prototype.prev = function(){
 	if (this.offset === 0){
 		return;
 	}
-	this.audioDevice.playPause(this.current().url);
-	this.loadPrev();
+	this.audioDevice.playPause(this.currentUrl());
+	this.loadSurrounding();
 	--this.offset;
-	this.audioDevice.playPause(this.current().url);
+	this.audioDevice.playPause(this.currentUrl());
 }
 
 Timeline.prototype.current = function(){
 	return this.playlist[this.offset];
 }
+
+Timeline.prototype.getMp3Url = function(i){
+	return this.fullSongMode ? this.playlist[i].url : "/cut/" + (this.playlist[i].url).substring(5);
+};
+
+Timeline.prototype.currentUrl = function(){
+	return this.getMp3Url(this.offset);
+};
 
 Timeline.prototype.stop = function(){
 	this.stopped = true;
@@ -195,7 +183,6 @@ Timeline.prototype.getPlayList = function(callback){
 	$.get("onsen/playlist", (data) => {
 		console.log(data);
 		this.playlist = data;
-		this.loadOffset = 0;
 		if (callback){
 			return callback();
 		}
