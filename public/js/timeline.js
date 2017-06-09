@@ -14,7 +14,7 @@ Timeline.prototype.init = function(audioMaster){
 	this.audioDevice = audioMaster;
     $(window).resize(Timeline.onResize);
 
-	this.date = new Date(2011, 10, 22);
+	this.date = new Date(2011, 9, 22);
 	this.updateDate();
 
 	this.offset = 0;
