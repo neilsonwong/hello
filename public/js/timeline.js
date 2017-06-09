@@ -133,6 +133,10 @@ Timeline.prototype.manualPlayPause = function(){
 
 Timeline.prototype.next = function(){
 	//actions to stop current
+	if (!this.currentUrl()){
+		++this.offset;
+		return this.next();
+	}
 	this.audioDevice.playPause(this.currentUrl());
 	++this.offset;
 
@@ -201,18 +205,14 @@ Timeline.prototype.addInfo = function(){
 			this.graphs[property].add(val, count);
 		}
 	});
+	this.updateSongMetaData();
 }
 
 Timeline.prototype.updateSongMetaData = function(){
-	/*
-	"title": "everlasting song~harmonica edition",
-	"artist": "YRL",
-	"playCount": 1,
-	"weeksAtTop": 1,
-	"topWeek": "2011-10-16T12:00:00.000Z",
-	"album": "everlasting song",
-	*/
-	console.log("write song metadata");
+	$("#np-title").html(this.current().title);
+	$("#np-artist").html(this.current().artist);
+	$("#np-weekPlayCount").html(this.current().playCount);
+	$("#np-totalPlayCount").html(this.current().totalPlayCount);
 };
 
 
