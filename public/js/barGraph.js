@@ -1,5 +1,6 @@
 function BarGraph(container, options){
 	this.data = {};
+	this.extra = {};
 	this.dataIndices = [];
 	this.container = container;
 	this.screenHeight = $(window).height();
@@ -43,13 +44,19 @@ BarGraph.prototype.onResize = function(){
     $(this.container).css("height", h);
 };
 
-BarGraph.prototype.add = function(item, change){
+BarGraph.prototype.add = function(item, change, extras){
 	let sum = change;
 
 	//add to data indexes
 	if (!(item in this.data)){
 		console.log("pushing " + item)
 		this.dataIndices.push(item);
+	}
+
+	if (extras !== undefined){
+		for (extra in extras){
+			this.extras[item][extra] = extras[extra];
+		}
 	}
 
 	//add item to data
@@ -78,5 +85,8 @@ BarGraph.prototype.redraw = function(){
         $(bars[j])
         	.attr("data-key", key)
         	.attr("data-value", val);
+
+        //check if image data is included
+        
     }
 };
