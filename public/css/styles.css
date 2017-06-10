@@ -400,6 +400,15 @@ body {
     margin-bottom: 10px;
 }
 
+#np-week {
+    position: absolute;
+    left: 220px;
+    bottom: 50%;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    font-style: italic;
+}
+
 /* bar graphs */
 
 .songBars {
@@ -413,6 +422,11 @@ body {
     display: inline-block;
     background-color: #666;
     margin-right: 10px;
+
+    -webkit-transition: -webkit-transform 200ms linear;
+    -moz-transition: -moz-transform 200ms linear;
+    -o-transition: -o-transform 200ms linear;
+    transition: transform 200ms linear;
 
     transform-origin: 50% 0 0;
 }
@@ -429,6 +443,11 @@ body {
     display: inline-block;
     background-color: #666;
     margin-left: 10px;
+
+    -webkit-transition: -webkit-transform 200ms linear;
+    -moz-transition: -moz-transform 200ms linear;
+    -o-transition: -o-transform 200ms linear;
+    transition: transform 200ms linear;
 
     transform-origin: 50% 0 0;
 }
