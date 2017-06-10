@@ -14,7 +14,7 @@ $(function () {
 			$("#page").html(body);
 
 			if (($("#"+name).length !== 0)){
-				// console.log("triggering " + name)
+				console.log("triggering " + name)
 				$("body").trigger("init-" + name);
 				// $("#"+name).trigger("init");
 			}
@@ -56,6 +56,7 @@ $(function () {
 			}
 		};
 		
+		console.log("triggering " + $("body").attr("id"));
 		$("body").trigger("init-" + $("body").attr("id"));
 	}
 
