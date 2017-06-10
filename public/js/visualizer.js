@@ -23,8 +23,9 @@ Visualizer.prototype.run = function() {
     this.dataArray = new Uint8Array(this.binCount);
 
     this.init();
+    this.animationFunction = this.getData.bind(this);
 
-    this.AnimationTimer = setInterval(this.getData.bind(this, 50 + (60 - this.fps)));
+    requestAnimationFrame(this.animationFunction);
 }
 
 Visualizer.prototype.clear = function() {
@@ -101,6 +102,7 @@ Visualizer.prototype.onWaveform = function(waveform) {
 
         bars[j].style[prefix.css + 'transform'] = ["scaleY(", magnitude, ") translate3d(0,0,0)"].join("");
     }
+    requestAnimationFrame(this.animationFunction);
 };
 
 function sampleArray(arrayToSample, numOfSamples, modifier, decimalDigits) {

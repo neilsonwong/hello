@@ -7,7 +7,7 @@ function Timeline() {
 	this.stopped = false;
 	this.graphs = {};
 	this.fullSongMode = false;
-	this.secondaryAudioDevice = null;
+	this.divergence = 0;
 }
 
 Timeline.prototype.init = function(audioMaster){
@@ -24,17 +24,7 @@ Timeline.prototype.init = function(audioMaster){
 	});
 }
 
-Timeline.toggleFullSongMode = function(){
-	let tmp = this.audioDevice;
-	if (this.secondaryAudioDevice){
-		//swap audio devices
-		this.audioDevice = secondaryAudioDevice;
-		this.secondaryAudioDevice = tmp;
-	}
-	else {
-		console.log("no secondary audio device exists");
-		return null;
-	}
+Timeline.prototype.toggleFullSongMode = function(){
 	this.fullSongMode = !this.fullSongMode;
 	return this.fullSongMode;
 }
@@ -46,40 +36,57 @@ Timeline.prototype.start = function(){
 	this.progressWeek(this.current().duration);
 }
 
-Timeline.prototype.progressWeek = function(duration, step){
+Timeline.prototype.progressWeek = function(duration, step, divergence){
 	//if we are done with this week, go to the next
 	if (this.stopped){
 		//if we are stopped
 		return;
 	}
 
-	if (this.acc > 7){
+	if (divergence !== undefined && this.divergence !== divergence){
+		//this is a recursive call but we have diverged, don't do anything
+		return;
+	}
+
+	if (this.acc > 6){
 		console.log("next week!");
 		this.acc = 0;
 		this.next();
 		return;
 	}
 
-	//figure out how much we need to step by
+	//figure out how much we need to step by, cuz first call
 	if (!step){
 		step = duration / 7;
+		this.date = new Date(this.current().week *1000 - 86400000);
 	}
 	let wait = duration < step ? 0 : duration - step;
 
 	//update date
-	this.updateDate();
-	setTimeout(this.progressWeek.bind(this, wait, step), step);
+	this.incDate();
+	setTimeout(this.progressWeek.bind(this, wait, step, this.divergence), step);
 }
 
-Timeline.prototype.updateDate = function(days){
-	days = days || 1;
-	this.date.setDate(this.date.getDate()+days);
+Timeline.prototype.incDate = function(){
+	this.date.setDate(this.date.getDate()+1);
+	this.updateDate();
+	++this.acc;
+}
+
+Timeline.prototype.regressWeek = function(){
+	//this current should be regressed already
+	//set date to 1 day before 
+	this.date = new Date(this.current().week *1000 - 86400000);
+	this.acc = 0;
+	this.progressWeek(this.current().duration);
+};
+
+Timeline.prototype.updateDate = function(){
 	$(".dateBox").html([
 		this.date.getDate(),
         this.date.getMonth()+1,
 		this.date.getFullYear()
 	].join("."));
-	++this.acc;
 }
 
 Timeline.prototype.loadSurrounding = function(){
@@ -133,10 +140,6 @@ Timeline.prototype.manualPlayPause = function(){
 
 Timeline.prototype.next = function(){
 	//actions to stop current
-	if (!this.currentUrl()){
-		++this.offset;
-		return this.next();
-	}
 	this.audioDevice.playPause(this.currentUrl());
 	++this.offset;
 
@@ -157,14 +160,28 @@ Timeline.prototype.next = function(){
 }
 
 Timeline.prototype.prev = function(){
-	if (this.offset === 0){
-		return;
-	}
 	this.audioDevice.playPause(this.currentUrl());
-	this.loadSurrounding();
 	--this.offset;
+
+	if (this.offset < 0){
+		this.offset = 0;
+	}
+
+	this.addInfo();
+	this.loadSurrounding();
 	this.audioDevice.playPause(this.currentUrl());
+	this.regressWeek();
 }
+
+Timeline.prototype.manualNext = function(){
+	this.divergence++;
+	this.next();
+};
+
+Timeline.prototype.manualPrev = function(){
+	this.divergence++;
+	this.prev();
+};
 
 Timeline.prototype.current = function(){
 	return this.playlist[this.offset];
@@ -213,6 +230,7 @@ Timeline.prototype.updateSongMetaData = function(){
 	$("#np-artist").html(this.current().artist);
 	$("#np-weekPlayCount").html(this.current().playCount);
 	$("#np-totalPlayCount").html(this.current().totalPlayCount);
+	$("#np-week").html("week of " + (new Date(this.current().week*1000)).toISOString().substring(0, 10));
 };
 
 

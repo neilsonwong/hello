@@ -20,6 +20,7 @@ $(function() {
         Timeline.addResizeFunctions(visualizer, bg, bg2);
         timeline.addBarGraph(bg, "title");
         timeline.addBarGraph(bg2, "artist");
+        timeline.toggleFullSongMode();
 
         timeline.init(audioMaster);
         visualizer.run();
@@ -27,8 +28,8 @@ $(function() {
         //bind functions to btn elements
         $("#btn-tl-start").on("click", timeline.start.bind(timeline));
         $("#btn-tl-playpause").on("click", timeline.manualPlayPause.bind(timeline));
-        $("#btn-tl-prev").on("click", timeline.prev.bind(timeline));
-        $("#btn-tl-next").on("click", timeline.next.bind(timeline));
+        $("#btn-tl-prev").on("click", timeline.manualPrev.bind(timeline));
+        $("#btn-tl-next").on("click", timeline.manualNext.bind(timeline));
     }
 
     $("body").on("init-onsen", onsen_init);
