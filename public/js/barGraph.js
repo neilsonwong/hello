@@ -82,6 +82,7 @@ BarGraph.prototype.redraw = function(){
 		val = this.data[key];
 		magnitude = (val / this.data[this.dataIndices[0]]) || 0;
         bars[j].style[prefix.css + 'transform'] = ["scaleY(", magnitude, ") translate3d(0,0,0)"].join("");
+        bars[j].style['opacity'] = 1 - index * 0.075;
         $(bars[j])
         	.attr("data-key", key)
         	.attr("data-value", val);
