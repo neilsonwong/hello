@@ -324,9 +324,6 @@ body {
     opacity: 1;
 }
 
-#onsen > nav > ul {
-}
-
 .visualizer {
     bottom: 0px;
     position: absolute;
@@ -428,18 +425,12 @@ body {
 }
 
 /* bar graphs */
-
-.songBars {
-    position: absolute;
-    left: 10px;
-    width: 50%;
-    z-index: -10;
+.barWrap {
+    display: inline-block;
 }
 
-.songBars .bar {
-    display: inline-block;
+.barWrap .bar {
     background-color: #666;
-    margin-right: 10px;
 
     -webkit-transition: -webkit-transform 200ms linear;
     -moz-transition: -moz-transform 200ms linear;
@@ -449,28 +440,64 @@ body {
     transform-origin: 50% 0 0;
 }
 
-.songBars .bar:hover {
-    opacity: 1;
-    background-color: red;
+.bar:hover {
+    opacity: 1 !important;
+}
+
+.barVal {
+    padding-top: 5px;
+    text-align: center;
+    font-size: 0.6em;
+    opacity: 0.5;
+}
+
+.barVal:empty {
+    display: none;
+}
+
+.songBars {
+    position: absolute;
+    left: 10px;
+    height: 0px;
+    z-index: -10;
+}
+
+.songBars .bar {
+    margin-right: 10px;
+}
+
+.songBars .barVal {
+    margin-right: 10px;
 }
 
 .artistBars {
     position: absolute;
     right: 10px;
-    width: 50%;
+    height: 0px;
     text-align: right;
     z-index: -10;
 }
 
 .artistBars .bar {
-    display: inline-block;
-    background-color: #666;
     margin-left: 10px;
+}
 
-    -webkit-transition: -webkit-transform 200ms linear;
-    -moz-transition: -moz-transform 200ms linear;
-    -o-transition: -o-transform 200ms linear;
-    transition: transform 200ms linear;
+.artistBars .barVal {
+    margin-left: 10px;
+}
 
-    transform-origin: 50% 0 0;
+.barWrap:hover .barTooltip {
+    display: block;
+}
+
+.barTooltip {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    padding: 10px;
+    background-color: #fff;
+    color: #666;
+    border-radius: 5px;
+    white-space: nowrap;
+    box-shadow: 0 1px 10px rgba(0,0,0,.3);
 }
