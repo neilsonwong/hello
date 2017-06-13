@@ -1,10 +1,8 @@
 features
-bar graph numbers / spiff it up
-play pause buttons
+
+play pause buttons styling
 date/time line
 mood colours
-
-pulse play time on line
 
 on exit functions
 fix mp3 cutter
@@ -13,3 +11,5 @@ fade in out
 investigate double next
 
 true full song mode
+
+loading / can't load song handling

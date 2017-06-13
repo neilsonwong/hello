@@ -8,6 +8,7 @@ function Timeline() {
 	this.graphs = {};
 	this.fullSongMode = false;
 	this.divergence = 0;
+	this.overline = $(".overline");
 }
 
 Timeline.prototype.init = function(audioMaster){
@@ -34,6 +35,7 @@ Timeline.prototype.start = function(){
 	this.addInfo();
 	this.playPause();
 	this.progressWeek(this.current().duration);
+    requestAnimationFrame(this.animateLine.bind(this));
 }
 
 Timeline.prototype.progressWeek = function(duration, step, divergence){
@@ -126,6 +128,7 @@ Timeline.prototype.load = function(url, callback){
 
 Timeline.prototype.playPause = function(){
 	this.audioDevice.playPause(this.currentUrl());
+	this.playPauseTime = Date.now();
 }
 
 Timeline.prototype.manualPlayPause = function(){
@@ -133,14 +136,14 @@ Timeline.prototype.manualPlayPause = function(){
 		this.start();
 	}
 	else {
-		this.audioDevice.playPause(this.currentUrl());
+		this.playPause();
 		this.stop();
 	}
 }
 
 Timeline.prototype.next = function(){
 	//actions to stop current
-	this.audioDevice.playPause(this.currentUrl());
+	this.playPause();
 	++this.offset;
 
 	// console.log(this.offset);
@@ -155,12 +158,12 @@ Timeline.prototype.next = function(){
 	//stuff to do to init next
 	this.addInfo();
 	this.loadSurrounding();
-	this.audioDevice.playPause(this.currentUrl());
+	this.playPause();
 	this.progressWeek(this.current().duration);
 }
 
 Timeline.prototype.prev = function(){
-	this.audioDevice.playPause(this.currentUrl());
+	this.playPause();
 	--this.offset;
 
 	if (this.offset < 0){
@@ -169,7 +172,7 @@ Timeline.prototype.prev = function(){
 
 	this.addInfo();
 	this.loadSurrounding();
-	this.audioDevice.playPause(this.currentUrl());
+	this.playPause();
 	this.regressWeek();
 }
 
@@ -233,6 +236,18 @@ Timeline.prototype.updateSongMetaData = function(){
 	$("#np-week").html("week of " + (new Date(this.current().week*1000)).toISOString().substring(0, 10));
 };
 
+Timeline.prototype.animateLine = function(){
+	//set width
+	let total = this.current().duration;
+	let pageWidth = $(window).width();
+	let elapsed = Date.now() - this.playPauseTime;
+	let progress = pageWidth * (elapsed / (total));
+
+	//set colour
+	this.overline.css("background-color", "blue");
+	this.overline.css("width", progress + "px");
+    requestAnimationFrame(this.animateLine.bind(this));
+}
 
 Timeline.onResize = function(){
 	console.log("resizing");

@@ -358,8 +358,12 @@ body {
     height: 10px;
     position: absolute;
     top: 50%;
+}
+.timeline .baseline {
     background-color: #666;
-
+}
+.timeline .overline {
+    z-index: 5;
 }
 
 .timeline .dateBox {
