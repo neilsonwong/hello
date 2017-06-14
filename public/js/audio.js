@@ -3,6 +3,7 @@
 function Audio (audioContext){
     this.context = audioContext;
     this.soundBuffers = {};
+    this.gainNodes = {};
     this.sounds = {};
     this.loading = 0;
     this.audioNodes = [];
@@ -42,21 +43,23 @@ Audio.prototype.playPause = function playPause(url) {
     var sound = this.sounds[url];
     // start
     if (!sound){
-        this.start(url);
+        this.fadeIn(url, this.start.bind(this, url));
     }
     //pause
     else if (sound.startedAt && sound.pausePoint === -1){
-        this.pause(url);
+        // this.pause(url);
+        this.fadeOut(url);
     }
     //resume
     else if (sound.pausePoint > 0){
-        this.resume(url);
+        this.fadeIn(url, this.resume.bind(this, url));
     }
 };
 
 Audio.prototype.start = function(url, oldPause){
     //add sound
     var sound = this.context.createBufferSource();
+    var gainNode = this.context.createGain ? this.context.createGain() : this.context.createGainNode();
     sound.buffer = this.soundBuffers[url];
 
     //attach nodes to sound
@@ -64,7 +67,9 @@ Audio.prototype.start = function(url, oldPause){
     for (i = 0; i < this.audioNodes.length; ++i){
         sound.connect(this.audioNodes[i]);
     }
-    sound.connect(this.context.destination);    //speaker output
+    sound.connect(gainNode);
+    // sound.connect(this.context.destination);    //speaker output
+    gainNode.connect(this.context.destination);
     
     //start sound
     if (oldPause) {
@@ -78,6 +83,7 @@ Audio.prototype.start = function(url, oldPause){
     }
     sound.pausePoint = -1;
     this.sounds[url] = sound;
+    this.gainNodes[url] = gainNode;
 };
 Audio.prototype.play = Audio.prototype.start;
 
@@ -85,6 +91,34 @@ Audio.prototype.resume = function play(url) {
     //if sounds expired or unmade, bind it to the correct buffer
     this.start(url, this.sounds[url].pausePoint);
 };
+
+Audio.prototype.fadeIn = function fadeIn(url, startFn, time) {
+    if (time === undefined){
+        time = 1500;
+    }
+    startFn();
+    var i;
+    for (i = 0; i < time; i += 50){
+        let gain = i / time;
+        setTimeout(() => {
+            this.gainNodes[url].gain.value = gain;
+        }, i);
+    }
+}
+
+Audio.prototype.fadeOut = function fadeOut(url, time) {
+    if (time === undefined){
+        time = 1500;
+    }
+    var i;
+    for (i = 0; i < time; i += 50){
+        let gain = (time - i) / time;
+        setTimeout(() => {
+            this.gainNodes[url].gain.value = gain;
+        }, i);
+    }
+    setTimeout(this.pause.bind(this, url), time);
+}
 
 Audio.prototype.pause = function pause(url, offset) {
     var sound = this.sounds[url];
