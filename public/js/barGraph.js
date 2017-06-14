@@ -51,11 +51,11 @@ BarGraph.prototype.setupBars = function(){
 			let windowWidth = $(window).width();
 			let fakeElementWidth = Math.max($tt.width(), 100);
 			if (e.pageX + fakeElementWidth > windowWidth - 50){
-				$tt.css("right", (windowWidth - e.pageX) + "px");
+				$tt.css("right", (windowWidth - e.pageX + 10) + "px");
 				$tt.css("left", "");
 			}
 			else {
-				$tt.css("left", e.pageX + "px");
+				$tt.css("left", e.pageX + 10 +"px");
 				$tt.css("right", "");
 			}
 			$tt.css("top", e.pageY + "px");

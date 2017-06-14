@@ -26,11 +26,29 @@ $(function() {
         visualizer.run();
 
         //bind functions to btn elements
-        $("#btn-tl-start").on("click", timeline.start.bind(timeline));
-        $("#btn-tl-playpause").on("click", timeline.manualPlayPause.bind(timeline));
+        $("#btn-tl-start").on("click", (function(e){
+            this.start();
+            switchPlayPause();
+        }).bind(timeline));
+        $("#btn-tl-playpause").on("click", (function(e){
+            this.manualPlayPause();
+            switchPlayPause();
+        }).bind(timeline));
         $("#btn-tl-prev").on("click", timeline.manualPrev.bind(timeline));
         $("#btn-tl-next").on("click", timeline.manualNext.bind(timeline));
     }
 
     $("body").on("init-onsen", onsen_init);
+
+    function switchPlayPause() {
+        let $btn = $("#btn-tl-playpause");
+        if ($btn.attr("data-playing") === "playing"){
+            $btn.attr("data-playing", "paused");
+            $btn.find("i").first().html("play_arrow");
+        }
+        else {
+            $btn.attr("data-playing", "playing");
+            $btn.find("i").first().html("pause");
+        }
+    }
 });

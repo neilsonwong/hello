@@ -383,6 +383,15 @@ body {
     bottom: 50%;
 }
 
+.timeline .audioControls button {
+    background-color: Transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+}
+
 .audioDetails > div {
     position: absolute;
     bottom: 50%;

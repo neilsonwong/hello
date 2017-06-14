@@ -22,20 +22,20 @@ Timeline.prototype.init = function(audioMaster){
 
 	this.getPlayList(() => {
 		this.loadSurrounding();
+		requestAnimationFrame(this.animateLine.bind(this));
 	});
 }
 
 Timeline.prototype.toggleFullSongMode = function(){
 	this.fullSongMode = !this.fullSongMode;
 	return this.fullSongMode;
-}
+};
 
 Timeline.prototype.start = function(){
 	this.stopped = false;
 	this.addInfo();
 	this.playPause();
 	this.progressWeek(this.current().duration);
-    requestAnimationFrame(this.animateLine.bind(this));
 }
 
 Timeline.prototype.progressWeek = function(duration, step, divergence){
@@ -47,10 +47,13 @@ Timeline.prototype.progressWeek = function(duration, step, divergence){
 
 	if (divergence !== undefined && this.divergence !== divergence){
 		//this is a recursive call but we have diverged, don't do anything
+		console.log("diverged");
 		return;
 	}
 
-	if (this.acc > 6){
+	let total = this.current().duration;
+	let elapsed = Date.now() - this.playPauseTime;
+	if (elapsed >= total){
 		console.log("next week!");
 		this.acc = 0;
 		this.next();
@@ -60,25 +63,30 @@ Timeline.prototype.progressWeek = function(duration, step, divergence){
 	//figure out how much we need to step by, cuz first call
 	if (!step){
 		step = duration / 7;
-		this.date = new Date(this.current().week *1000 - 86400000);
+		// this.date = new Date(this.current().week *1000 - 86400000);
+		this.date = new Date(this.current().week *1000);
 	}
 	let wait = duration < step ? 0 : duration - step;
 
 	//update date
-	this.incDate();
-	setTimeout(this.progressWeek.bind(this, wait, step, this.divergence), step);
+	setTimeout((function(wait, step, divergence) {
+		this.incDate();
+		this.progressWeek(wait, step, divergence);
+	}).bind(this, wait, step, this.divergence), step);
 }
 
 Timeline.prototype.incDate = function(){
+	if (this.stopped){
+		return;
+	}
 	this.date.setDate(this.date.getDate()+1);
 	this.updateDate();
-	++this.acc;
 }
 
 Timeline.prototype.regressWeek = function(){
 	//this current should be regressed already
 	//set date to 1 day before 
-	this.date = new Date(this.current().week *1000 - 86400000);
+	this.date = new Date(this.current().week *1000);
 	this.acc = 0;
 	this.progressWeek(this.current().duration);
 };
@@ -129,15 +137,26 @@ Timeline.prototype.load = function(url, callback){
 Timeline.prototype.playPause = function(){
 	this.audioDevice.playPause(this.currentUrl());
 	this.playPauseTime = Date.now();
+	console.log()
+	if (this.elapsed > 0){
+		console.log(this.playPauseTime);
+		this.playPauseTime = Date.now() - this.elapsed;
+		console.log(this.playPauseTime);
+		this.elapsed = 0;
+	}
 }
 
 Timeline.prototype.manualPlayPause = function(){
+	this.divergence++;
 	if (this.stopped){
 		this.start();
 	}
 	else {
+		let elapsed = Date.now() - this.playPauseTime;
 		this.playPause();
 		this.stop();
+		this.elapsed = elapsed;
+		console.log("saving elapsed as " + this.elapsed);
 	}
 }
 
@@ -145,6 +164,7 @@ Timeline.prototype.next = function(){
 	//actions to stop current
 	this.playPause();
 	++this.offset;
+	this.acc = 0;
 
 	// console.log(this.offset);
 	// console.log(this.playlist.length);
@@ -238,14 +258,16 @@ Timeline.prototype.updateSongMetaData = function(){
 
 Timeline.prototype.animateLine = function(){
 	//set width
-	let total = this.current().duration;
-	let pageWidth = $(window).width();
-	let elapsed = Date.now() - this.playPauseTime;
-	let progress = pageWidth * (elapsed / (total));
+	if (!this.stopped){
+		let total = this.current().duration;
+		let pageWidth = $(window).width();
+		let elapsed = Date.now() - this.playPauseTime;
+		let progress = pageWidth * (elapsed / (total));
 
-	//set colour
-	this.overline.css("background-color", "blue");
-	this.overline.css("width", progress + "px");
+		//set colour
+		this.overline.css("background-color", "blue");
+		this.overline.css("width", progress + "px");
+	}
     requestAnimationFrame(this.animateLine.bind(this));
 }
 
