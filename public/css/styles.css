@@ -74,6 +74,17 @@ body {
     font-size: 5.75em;
 }
 
+@media (max-width: 1000px) {
+    .large.jp {
+        font-size: 5.2em;
+        letter-spacing: -0.23em;
+    }
+
+    .large.en {
+        font-size: 4.75em;
+    }
+}
+
 .multicolour span:nth-child(1) {
     color: rgb(235, 116, 60);
 }
@@ -100,7 +111,8 @@ body {
 }
 .multicolour span:nth-child(9) {
     color: rgb(194, 78, 127);
-}.multicolour span:nth-child(10) {
+}
+.multicolour span:nth-child(10) {
     color: rgb(236, 0, 140);
 }
 
@@ -175,6 +187,7 @@ body {
     transform: translateX(-50%);
     padding: 0;
 }
+
 .nav > ul > li {
     display: block;
     padding: 0px 10px;
@@ -185,6 +198,13 @@ body {
     text-decoration: none;
     color: #666666;
     cursor: pointer;
+    white-space: nowrap;
+}
+
+@media (max-width: 1000px) {
+    .nav a {
+        font-size: 1.5em;
+    }
 }
 
 .nav a:hover {
