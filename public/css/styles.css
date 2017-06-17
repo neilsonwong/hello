@@ -388,6 +388,8 @@ body {
 }
 .timeline .overline {
     z-index: 5;
+    margin-top: 10px;
+    height: 5px;
 }
 
 .timeline .dateBox {

@@ -66,7 +66,7 @@ Visualizer.prototype.setupElements = function() {
 
     for (var i = 0; i < this.numOfBars; i++) {
         nbar = document.createElement('div');
-        nbar.className = 'nbar';
+        nbar.className = 'nbar songColour';
         nbar.style.width = w;
         nbar.style.height = h;
         this.visualizer.appendChild(nbar);
