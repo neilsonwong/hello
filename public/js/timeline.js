@@ -4,7 +4,7 @@ function Timeline() {
 	this.offset = -1;
 	this.playlist = [];
 	this.urlSet = new Set();
-	this.stopped = false;
+	this.stopped = true;
 	this.graphs = {};
 	this.fullSongMode = false;
 	this.divergence = 0;
@@ -18,7 +18,7 @@ Timeline.prototype.init = function(audioMaster){
 	this.date = new Date(2011, 9, 22);
 	this.updateDate();
 
-	this.offset = 0;
+	this.offset = 16;
 
 	this.getPlayList(() => {
 		this.loadSurrounding();
@@ -265,7 +265,9 @@ Timeline.prototype.animateLine = function(){
 		let progress = pageWidth * (elapsed / (total));
 
 		//set colour
-		this.overline.css("background-color", "blue");
+		let lineColour = this.current().colour === "" ? "#333" : this.current().colour;
+		this.overline.css("background-color", lineColour);
+		$(".songColour").css("background-color", lineColour);
 		this.overline.css("width", progress + "px");
 	}
     requestAnimationFrame(this.animateLine.bind(this));
