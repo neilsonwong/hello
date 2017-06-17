@@ -18,7 +18,7 @@ Timeline.prototype.init = function(audioMaster){
 	this.date = new Date(2011, 9, 22);
 	this.updateDate();
 
-	this.offset = 16;
+	this.offset = 0;
 
 	this.getPlayList(() => {
 		this.loadSurrounding();
@@ -134,10 +134,12 @@ Timeline.prototype.load = function(url, callback){
 	});
 }
 
-Timeline.prototype.playPause = function(){
-	this.audioDevice.playPause(this.currentUrl());
+Timeline.prototype.playPause = function(noAction){
+	if (noAction !== true){
+		console.log("hit play pause");
+		this.audioDevice.playPause(this.currentUrl());
+	}
 	this.playPauseTime = Date.now();
-	console.log()
 	if (this.elapsed > 0){
 		console.log(this.playPauseTime);
 		this.playPauseTime = Date.now() - this.elapsed;
@@ -162,7 +164,8 @@ Timeline.prototype.manualPlayPause = function(){
 
 Timeline.prototype.next = function(){
 	//actions to stop current
-	this.playPause();
+	let sameSong = this.currentUrl() === this.nextUrl();
+	this.playPause(sameSong);
 	++this.offset;
 	this.acc = 0;
 
@@ -178,12 +181,13 @@ Timeline.prototype.next = function(){
 	//stuff to do to init next
 	this.addInfo();
 	this.loadSurrounding();
-	this.playPause();
+	this.playPause(sameSong);
 	this.progressWeek(this.current().duration);
 }
 
 Timeline.prototype.prev = function(){
-	this.playPause();
+	let sameSong = this.currentUrl() === this.nextUrl();
+	this.playPause(sameSong);
 	--this.offset;
 
 	if (this.offset < 0){
@@ -192,7 +196,7 @@ Timeline.prototype.prev = function(){
 
 	this.addInfo();
 	this.loadSurrounding();
-	this.playPause();
+	this.playPause(sameSong);
 	this.regressWeek();
 }
 
@@ -217,6 +221,20 @@ Timeline.prototype.getMp3Url = function(i){
 Timeline.prototype.currentUrl = function(){
 	return this.getMp3Url(this.offset);
 };
+
+Timeline.prototype.nextUrl = function(){
+	if (this.offset >= this.playlist.length){
+		return null;
+	}
+	return this.getMp3Url(this.offset+1);
+}
+
+Timeline.prototype.prevUrl = function(){
+	if (this.offset <= 0){
+		return null;
+	}
+	return this.getMp3Url(this.offset-1);
+}
 
 Timeline.prototype.stop = function(){
 	this.stopped = true;
