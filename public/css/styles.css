@@ -77,7 +77,7 @@ body {
 @media (max-width: 1000px) {
     .large.jp {
         font-size: 5.2em;
-        letter-spacing: -0.23em;
+        letter-spacing: -0.13em;
     }
 
     .large.en {
@@ -139,6 +139,12 @@ body {
 .muse .logo {
     padding-top: 1.5em;
     font-size: 5.75em;
+}
+
+@media (max-height: 700px) {
+    .muse .logo {
+        padding-top: 0.25em;
+    }
 }
 
 .muse, .normies {
