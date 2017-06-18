@@ -1,6 +1,8 @@
 $(function () {
 	function renderPage(name, url){
 		//check if current url
+		$("body").trigger("exit-" + $("body").attr("id"));
+		
 		let newUrl = "partial" + url;
 		$.get({
 			url: newUrl,

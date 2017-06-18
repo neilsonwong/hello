@@ -23,9 +23,6 @@ Visualizer.prototype.run = function() {
     this.dataArray = new Uint8Array(this.binCount);
 
     this.init();
-    this.animationFunction = this.getData.bind(this);
-
-    requestAnimationFrame(this.animationFunction);
 }
 
 Visualizer.prototype.clear = function() {
@@ -75,7 +72,7 @@ Visualizer.prototype.setupElements = function() {
     this.bars = document.getElementsByClassName('nbar');
 };
 
-Visualizer.prototype.getData = function() {
+Visualizer.prototype.onAnimate = function() {
     this.onWaveform(this.getWaveform());
 };
 
@@ -102,7 +99,6 @@ Visualizer.prototype.onWaveform = function(waveform) {
 
         bars[j].style[prefix.css + 'transform'] = ["scaleY(", magnitude, ") translate3d(0,0,0)"].join("");
     }
-    requestAnimationFrame(this.animationFunction);
 };
 
 function sampleArray(arrayToSample, numOfSamples, modifier, decimalDigits) {

@@ -9,11 +9,15 @@ function Timeline() {
 	this.fullSongMode = false;
 	this.divergence = 0;
 	this.overline = $(".overline");
+	this.resizeFunctions = [];
+	this.animations = [];
+	this.animations.push(this.animateLine.bind(this));
+	this.alive = true;
 }
 
 Timeline.prototype.init = function(audioMaster){
 	this.audioDevice = audioMaster;
-    $(window).resize(Timeline.onResize);
+    $(window).resize(this.onResize.bind(this));
 
 	this.date = new Date(2011, 9, 22);
 	this.updateDate();
@@ -22,8 +26,24 @@ Timeline.prototype.init = function(audioMaster){
 
 	this.getPlayList(() => {
 		this.loadSurrounding();
-		requestAnimationFrame(this.animateLine.bind(this));
+		requestAnimationFrame(this.animate.bind(this));
 	});
+}
+
+Timeline.prototype.exit = function(){
+	//stop a few things mainly
+	//stop resize listeners
+	console.log("exit timeline")
+    $(window).off("resize", Timeline.onResize);
+
+	//stop audio playing
+	if (!this.stopped){
+		this.playPause();
+		this.stop();
+	}
+
+	//stop animations
+	this.alive = false;
 }
 
 Timeline.prototype.toggleFullSongMode = function(){
@@ -274,6 +294,31 @@ Timeline.prototype.updateSongMetaData = function(){
 	$("#np-week").html("week of " + (new Date(this.current().week*1000)).toISOString().substring(0, 10));
 };
 
+Timeline.prototype.attachObject = function(){
+	for (let i = 0; i < arguments.length; ++i){
+		if (arguments[i]["onResize"] !== undefined){
+			console.log("adding resize");
+			this.resizeFunctions.push(arguments[i].onResize.bind(arguments[i]));
+		}
+		if (arguments[i]["onAnimate"] !== undefined){
+			console.log("adding animation");
+			this.animations.push(arguments[i].onAnimate.bind(arguments[i]));
+		}
+	}
+}
+
+Timeline.prototype.onResize = function(){
+	console.log("resizing");
+	this.resizeFunctions.forEach((x) => x());
+};
+
+Timeline.prototype.animate = function(){
+	this.animations.forEach((x) => x());
+	if (this.alive){
+		requestAnimationFrame(this.animate.bind(this));
+	}
+}
+
 Timeline.prototype.animateLine = function(){
 	//set width
 	if (!this.stopped){
@@ -288,21 +333,4 @@ Timeline.prototype.animateLine = function(){
 		$(".songColour").css("background-color", lineColour);
 		this.overline.css("width", progress + "px");
 	}
-    requestAnimationFrame(this.animateLine.bind(this));
 }
-
-Timeline.onResize = function(){
-	console.log("resizing");
-	Timeline.resizeFunctions.forEach((x) => x());
-};
-
-Timeline.resizeFunctions = [];
-
-Timeline.addResizeFunctions = function(){
-	for (let i = 0; i < arguments.length; ++i){
-		if (arguments[i]["onResize"] !== undefined){
-			console.log("adding resize");
-			Timeline.resizeFunctions.push(arguments[i].onResize.bind(arguments[i]));
-		}
-	}
-};
