@@ -62,6 +62,14 @@ body {
     /*text-shadow: #fff 0px 1px 1px;*/
 }
 
+.light {
+    font-weight: 200;
+}
+
+.heavy {
+    font-weight: 900;
+}
+
 .muse .en {
     color: black;
 }
@@ -143,7 +151,7 @@ body {
 
 @media (max-height: 700px) {
     .muse .logo {
-        padding-top: 0.25em;
+        padding-top: 0.5em;
     }
 }
 
@@ -153,7 +161,7 @@ body {
 
 /* kotobomb */
 .kotobomb {
-    position: absolute;
+    position: fixed;
     display: block;
     left: 0;
     bottom: 0;
@@ -352,7 +360,7 @@ body {
 
 .visualizer {
     bottom: 0px;
-    position: absolute;
+    position: fixed;
 }
 
 .nbar {
@@ -377,7 +385,7 @@ body {
 }
 
 .timeline {
-    position: absolute;
+    position: fixed;
     top: 50%;
     width: 100%;
     transform: translateY(-50%);
@@ -386,7 +394,7 @@ body {
 .timeline .line {
     width: 100%;
     height: 10px;
-    position: absolute;
+    position: fixed;
     top: 50%;
 }
 .timeline .baseline {
@@ -401,7 +409,7 @@ body {
 .timeline .dateBox {
     margin-bottom: 10px;
     width: 180px;
-    position: absolute;
+    position: fixed;
     left: 20px;
     bottom: 50%;
     font-size: 2em;
@@ -410,7 +418,7 @@ body {
 
 .timeline .audioControls {
     margin-bottom: 10px;
-    position: absolute;
+    position: fixed;
     right: 20px;
     bottom: 50%;
 }
@@ -425,10 +433,9 @@ body {
 }
 
 .audioDetails > div {
-    position: absolute;
+    position: fixed;
     bottom: 50%;
     left: 50%;
-    transform: translateX(-50%);
     margin: 5px;
 }
 
@@ -445,28 +452,49 @@ body {
     margin-bottom: 70px;
     font-size: 3em;
     font-weight: 600;
+    transform: translateX(-50%);
 }
 
 #np-artist {
     margin-bottom: 10px;
     font-size: 2.5em;
+    transform: translateX(-50%);
 }
 
 #np-weekPlayCount {
-    margin-bottom: 10px;
+    margin-bottom: 2px;
+    font-size: 1em;
+    left: auto;
+    right: 25%;
+    text-align: right;
 }
 
 #np-totalPlayCount {
-    margin-bottom: 10px;
+    margin-bottom: 2px;
+    font-size: 1em;
+    left: 75%;
 }
 
 #np-week {
-    position: absolute;
-    left: 220px;
-    bottom: 50%;
-    margin-bottom: 15px;
-    font-size: 1.5em;
-    font-style: italic;
+    transform: translateX(-50%);
+    left: 25%;
+    margin-bottom: 2px;
+    font-size: 1em;
+    text-align: right;
+}
+
+#np-weekPlayCount .light,
+#np-totalPlayCount .light,
+#np-week .light{
+    color: #aaa;
+}
+
+@media (max-width: 1000px) {
+    #np-weekPlayCount,
+    #np-totalPlayCount,
+    #np-week {
+        display: none;
+    }
 }
 
 /* bar graphs */

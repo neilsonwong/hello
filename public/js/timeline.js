@@ -289,9 +289,15 @@ Timeline.prototype.addInfo = function(){
 Timeline.prototype.updateSongMetaData = function(){
 	$("#np-title").html(this.current().title);
 	$("#np-artist").html(this.current().artist);
-	$("#np-weekPlayCount").html(this.current().playCount);
-	$("#np-totalPlayCount").html(this.current().totalPlayCount);
-	$("#np-week").html("week of " + (new Date(this.current().week*1000)).toISOString().substring(0, 10));
+	$("#np-weekPlayCount").html("<span class=\"heavy\">" + this.current().playCount + "</span>" + "<span class=\"light\"> plays this week</span>");
+	$("#np-totalPlayCount").html("<span class=\"heavy\">" + this.current().totalPlayCount + "</span>" +"<span class=\"light\"> all time plays</span>");
+	let leWeek = new Date(this.current().week*1000);
+	let dateString = [
+		leWeek.getDate(),
+        leWeek.getMonth()+1,
+		leWeek.getFullYear()
+	].join(".")
+	$("#np-week").html("<span class=\"light\">week of </span>" + "<span class=\"heave\">" + dateString + "</span>");
 };
 
 Timeline.prototype.attachObject = function(){
