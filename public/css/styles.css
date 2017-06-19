@@ -386,7 +386,7 @@ body {
 
 .timeline {
     position: fixed;
-    top: 50%;
+    bottom: 50%;
     width: 100%;
     transform: translateY(-50%);
 }
@@ -395,32 +395,37 @@ body {
     width: 100%;
     height: 10px;
     position: fixed;
-    top: 50%;
+    bottom: 50%;
 }
 .timeline .baseline {
     background-color: #666;
 }
 .timeline .overline {
     z-index: 5;
-    margin-top: 10px;
+    top: 50%;
     height: 5px;
 }
 
 .timeline .dateBox {
-    margin-bottom: 10px;
-    width: 180px;
     position: fixed;
-    left: 20px;
-    bottom: 50%;
+    margin-top: 35px;
+    top: 50%;
     font-size: 2em;
+    width: 180px;
+    left: 20px;
     text-align: right;
 }
 
 .timeline .audioControls {
-    margin-bottom: 10px;
+    margin-top: 35px;
+    top: 50%;
     position: fixed;
     right: 20px;
-    bottom: 50%;
+    opacity: 0.3;
+}
+
+.timeline .audioControls:hover {
+    opacity: 1;
 }
 
 .timeline .audioControls button {
@@ -434,53 +439,46 @@ body {
 
 .audioDetails > div {
     position: fixed;
-    bottom: 50%;
+    top: 50%;
     left: 50%;
     margin: 5px;
 }
 
-.timeline .audioDetails .songMeta-left {
-    right: 50%;
-    text-align: right;
-}
-.timeline .audioDetails .songMeta-right {
-    left: 50%;
-    text-align: left;
-}
-
 #np-title {
-    margin-bottom: 70px;
-    font-size: 3em;
+    margin-top: 10px;
+    font-size: 3.25em;
     font-weight: 600;
     transform: translateX(-50%);
 }
 
 #np-artist {
-    margin-bottom: 10px;
+    margin-top: 80px;
     font-size: 2.5em;
     transform: translateX(-50%);
 }
 
 #np-weekPlayCount {
-    margin-bottom: 2px;
+    margin-top: 9px;
     font-size: 1em;
     left: auto;
-    right: 25%;
+    right: 200px;
     text-align: right;
 }
 
 #np-totalPlayCount {
-    margin-bottom: 2px;
+    margin-top: 9px;
     font-size: 1em;
-    left: 75%;
+    left: auto;
+    right: 20px;
+    text-align: right;
 }
 
 #np-week {
-    transform: translateX(-50%);
-    left: 25%;
-    margin-bottom: 2px;
+    margin-top: 9px;
     font-size: 1em;
-    text-align: right;
+    width: 180px;
+    left: 20px;
+    text-align: left;
 }
 
 #np-weekPlayCount .light,
@@ -489,12 +487,16 @@ body {
     color: #aaa;
 }
 
-@media (max-width: 1000px) {
+/*@media (max-width: 1000px) {
     #np-weekPlayCount,
     #np-totalPlayCount,
     #np-week {
         display: none;
     }
+}*/
+
+#bg_cover {
+
 }
 
 /* bar graphs */
