@@ -18,16 +18,39 @@ $(function() {
         timeline.attachObject(visualizer, bg, bg2);
         timeline.addBarGraph(bg, "title");
         timeline.addBarGraph(bg2, "artist");
-        timeline.toggleFullSongMode();
 
         timeline.init(audioMaster);
         visualizer.run();
 
         //bind functions to btn elements
-        $("#btn-tl-start").on("click", timeline.start.bind(timeline));
         $("#btn-tl-playpause").on("click", timeline.manualPlayPause.bind(timeline));
         $("#btn-tl-prev").on("click", timeline.manualPrev.bind(timeline));
         $("#btn-tl-next").on("click", timeline.manualNext.bind(timeline));
+
+        $(".door").on("click", openGates);
+
+        $(".onsenLogo").on("mouseover", peek);
+        $(".onsenLogo").on("mouseout", stopPeeking);
+
+        function openGates(){
+            if (timeline.ready){
+                console.log("open gates");
+                $(".door").addClass("opened");
+                stopPeeking();
+                setTimeout(timeline.start.bind(timeline), 1000);
+            }
+            else {
+                console.log("timeline still loading!");
+            }
+        }
+
+        function peek(){
+            $(".door").addClass("peek");
+            $(".onsenLogo").addClass("peek");
+        }
+        function stopPeeking(){
+            $(".door").removeClass("peek");
+        }
 
         $("body").on("exit-onsen", timeline.exit.bind(timeline));
     }
