@@ -29,6 +29,9 @@ Audio.prototype.load = function(sounds, done){
         }.bind(this);
 
         urls.forEach(addSoundToBuffer);
+        if (this.loading === 0 && done){
+            return done();
+        }
     }.bind(this);
 
     var bufferLoader = new BufferLoader(this.context, sounds, doneLoading);

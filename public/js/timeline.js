@@ -27,6 +27,7 @@ Timeline.prototype.init = function(audioMaster){
 	this.getPlayList(() => {
 		this.loadSurrounding();
 		requestAnimationFrame(this.animate.bind(this));
+		this.ready = true;
 	});
 }
 
@@ -70,7 +71,6 @@ Timeline.prototype.progressWeek = function(duration, step, divergence){
 
 	if (divergence !== undefined && this.divergence !== divergence){
 		//this is a recursive call but we have diverged, don't do anything
-		console.log("diverged");
 		return;
 	}
 
@@ -137,7 +137,6 @@ Timeline.prototype.loadSurrounding = function(){
 
 	this.load(tbl, () => {
 		this.bufferingMode(false);
-		console.log("turning off buffering mode");
 	});
 };
 
@@ -188,23 +187,19 @@ Timeline.prototype.bufferingMode = function(onOff){
 
 Timeline.prototype.playPause = function(noAction){
 	if (noAction !== true){
-		console.log("hit play pause");
 		switchPlayPause();
 		this.audioDevice.playPause(this.currentUrl());
 	}
 
 	this.playPauseTime = Date.now();
 	if (this.elapsed > 0){
-		console.log(this.playPauseTime);
 		this.playPauseTime = Date.now() - this.elapsed;
-		console.log(this.playPauseTime);
 		this.elapsed = 0;
 	}
 }
 
 Timeline.prototype.manualPlayPause = function(){
 	if (this.debouncing){
-		console.log("still debouncing");
 		return;
 	}
 	this.divergence++;
@@ -221,14 +216,13 @@ Timeline.prototype.manualPlayPause = function(){
 		this.debouncing = true;
 		setTimeout(() => {
 			this.debouncing = false;
-			console.log("turning off debouncing")
-		}
-		, 1100);
+		} , 1100);
 	}
 }
 
 Timeline.prototype.next = function(){
 	if (this.bufferingAudio){
+		console.log("waiting for buffering to finish");
 		return setTimeout(this.next.bind(this), 500);
 	}
 	//actions to stop current
@@ -237,9 +231,6 @@ Timeline.prototype.next = function(){
 	++this.offset;
 	this.acc = 0;
 
-	// console.log(this.offset);
-	// console.log(this.playlist.length);
-	
 	//check if we are done
 	if (this.offset >= this.playlist.length){
 		this.stop();
@@ -254,7 +245,11 @@ Timeline.prototype.next = function(){
 }
 
 Timeline.prototype.prev = function(){
-	let sameSong = this.currentUrl() === this.nextUrl();
+	if (this.bufferingAudio){
+		console.log("waiting for buffering to finish");
+		return setTimeout(this.prev.bind(this), 500);
+	}
+	let sameSong = this.currentUrl() === this.prevUrl();
 	this.playPause(sameSong);
 	--this.offset;
 
@@ -305,19 +300,17 @@ Timeline.prototype.nextUrl = function(){
 
 Timeline.prototype.prevUrl = function(){
 	if (this.offset <= 0){
-		return null;
+		return this.getMp3Url(0);
 	}
 	return this.getMp3Url(this.offset-1);
 }
 
 Timeline.prototype.stop = function(){
 	this.stopped = true;
-	console.log("we done");
 }
 
 Timeline.prototype.getPlayList = function(callback){
 	$.get("onsen/playlist", (data) => {
-		console.log(data);
 		this.playlist = data;
 		if (callback){
 			return callback();
@@ -357,18 +350,15 @@ Timeline.prototype.updateSongMetaData = function(){
 Timeline.prototype.attachObject = function(){
 	for (let i = 0; i < arguments.length; ++i){
 		if (arguments[i]["onResize"] !== undefined){
-			console.log("adding resize");
 			this.resizeFunctions.push(arguments[i].onResize.bind(arguments[i]));
 		}
 		if (arguments[i]["onAnimate"] !== undefined){
-			console.log("adding animation");
 			this.animations.push(arguments[i].onAnimate.bind(arguments[i]));
 		}
 	}
 }
 
 Timeline.prototype.onResize = function(){
-	console.log("resizing");
 	this.resizeFunctions.forEach((x) => x());
 };
 
@@ -391,12 +381,12 @@ Timeline.prototype.animateLine = function(){
 		let lineColour = this.current().colour === "" ? "#333" : this.current().colour;
 		this.overline.css("background-color", lineColour);
 		$(".songColour").css("background-color", lineColour);
+		$(".songColourBorder").css("border-color", lineColour);
 		this.overline.css("width", progress + "px");
 	}
 }
 
 function switchPlayPause() {
-	console.log("switching");
 	let $btn = $("#btn-tl-playpause");
 	if ($btn.attr("data-playing") === "playing"){
 		$btn.attr("data-playing", "paused");
