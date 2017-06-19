@@ -52,6 +52,9 @@ Timeline.prototype.toggleFullSongMode = function(){
 };
 
 Timeline.prototype.start = function(){
+	if (this.bufferingAudio){
+		return;
+	}
 	this.stopped = false;
 	this.addInfo();
 	this.playPause();
@@ -114,18 +117,29 @@ Timeline.prototype.regressWeek = function(){
 Timeline.prototype.updateDate = function(){
 	$(".dateBox").html([
 		this.date.getDate(),
-        this.date.getMonth()+1,
+		// "<span class=\"heavy\">" +
+        (this.date.getMonth()+1),
+		// "</span>",
 		this.date.getFullYear()
 	].join("."));
-}
+};
 
 Timeline.prototype.loadSurrounding = function(){
+	//turn on buffering mode
+	this.bufferingMode(true);
+
 	let small = Math.max(0, this.offset - 3);
 	let big = Math.min(this.playlist.length, this.offset + 4);
+	let tbl = [];
 	for(let i = small; i < big; ++i){
-		this.load(this.getMp3Url(i));
+		tbl.push(this.getMp3Url(i));
 	}
-}
+
+	this.load(tbl, () => {
+		this.bufferingMode(false);
+		console.log("turning off buffering mode");
+	});
+};
 
 Timeline.prototype.load = function(url, callback){
 	if (!Array.isArray(url)){
@@ -152,13 +166,33 @@ Timeline.prototype.load = function(url, callback){
 			return callback();
 		}
 	});
-}
+};
+
+Timeline.prototype.bufferingMode = function(onOff){
+	if (onOff){
+		this.bufferingAudio = onOff;
+		//cannot start
+		//when buffering cannot press next / back buttons
+		$("#btn-tl-prev").css("opacity", 0.1).css("color", "red");
+		$("#btn-tl-next").css("opacity", 0.1).css("color", "red");
+
+		//cannot progress unbuffered songs
+	}
+	else {
+		this.bufferingAudio = onOff;
+		//enable next / back buttons visually
+		$("#btn-tl-prev").css("opacity", 1).css("color", "black");
+		$("#btn-tl-next").css("opacity", 1).css("color", "black");
+	}
+};
 
 Timeline.prototype.playPause = function(noAction){
 	if (noAction !== true){
 		console.log("hit play pause");
+		switchPlayPause();
 		this.audioDevice.playPause(this.currentUrl());
 	}
+
 	this.playPauseTime = Date.now();
 	if (this.elapsed > 0){
 		console.log(this.playPauseTime);
@@ -169,6 +203,10 @@ Timeline.prototype.playPause = function(noAction){
 }
 
 Timeline.prototype.manualPlayPause = function(){
+	if (this.debouncing){
+		console.log("still debouncing");
+		return;
+	}
 	this.divergence++;
 	if (this.stopped){
 		this.start();
@@ -179,10 +217,20 @@ Timeline.prototype.manualPlayPause = function(){
 		this.stop();
 		this.elapsed = elapsed;
 		console.log("saving elapsed as " + this.elapsed);
+		//timeout playpause til music stops
+		this.debouncing = true;
+		setTimeout(() => {
+			this.debouncing = false;
+			console.log("turning off debouncing")
+		}
+		, 1100);
 	}
 }
 
 Timeline.prototype.next = function(){
+	if (this.bufferingAudio){
+		return setTimeout(this.next.bind(this), 500);
+	}
 	//actions to stop current
 	let sameSong = this.currentUrl() === this.nextUrl();
 	this.playPause(sameSong);
@@ -221,11 +269,17 @@ Timeline.prototype.prev = function(){
 }
 
 Timeline.prototype.manualNext = function(){
+	if (this.bufferingAudio){
+		return;
+	}
 	this.divergence++;
 	this.next();
 };
 
 Timeline.prototype.manualPrev = function(){
+	if (this.bufferingAudio){
+		return;
+	}
 	this.divergence++;
 	this.prev();
 };
@@ -338,5 +392,18 @@ Timeline.prototype.animateLine = function(){
 		this.overline.css("background-color", lineColour);
 		$(".songColour").css("background-color", lineColour);
 		this.overline.css("width", progress + "px");
+	}
+}
+
+function switchPlayPause() {
+	console.log("switching");
+	let $btn = $("#btn-tl-playpause");
+	if ($btn.attr("data-playing") === "playing"){
+		$btn.attr("data-playing", "paused");
+		$btn.find("i").first().html("play_arrow");
+	}
+	else {
+		$btn.attr("data-playing", "playing");
+		$btn.find("i").first().html("pause");
 	}
 }
