@@ -6,6 +6,7 @@ let favicon = require('serve-favicon');
 let ms = require('mediaserver');
 let path = require('path');
 let config = require('./config');
+let utils = require('./utils');
 let Onsen = require("onsenbackend")(
     config.lastfmAPIKey,
     config.lastfmUsername,
@@ -79,17 +80,31 @@ app.get('/onsen/playlist', function(req, res){
     });
 });
 
-app.get('/onsen/cutcut', function(req, res){
-    Onsen.cutSongs(() => {
-        console.log("songs have been cut");
-    })
+app.get('/onsen/cover/:artist/:song', function(req, res){
+    let hashed = utils.hash(req.params.artist + " - " + req.params.song);
+    utils.matchFile(path.join(__dirname, 'public', 'images', 'covers'), hashed)
+        .then(cover => {
+            if (cover === null){
+                // send default
+                res.sendFile(__dirname + '/public/images/default.png');
+            }
+            else {
+                res.sendFile(cover);
+            }
+        });
 });
 
-app.get('/onsen/copycopy', function(req, res){
-    Onsen.copyWeeklyToNewFolder("/home/rin/musicStorage", () => {
-        console.log("songs have been moved");
-    })
-});
+// app.get('/onsen/cutcut', function(req, res){
+//     onsen.cutsongs(() => {
+//         console.log("songs have been cut");
+//     })
+// });
+
+// app.get('/onsen/copycopy', function(req, res){
+//     Onsen.copyWeeklyToNewFolder("/home/rin/musicStorage", () => {
+//         console.log("songs have been moved");
+//     })
+// });
 
 // app.get(encodeURI('/mp3/01 三日月.mp3'), function(req, res){
 //     console.log("mikazuki");
