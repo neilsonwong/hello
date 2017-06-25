@@ -430,13 +430,35 @@ body {
     top: 50%;
     position: fixed;
     right: 20px;
+}
+
+
+#about-onsen {
+    position: fixed;
+    bottom: 50%;
+    right: 20px;
+    margin: 5px;
+    margin-bottom: 15px;
     opacity: 0.3;
 }
 
-.timeline .audioControls:hover {
+.timeline .audioControls button {
+    opacity: 0.3;
+}
+.timeline .audioControls:hover button {
+    opacity: 0.5;
+}
+#about-onsen:hover,
+.timeline .audioControls button:hover {
     opacity: 1;
 }
 
+.timeline .audioControls button.buffering {
+    opacity: 0.1;
+    color: red;
+}
+
+#about-onsen, 
 .timeline .audioControls button {
     background-color: Transparent;
     background-repeat:no-repeat;
@@ -520,6 +542,7 @@ body {
     border-color: #aaa;
     box-shadow: 0 0 5px #aaa;
     background-color: #aaa;
+    opacity: 0.2;
 }
 
 #bg-blur {
@@ -641,12 +664,43 @@ body {
     overflow: hidden;
 }
 
+.onsen-title {
+    font-size: 240px;
+}
+
+.onsen-title,
 .onsenLogo {
     width: 0;
     height: 0;
     position: relative;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.onsen-info {
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    height: 80px;
+    transform: translateX(-50%);
+    position: fixed;
+    z-index: 11;
+    text-align: center;
+    color: #ccc;
+    
+    transition: all 1s ease-in-out;
+    -webkit-transition: all 1s ease-in-out;
+    -moz-transition: all 1s ease-in-out;
+    -o-transition: all 1s ease-in-out;
+}
+
+.left-gate .onsen-title {
+    left: calc(50vw - 445px);
+    line-height: 80vh;
+}
+.right-gate .onsen-title {
+    left: calc(215px);
+    line-height: 120vh;
 }
 
 .left-gate .onsenLogo {

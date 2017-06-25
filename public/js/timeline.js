@@ -178,16 +178,17 @@ Timeline.prototype.bufferingMode = function(onOff){
 		this.bufferingAudio = onOff;
 		//cannot start
 		//when buffering cannot press next / back buttons
-		$("#btn-tl-prev").css("opacity", 0.1).css("color", "red");
-		$("#btn-tl-next").css("opacity", 0.1).css("color", "red");
+		$("#btn-tl-prev").addClass("buffering");
+		$("#btn-tl-next").addClass("buffering");
+
 
 		//cannot progress unbuffered songs
 	}
 	else {
 		this.bufferingAudio = onOff;
 		//enable next / back buttons visually
-		$("#btn-tl-prev").css("opacity", 1).css("color", "black");
-		$("#btn-tl-next").css("opacity", 1).css("color", "black");
+		$("#btn-tl-prev").removeClass("buffering");
+		$("#btn-tl-next").removeClass("buffering");
 	}
 };
 

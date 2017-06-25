@@ -40,7 +40,6 @@ $(function() {
 
         function openGates(){
             if (timeline.ready){
-                console.log(timeline.ready)
                 console.log("open gates");
 
                 //turn off mouse overs
@@ -50,7 +49,9 @@ $(function() {
                 $(".door").off("click");
 
                 $(".door").addClass("opened");
+                $("#bg-cover").css("opacity", "1");
                 $("#bg-blur").css("z-index", "-9999");
+                $(".onsen-info").css("display", "none");
 
                 stopPeeking();
                 setTimeout(timeline.start.bind(timeline), 1000);
