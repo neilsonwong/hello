@@ -38,7 +38,7 @@ Timeline.prototype.exit = function(){
 
 	//stop audio playing
 	if (!this.stopped){
-		this.playPause();
+		this.pause();
 		this.stop();
 	}
 
@@ -57,7 +57,7 @@ Timeline.prototype.start = function(){
 	}
 	this.stopped = false;
 	this.addInfo();
-	this.playPause();
+	this.play();
 	this.progressWeek(this.current().duration);
 }
 
@@ -184,12 +184,17 @@ Timeline.prototype.bufferingMode = function(onOff){
 	}
 };
 
-Timeline.prototype.playPause = function(noAction){
-	if (noAction !== true){
-		switchPlayPause();
-		this.audioDevice.playPause(this.currentUrl());
-	}
+Timeline.prototype.play = function(){
+	//set to pause button
+	setPlayPause("playing");
+	this.audioDevice.playResume(this.currentUrl());
+	this.playPauseTime = Date.now();
+};
 
+Timeline.prototype.pause = function(){
+	//set to play button
+	setPlayPause("paused");
+	this.audioDevice.playPause(this.currentUrl());
 	this.playPauseTime = Date.now();
 	if (this.elapsed > 0){
 		this.playPauseTime = Date.now() - this.elapsed;
@@ -207,7 +212,7 @@ Timeline.prototype.manualPlayPause = function(){
 	}
 	else {
 		let elapsed = Date.now() - this.playPauseTime;
-		this.playPause();
+		this.pause();
 		this.stop();
 		this.elapsed = elapsed;
 		console.log("saving elapsed as " + this.elapsed);
@@ -226,7 +231,9 @@ Timeline.prototype.next = function(){
 	}
 	//actions to stop current
 	let sameSong = this.currentUrl() === this.nextUrl();
-	this.playPause(sameSong);
+	if (!sameSong){
+		this.pause();
+	}
 	++this.offset;
 	this.acc = 0;
 
@@ -239,7 +246,7 @@ Timeline.prototype.next = function(){
 	//stuff to do to init next
 	this.addInfo();
 	this.loadSurrounding();
-	this.playPause(sameSong);
+	this.play();
 	this.progressWeek(this.current().duration);
 }
 
@@ -249,7 +256,9 @@ Timeline.prototype.prev = function(){
 		return setTimeout(this.prev.bind(this), 500);
 	}
 	let sameSong = this.currentUrl() === this.prevUrl();
-	this.playPause(sameSong);
+	if (!sameSong){
+		this.pause();
+	}
 	--this.offset;
 
 	if (this.offset < 0){
@@ -258,7 +267,7 @@ Timeline.prototype.prev = function(){
 
 	this.addInfo();
 	this.loadSurrounding();
-	this.playPause(sameSong);
+	this.play();
 	this.regressWeek();
 }
 
@@ -392,9 +401,9 @@ Timeline.prototype.animateLine = function(){
 	}
 }
 
-function switchPlayPause() {
+function setPlayPause(mode) {
 	let $btn = $("#btn-tl-playpause");
-	if ($btn.attr("data-playing") === "playing"){
+	if (mode === "paused"){
 		$btn.attr("data-playing", "paused");
 		$btn.find("i").first().html("play_arrow");
 	}

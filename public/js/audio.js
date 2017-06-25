@@ -59,6 +59,24 @@ Audio.prototype.playPause = function playPause(url) {
     }
 };
 
+Audio.prototype.playResume = function(url){
+    var sound = this.sounds[url];
+    // start
+    if (!sound){
+        this.fadeIn(url, this.start.bind(this, url));
+    }
+    //resume
+    else if (sound.pausePoint > 0){
+        this.fadeIn(url, this.resume.bind(this, url));
+    }
+};
+
+Audio.prototype.stopPlaying = function(url){
+    if (sound.startedAt && sound.pausePoint === -1){
+        this.fadeOut(url);
+    }
+};
+
 Audio.prototype.start = function(url, oldPause){
     //add sound
     var sound = this.context.createBufferSource();
@@ -123,7 +141,7 @@ Audio.prototype.fadeOut = function fadeOut(url, time) {
     setTimeout(this.pause.bind(this, url), time);
 }
 
-Audio.prototype.pause = function pause(url, offset) {
+Audio.prototype.pause = function pause(url) {
     var sound = this.sounds[url];
     sound.stop(0);
     sound.pausePoint = Date.now() - sound.startedAt;

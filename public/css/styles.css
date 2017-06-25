@@ -490,8 +490,8 @@ body {
 #np-weekPlayCount .light,
 #np-totalPlayCount .light,
 #np-week .light{
-    color: #ccc;
-    text-shadow: 0 0 0px #000;
+    color: #333;
+    font-size: 0.85em
 }
 
 /*@media (max-width: 1000px) {
