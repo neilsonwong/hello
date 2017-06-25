@@ -378,6 +378,9 @@ Timeline.prototype.attachObject = function(){
 }
 
 Timeline.prototype.onResize = function(){
+	this.width = $(window).width();
+	this.height = $(window).height();
+
 	this.resizeFunctions.forEach((x) => x());
 };
 
@@ -392,12 +395,11 @@ Timeline.prototype.animateLine = function(){
 	//set width
 	if (!this.stopped){
 		let total = this.current().duration;
-		let pageWidth = $(window).width();
 		let elapsed = Date.now() - this.playPauseTime;
-		let progress = pageWidth * (elapsed / (total));
+		let progress = elapsed / total;
 
 		//set colour
-		this.overline.css("width", progress + "px");
+		this.overline.css("transform", ["scaleX(", progress, ") translate3d(0,0,0)"].join(""));
 	}
 }
 

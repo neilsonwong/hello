@@ -18,7 +18,7 @@ Visualizer.prototype.run = function() {
     this.clear();
 
     //if nothing shows up, up the fft size
-    this.analyser.fftSize = 512;
+    this.analyser.fftSize = 256;
     this.binCount = this.analyser.frequencyBinCount;
     this.dataArray = new Uint8Array(this.binCount);
 
@@ -31,7 +31,7 @@ Visualizer.prototype.clear = function() {
 
 Visualizer.prototype.init = function() {
     //if nothing shows up, down the numOfBars
-    this.numOfBars = 128;
+    this.numOfBars = 64;
     this.barWidth = this.screenWidth / (this.numOfBars) - 1;
     this.barMaxHeight = Math.floor(this.screenHeight / 3);
     this.volumeModifier = 1;

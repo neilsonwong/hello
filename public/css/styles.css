@@ -367,6 +367,7 @@ body {
 .visualizer {
     bottom: 0px;
     position: fixed;
+    z-index: -10;
 }
 
 .nbar {
@@ -410,6 +411,8 @@ body {
     z-index: 5;
     top: 50%;
     height: 5px;
+    width: 100vw;
+    transform-origin: 0 100% 0;
 }
 
 .timeline .dateBox {
@@ -452,14 +455,14 @@ body {
 
 #np-title {
     margin-top: 10px;
-    font-size: 3.25em;
+    font-size: 5vmin;
     font-weight: 600;
     transform: translateX(-50%);
 }
 
 #np-artist {
     margin-top: 80px;
-    font-size: 2.5em;
+    font-size: 4.5vmin;
     transform: translateX(-50%);
 }
 
@@ -503,9 +506,9 @@ body {
 }*/
 
 #bg-cover {
-    background-size: 250px;
-    width: 250px;
-    height: 250px;
+    background-size: 300px;
+    width: 300px;
+    height: 300px;
     position: fixed;
     bottom: 50%;
     left: 50%;
@@ -521,7 +524,8 @@ body {
 
 #bg-blur {
     position: fixed;
-    z-index: -9999;
+    /*z-index: -9999;*/
+    z-index: 9;
     background-size: 100vw;
     height: 100vh;
     width: 100vw;
@@ -675,6 +679,7 @@ body {
 .left-gate.peek {
     left: -10px;
 }
+
 .right-gate.peek {
     left: calc(50vw + 10px);
 }
