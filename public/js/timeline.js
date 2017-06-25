@@ -189,17 +189,16 @@ Timeline.prototype.play = function(){
 	setPlayPause("playing");
 	this.audioDevice.playResume(this.currentUrl());
 	this.playPauseTime = Date.now();
+	if (this.elapsed > 0){
+		this.playPauseTime = Date.now() - this.elapsed;
+		this.elapsed = 0;
+	}
 };
 
 Timeline.prototype.pause = function(){
 	//set to play button
 	setPlayPause("paused");
 	this.audioDevice.playPause(this.currentUrl());
-	this.playPauseTime = Date.now();
-	if (this.elapsed > 0){
-		this.playPauseTime = Date.now() - this.elapsed;
-		this.elapsed = 0;
-	}
 }
 
 Timeline.prototype.manualPlayPause = function(){
@@ -319,6 +318,7 @@ Timeline.prototype.stop = function(){
 
 Timeline.prototype.getPlayList = function(callback){
 	$.get("onsen/playlist", (data) => {
+		console.log(data);
 		this.playlist = data;
 		if (callback){
 			return callback();

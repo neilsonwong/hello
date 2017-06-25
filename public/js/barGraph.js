@@ -7,7 +7,6 @@ function BarGraph(container, options){
     this.screenWidth = $(window).width();
     this.numOfBars = 12;
 	this.sortRight = (options && options.sortRight) || false;
-	console.log(this.sortRight);
 	this.setupBars();
 }
 
