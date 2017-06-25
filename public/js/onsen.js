@@ -35,12 +35,23 @@ $(function() {
         $(".door").on("click", openGates);
 
         $(".onsenLogo").on("mouseover", peek);
+        $("#bg-blur").on("mouseover", peek);
         $(".onsenLogo").on("mouseout", stopPeeking);
 
         function openGates(){
             if (timeline.ready){
+                console.log(timeline.ready)
                 console.log("open gates");
+
+                //turn off mouse overs
+                $(".onsenLogo").off("mouseover");
+                $("#bg-blur").off("mouseover");
+                $(".onsenLogo").off("mouseout");
+                $(".door").off("click");
+
                 $(".door").addClass("opened");
+                $("#bg-blur").css("z-index", "-9999");
+
                 stopPeeking();
                 setTimeout(timeline.start.bind(timeline), 1000);
             }
@@ -53,8 +64,9 @@ $(function() {
             $(".door").addClass("peek");
             $(".onsenLogo").addClass("peek");
         }
-        function stopPeeking(){
+        function stopPeeking(e){
             $(".door").removeClass("peek");
+            
         }
 
         $("body").on("exit-onsen", timeline.exit.bind(timeline));
