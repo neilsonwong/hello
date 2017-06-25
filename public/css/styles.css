@@ -503,7 +503,6 @@ body {
 }*/
 
 #bg-cover {
-    background-image: url("/images/cover.jpg"); 
     background-size: 250px;
     width: 250px;
     height: 250px;
@@ -516,11 +515,11 @@ body {
     border-width: 2px;
     border-style: solid;
     border-color: #aaa;
-    
+    box-shadow: 0 0 5px #aaa;
+    background-color: #aaa;
 }
 
 #bg-blur {
-    background-image: url("/images/cover.jpg"); 
     position: fixed;
     z-index: -9999;
     background-size: 100vw;
