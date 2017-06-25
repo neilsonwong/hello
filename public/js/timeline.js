@@ -13,6 +13,7 @@ function Timeline() {
 	this.animations = [];
 	this.animations.push(this.animateLine.bind(this));
 	this.alive = true;
+	this.ready = false;
 }
 
 Timeline.prototype.init = function(audioMaster, offset){
@@ -24,9 +25,11 @@ Timeline.prototype.init = function(audioMaster, offset){
 	this.getPlayList(() => {
 		this.date = new Date(this.current().week *1000);
 		this.updateDate();
-		this.loadSurrounding();
-		requestAnimationFrame(this.animate.bind(this));
-		this.ready = true;
+		this.loadSurrounding(() => {
+			console.log("setting to ready true")
+			this.ready = true;
+			requestAnimationFrame(this.animate.bind(this));
+		});
 	});
 }
 
@@ -53,6 +56,7 @@ Timeline.prototype.toggleFullSongMode = function(){
 
 Timeline.prototype.start = function(){
 	if (this.bufferingAudio){
+		console.log("still buffering");
 		return;
 	}
 	this.stopped = false;
@@ -123,7 +127,7 @@ Timeline.prototype.updateDate = function(){
 	].join("."));
 };
 
-Timeline.prototype.loadSurrounding = function(){
+Timeline.prototype.loadSurrounding = function(callback){
 	//turn on buffering mode
 	this.bufferingMode(true);
 
@@ -136,6 +140,9 @@ Timeline.prototype.loadSurrounding = function(){
 
 	this.load(tbl, () => {
 		this.bufferingMode(false);
+		if (callback){
+			return callback();
+		}
 	});
 };
 
