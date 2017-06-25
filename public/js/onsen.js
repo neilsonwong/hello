@@ -2,6 +2,10 @@
 $(function() {
     function onsen_init() {
         console.log("inside onsen init");
+        let offset = null;
+        if (parseInt(window.location.hash.substring(1))){
+            offset = parseInt(window.location.hash.substring(1));
+        }
 
         // init audio context so our page is ready
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -18,8 +22,9 @@ $(function() {
         timeline.attachObject(visualizer, bg, bg2);
         timeline.addBarGraph(bg, "title");
         timeline.addBarGraph(bg2, "artist");
+        // timeline.toggleFullSongMode(audioMaster);
 
-        timeline.init(audioMaster);
+        timeline.init(audioMaster, offset);
         visualizer.run();
 
         //bind functions to btn elements

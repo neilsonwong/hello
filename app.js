@@ -81,6 +81,8 @@ app.get('/onsen/playlist', function(req, res){
 });
 
 app.get('/onsen/cover/:artist/:song', function(req, res){
+    console.log(req.params.artist);
+    console.log(req.params.song);
     let hashed = utils.hash(req.params.artist + " - " + req.params.song);
     utils.matchFile(path.join(__dirname, 'public', 'images', 'covers'), hashed)
         .then(cover => {

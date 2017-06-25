@@ -490,7 +490,8 @@ body {
 #np-weekPlayCount .light,
 #np-totalPlayCount .light,
 #np-week .light{
-    color: #aaa;
+    color: #ccc;
+    text-shadow: 0 0 0px #000;
 }
 
 /*@media (max-width: 1000px) {
@@ -501,7 +502,7 @@ body {
     }
 }*/
 
-/*#bg_cover {
+#bg-cover {
     background-image: url("/images/cover.jpg"); 
     background-size: 250px;
     width: 250px;
@@ -514,9 +515,11 @@ body {
     transform: translateX(-50%);
     border-width: 2px;
     border-style: solid;
+    border-color: #aaa;
+    
 }
 
-#bg_blur {
+#bg-blur {
     background-image: url("/images/cover.jpg"); 
     position: fixed;
     z-index: -9999;
@@ -524,8 +527,8 @@ body {
     height: 100vh;
     width: 100vw;
     overflow: hidden;
-    filter: blur(5px) opacity(15%);
-}*/
+    filter: blur(5px) opacity(50%);
+}
 
 /* bar graphs */
 .barWrap {

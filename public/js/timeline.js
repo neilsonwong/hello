@@ -15,16 +15,15 @@ function Timeline() {
 	this.alive = true;
 }
 
-Timeline.prototype.init = function(audioMaster){
+Timeline.prototype.init = function(audioMaster, offset){
 	this.audioDevice = audioMaster;
     $(window).resize(this.onResize.bind(this));
 
-	this.date = new Date(2011, 9, 22);
-	this.updateDate();
-
-	this.offset = 0;
+	this.offset = offset || 0;
 
 	this.getPlayList(() => {
+		this.date = new Date(this.current().week *1000);
+		this.updateDate();
 		this.loadSurrounding();
 		requestAnimationFrame(this.animate.bind(this));
 		this.ready = true;
@@ -345,6 +344,17 @@ Timeline.prototype.updateSongMetaData = function(){
 		leWeek.getFullYear()
 	].join(".")
 	$("#np-week").html("<span class=\"light\">week of </span>" + "<span class=\"heave\">" + dateString + "</span>");
+
+	//get bg image
+	let url = "/onsen/cover/"+this.current().artist+"/"+this.current().title;
+	console.log(url);
+	$("#bg-cover").css("background-image", "url(\"" + url + "\")" ); 
+	$("#bg-blur").css("background-image", "url(\"" + url + "\")" ); 
+
+	let lineColour = this.current().colour === "" ? "#333" : this.current().colour;
+	this.overline.css("background-color", lineColour);
+	$(".songColour").css("background-color", lineColour);
+	$(".songColourBorder").css("border-color", lineColour);
 };
 
 Timeline.prototype.attachObject = function(){
@@ -378,10 +388,6 @@ Timeline.prototype.animateLine = function(){
 		let progress = pageWidth * (elapsed / (total));
 
 		//set colour
-		let lineColour = this.current().colour === "" ? "#333" : this.current().colour;
-		this.overline.css("background-color", lineColour);
-		$(".songColour").css("background-color", lineColour);
-		$(".songColourBorder").css("border-color", lineColour);
 		this.overline.css("width", progress + "px");
 	}
 }
