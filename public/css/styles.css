@@ -488,6 +488,27 @@ body {
     transform: translateX(-50%);
 }
 
+/*#np-title.shrink-text {
+    font-size: 3.5vmin;
+}
+
+#np-artist.shrink-text {
+    font-size: 3.5vmin;
+    margin-top: 30px;
+}
+*/
+@media (max-width: 1000px) {
+    #np-title {
+        font-size: 4vmin;
+        margin-top: 40px;
+    }
+
+    #np-artist {
+        font-size: 3.75vmin;
+        margin-top: 90px;
+    }
+}
+
 #np-weekPlayCount {
     margin-top: 9px;
     font-size: 1em;
@@ -519,14 +540,6 @@ body {
     font-size: 0.85em
 }
 
-/*@media (max-width: 1000px) {
-    #np-weekPlayCount,
-    #np-totalPlayCount,
-    #np-week {
-        display: none;
-    }
-}*/
-
 #bg-cover {
     background-size: cover;
     width: 300px;
@@ -543,6 +556,13 @@ body {
     box-shadow: 0 0 5px #aaa;
     background-color: #aaa;
     opacity: 0.2;
+}
+
+@media (max-height: 700px) {
+    #bg-cover {
+        width: 200px;
+        height: 200px;
+    }
 }
 
 #bg-blur {
