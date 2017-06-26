@@ -492,7 +492,7 @@ body {
     width: 100vw;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1200px) {
     #np-title {
         font-size: 4vmin;
         margin-top: 40px;
@@ -509,7 +509,7 @@ body {
     }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 700px) {
     #np-title {
         margin-top: 90px;
     }
