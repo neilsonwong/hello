@@ -364,10 +364,10 @@ Timeline.prototype.updateSongMetaData = function(){
 
 	//get bg image
 	let url = "/onsen/cover/"+this.current().artist+"/"+this.current().title;
-	console.log(url);
 	$("#bg-cover").css("background-image", "url(\"" + url + "\")" ); 
 	$("#bg-blur").css("background-image", "url(\"" + url + "\")" ); 
 
+	//set line colours
 	let lineColour = this.current().colour === "" ? "#333" : this.current().colour;
 	this.overline.css("background-color", lineColour);
 	$(".songColour").css("background-color", lineColour);
