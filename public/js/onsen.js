@@ -36,6 +36,7 @@ $(function() {
 
         $(".onsenLogo").on("mouseover", peek);
         $("#bg-blur").on("mouseover", peek);
+        $("#bg-blur").addClass("hoverable");
         $(".onsenLogo").on("mouseout", stopPeeking);
 
         function openGates(){
@@ -51,6 +52,7 @@ $(function() {
                 $(".door").addClass("opened");
                 $("#bg-cover").css("opacity", "1");
                 $("#bg-blur").css("z-index", "-9999");
+                $("#bg-blur").removeClass("hoverable");
                 $(".onsen-info").css("display", "none");
 
                 stopPeeking();

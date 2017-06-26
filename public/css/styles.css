@@ -586,6 +586,10 @@ body {
     filter: blur(5px) opacity(50%);
 }
 
+#bg-blur.hoverable {
+    cursor: pointer;
+}
+
 /* bar graphs */
 .barWrap {
     display: inline-block;
@@ -775,4 +779,32 @@ body {
     -webkit-transition: all 0.7s ease-in-out;
     -moz-transition: all 0.7s ease-in-out;
     -o-transition: all 0.7s ease-in-out;
+}
+
+@media (max-width: 1000px) {
+    .onsenLogo {
+        font-size: 120px;
+    }
+
+    .left-gate .onsenLogo {
+        left: calc(50vw - 60px);
+    }
+
+    .right-gate .onsenLogo {
+        left: calc(-60px);
+    }
+
+    .left-gate .onsen-title {
+        left: calc(50vw - 245px);
+        line-height: 80vh;
+    }
+
+    .right-gate .onsen-title {
+        left: calc(115px);
+        line-height: 120vh;
+    }
+
+    .onsen-title {
+        font-size: 120px;
+    }
 }
