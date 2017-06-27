@@ -58,15 +58,32 @@ Timeline.prototype.toggleFullSong = function(){
 	let origUrl = this.currentUrl();
 	this.stop();
 	++this.divergence;
+	this.elapsed = Date.now() - this.playPauseTime;
+
 	if (this.toggleFullSongMode()){
 		$("#btn-tl-repeat").addClass("activated");
+		this.load(this.currentUrl(), () => {
+			this.swapAudioTrack(origUrl, this.currentUrl());
+		});
 	}
 	else {
 		$("#btn-tl-repeat").removeClass("activated");
+		//no point of swapping audio since we already have loaded the whole song lol
+
+		//bit hacky but will work
+		this.stopped = false;
+		this.addInfo();
+
+		//fix play pause time
+
+		this.playPauseTime = Date.now();
+		if (this.elapsed > 0){
+			this.playPauseTime = Date.now() - this.elapsed;
+			this.elapsed = 0;
+		}
+
+		this.progressWeek(this.current().duration);
 	}
-	this.load(this.currentUrl(), () => {
-		this.swapAudioTrack(origUrl, this.currentUrl());
-	});
 };
 
 Timeline.prototype.start = function(){
@@ -225,7 +242,8 @@ Timeline.prototype.play = function(){
 Timeline.prototype.pause = function(){
 	//set to play button
 	setPlayPause("paused");
-	this.audioDevice.playPause(this.currentUrl());
+	this.audioDevice.stopPlaying(this.currentUrl());
+	// this.audioDevice.stopPlaying(this.currentFullUrl());
 };
 
 Timeline.prototype.swapAudioTrack = function(origUrl, swapUrl){
@@ -301,6 +319,29 @@ Timeline.prototype.prev = function(){
 	this.regressWeek();
 }
 
+Timeline.prototype.jump = function(index){
+	//actions to stop current
+	let sameSong = this.currentUrl() === this.getMp3Url(index);
+	if (!sameSong){
+		this.pause();
+	}
+	this.offset = index;
+	this.acc = 0;
+
+	//check if we are done
+	if (this.offset >= this.playlist.length){
+		this.stop();
+		return;
+	}
+	
+	//stuff to do to init next
+	this.addInfo();
+	this.loadSurrounding(() => {
+		this.play();
+		this.progressWeek(this.current().duration);
+	});
+};
+
 Timeline.prototype.manualNext = function(){
 	if (this.bufferingAudio){
 		return;
@@ -331,6 +372,10 @@ Timeline.prototype.getFullMp3Url = function(i){
 
 Timeline.prototype.currentUrl = function(){
 	return this.getMp3Url(this.offset);
+};
+
+Timeline.prototype.currentFullUrl = function(){
+	return this.getFullMp3Url(this.offset);
 };
 
 Timeline.prototype.nextUrl = function(){

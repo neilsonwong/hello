@@ -74,7 +74,8 @@ Audio.prototype.playResume = function(url){
 };
 
 Audio.prototype.stopPlaying = function(url){
-    if (sound.startedAt && sound.pausePoint === -1){
+    var sound = this.sounds[url];
+    if (sound && sound.startedAt && sound.pausePoint === -1){
         this.fadeOut(url);
     }
 };
@@ -151,8 +152,8 @@ Audio.prototype.fadeOut = function fadeOut(url, time) {
 
 Audio.prototype.pause = function pause(url) {
     var sound = this.sounds[url];
-    sound.stop(0);
-    sound.pausePoint = Date.now() - sound.startedAt;
+    if (sound){
+        sound.stop(0);
+        sound.pausePoint = Date.now() - sound.startedAt;
+    }
 };
-
-
