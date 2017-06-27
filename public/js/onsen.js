@@ -31,6 +31,7 @@ $(function() {
         $("#btn-tl-playpause").on("click", timeline.manualPlayPause.bind(timeline));
         $("#btn-tl-prev").on("click", timeline.manualPrev.bind(timeline));
         $("#btn-tl-next").on("click", timeline.manualNext.bind(timeline));
+        $("#btn-tl-repeat").on("click", timeline.toggleFullSong.bind(timeline));
 
         $(".door").on("click", openGates);
 

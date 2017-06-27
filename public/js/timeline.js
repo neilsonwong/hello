@@ -54,6 +54,21 @@ Timeline.prototype.toggleFullSongMode = function(){
 	return this.fullSongMode;
 };
 
+Timeline.prototype.toggleFullSong = function(){
+	let origUrl = this.currentUrl();
+	this.stop();
+	++this.divergence;
+	if (this.toggleFullSongMode()){
+		$("#btn-tl-repeat").addClass("activated");
+	}
+	else {
+		$("#btn-tl-repeat").removeClass("activated");
+	}
+	this.load(this.currentUrl(), () => {
+		this.swapAudioTrack(origUrl, this.currentUrl());
+	});
+};
+
 Timeline.prototype.start = function(){
 	if (this.bufferingAudio){
 		console.log("still buffering");
@@ -128,6 +143,7 @@ Timeline.prototype.updateDate = function(){
 };
 
 Timeline.prototype.loadSurrounding = function(callback){
+	console.log("load surrounding called")
 	//turn on buffering mode
 	this.bufferingMode(true);
 
@@ -141,12 +157,14 @@ Timeline.prototype.loadSurrounding = function(callback){
 	this.load(tbl, () => {
 		this.bufferingMode(false);
 		if (callback){
+			console.log("calling callback from loadSur")
 			return callback();
 		}
 	});
 };
 
 Timeline.prototype.load = function(url, callback){
+	console.log("load called")
 	if (!Array.isArray(url)){
 		url = [url];
 	}
@@ -168,6 +186,7 @@ Timeline.prototype.load = function(url, callback){
 		});
 
 		if (callback){
+			console.log("calling callback from load")
 			return callback();
 		}
 	});
@@ -207,7 +226,11 @@ Timeline.prototype.pause = function(){
 	//set to play button
 	setPlayPause("paused");
 	this.audioDevice.playPause(this.currentUrl());
-}
+};
+
+Timeline.prototype.swapAudioTrack = function(origUrl, swapUrl){
+	this.audioDevice.instantSwap(origUrl, swapUrl);
+};
 
 Timeline.prototype.manualPlayPause = function(){
 	if (this.debouncing){
@@ -300,6 +323,10 @@ Timeline.prototype.current = function(){
 
 Timeline.prototype.getMp3Url = function(i){
 	return this.fullSongMode ? this.playlist[i].url : "/cut/" + (this.playlist[i].url).substring(5);
+};
+
+Timeline.prototype.getFullMp3Url = function(i){
+	return this.playlist[i].url;
 };
 
 Timeline.prototype.currentUrl = function(){

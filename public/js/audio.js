@@ -24,12 +24,14 @@ Audio.prototype.load = function(sounds, done){
             this.soundBuffers[url] = bufferList[i];
             this.loading--;
             if (this.loading === 0 && done){
+                console.log("cb1")
                 return done();
             }
         }.bind(this);
 
         urls.forEach(addSoundToBuffer);
-        if (this.loading === 0 && done){
+        if (urls.length === 0 && this.loading === 0 && done){
+            console.log("cb2")
             return done();
         }
     }.bind(this);
@@ -77,7 +79,13 @@ Audio.prototype.stopPlaying = function(url){
     }
 };
 
+Audio.prototype.instantSwap = function(playingUrl, swapUrl){
+    this.pause(playingUrl);
+    this.start(swapUrl, this.sounds[playingUrl].pausePoint);
+};
+
 Audio.prototype.start = function(url, oldPause){
+    console.log("starting " + url + " " + oldPause);
     //add sound
     var sound = this.context.createBufferSource();
     var gainNode = this.context.createGain ? this.context.createGain() : this.context.createGainNode();
