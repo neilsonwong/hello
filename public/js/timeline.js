@@ -31,6 +31,8 @@ Timeline.prototype.init = function(audioMaster, offset){
 			requestAnimationFrame(this.animate.bind(this));
 		});
 	});
+
+	this.initYearbox();
 }
 
 Timeline.prototype.exit = function(){
@@ -325,6 +327,7 @@ Timeline.prototype.jump = function(index){
 	if (!sameSong){
 		this.pause();
 	}
+	this.divergence++;
 	this.offset = index;
 	this.acc = 0;
 
@@ -483,6 +486,24 @@ Timeline.prototype.animateLine = function(){
 	}
 }
 
+Timeline.prototype.jumpToYear = function(year){
+	console.log(year)
+
+	var lastDay = new Date(year, 0, 1, 0, 0, 0) - 1;
+
+	let i, firstWeek;
+	for(i = 0; i < this.playlist.length; ++i){
+		console.log(lastDay-1);
+		console.log(this.playlist[i].week * 1000);
+		if ((this.playlist[i].week * 1000) > lastDay){
+			firstWeek = i;
+			console.log("jumping to " + firstWeek)
+			this.jump(firstWeek);
+			return;
+		}
+	}
+}
+
 function setPlayPause(mode) {
 	let $btn = $("#btn-tl-playpause");
 	if (mode === "paused"){
@@ -492,5 +513,15 @@ function setPlayPause(mode) {
 	else {
 		$btn.attr("data-playing", "playing");
 		$btn.find("i").first().html("pause");
+	}
+}
+
+Timeline.prototype.initYearbox = function initYearbox(){
+	let $yearbox = $("#yearbox");
+	let curDate = new Date();
+	console.log(curDate.getFullYear());
+	for (let i = 2011; i <= curDate.getFullYear(); ++i){
+		let $link = $("<a>", {html: i}).on("click", this.jumpToYear.bind(this, i));
+		$yearbox.append($link);
 	}
 }
