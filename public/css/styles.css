@@ -425,6 +425,24 @@ body {
     text-align: right;
 }
 
+.timeline #yearbox {
+    position: fixed;
+    margin-bottom: 15px;
+    font-size: 0.75em;
+    bottom: 50%;
+    left: 20px;
+}
+
+.timeline #yearbox > a {
+    margin: 5px;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.timeline #yearbox > a:hover {
+    opacity: 1;
+}
+
 .timeline .audioControls {
     margin-top: 35px;
     top: 50%;
@@ -432,23 +450,32 @@ body {
     right: 20px;
 }
 
+#btn-tl-repeat {
+    display: none;
+}
 
-#about-onsen {
+.onsen-extra {
     position: fixed;
     bottom: 50%;
     right: 20px;
     margin: 5px;
     margin-bottom: 15px;
-    opacity: 0.3;
 }
 
+#btn-loved-onsen:hover {
+    color: red;
+}
+
+.timeline .onsen-extra button,
 .timeline .audioControls button {
     opacity: 0.3;
 }
+
+.timeline .onsen-extra:hover button,
 .timeline .audioControls:hover button {
     opacity: 0.5;
 }
-#about-onsen:hover,
+.timeline .onsen-extra button:hover,
 .timeline .audioControls button:hover {
     opacity: 1;
 }
@@ -458,7 +485,7 @@ body {
     color: red;
 }
 
-#about-onsen, 
+.timeline .onsen-extra button,
 .timeline .audioControls button {
     background-color: Transparent;
     background-repeat:no-repeat;
@@ -476,7 +503,7 @@ body {
 }
 
 #np-title {
-    margin-top: 10px;
+    margin-top: 15px;
     font-size: 5vmin;
     font-weight: 600;
     transform: translateX(-50%);
@@ -485,7 +512,7 @@ body {
 }
 
 #np-artist {
-    margin-top: 80px;
+    margin-top: 85px;
     font-size: 4.5vmin;
     transform: translateX(-50%);
     text-align: center;
