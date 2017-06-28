@@ -34,8 +34,9 @@ $(function() {
         $("#btn-tl-repeat").on("click", timeline.toggleFullSong.bind(timeline));
 
         $("#btn-jump-random").on("click", timeline.jumpRandom.bind(timeline));
-        $("#btn-loved-onsen").on("click", timeline.changeMode.bind(timeline, "loved"));
-        $("#btn-top-onsen").on("click", timeline.changeMode.bind(timeline, "top"));
+        $("#btn-loved-onsen").on("click", timeline.setPlayMode.bind(timeline, "loved", timeline.start.bind(timeline)));
+        $("#btn-top-onsen").on("click", timeline.setPlayMode.bind(timeline, "top", timeline.start.bind(timeline)));
+        $("#btn-time-onsen").on("click", timeline.setPlayMode.bind(timeline, "chronological", timeline.start.bind(timeline)));
         $("#btn-about-onsen").on("click", timeline.jumpRandom.bind(timeline));
 
         $(".door").on("click", openGates);

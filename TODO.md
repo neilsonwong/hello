@@ -1,5 +1,6 @@
 features
 
-timeline?
+information
+curated list
 
 finish song button

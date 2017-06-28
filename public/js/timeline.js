@@ -2,7 +2,8 @@ function Timeline() {
 	this.date = null;
 	this.acc = 0;
 	this.offset = -1;
-	this.playlist = [];
+	this.playlist;
+	this.playlists = {};
 	this.urlSet = new Set();
 	this.stopped = true;
 	this.graphs = {};
@@ -14,7 +15,7 @@ function Timeline() {
 	this.animations.push(this.animateLine.bind(this));
 	this.alive = true;
 	this.ready = false;
-	this.mode = "chronological";
+	this.mode = null;
 }
 
 Timeline.prototype.init = function(audioMaster, offset){
@@ -24,10 +25,7 @@ Timeline.prototype.init = function(audioMaster, offset){
 	this.offset = offset || 0;
 
 	this.getPlayList(() => {
-		this.date = new Date(this.current().week *1000);
-		this.updateDate();
-		this.loadSurrounding(() => {
-			console.log("setting to ready true")
+		this.setPlayMode("chronological", () => {
 			this.ready = true;
 			requestAnimationFrame(this.animate.bind(this));
 		});
@@ -51,6 +49,11 @@ Timeline.prototype.exit = function(){
 	//stop animations
 	this.alive = false;
 }
+
+Timeline.prototype.setFullSongMode = function(mode){
+	this.fullSongMode = mode;
+	return this.fullSongMode;
+};
 
 Timeline.prototype.toggleFullSongMode = function(){
 	this.fullSongMode = !this.fullSongMode;
@@ -171,6 +174,12 @@ Timeline.prototype.loadSurrounding = function(callback){
 
 	let small = Math.max(0, this.offset - 3);
 	let big = Math.min(this.playlist.length, this.offset + 4);
+
+	if (this.fullSongMode){
+		small = Math.max(0, this.offset - 1);
+		big = Math.min(this.playlist.length, this.offset + 2);
+	}
+
 	let tbl = [];
 	for(let i = small; i < big; ++i){
 		tbl.push(this.getMp3Url(i));
@@ -235,7 +244,7 @@ Timeline.prototype.bufferingMode = function(onOff){
 
 Timeline.prototype.play = function(){
 	//set to pause button
-	setPlayPause("playing");
+	setPlayPauseUI("playing");
 	this.audioDevice.playResume(this.currentUrl());
 	this.playPauseTime = Date.now();
 	if (this.elapsed > 0){
@@ -246,7 +255,7 @@ Timeline.prototype.play = function(){
 
 Timeline.prototype.pause = function(){
 	//set to play button
-	setPlayPause("paused");
+	setPlayPauseUI("paused");
 	this.audioDevice.stopPlaying(this.currentUrl());
 	// this.audioDevice.stopPlaying(this.currentFullUrl());
 };
@@ -405,11 +414,28 @@ Timeline.prototype.stop = function(){
 Timeline.prototype.getPlayList = function(callback){
 	$.get("onsen/playlist", (data) => {
 		console.log(data);
-		this.playlist = data;
+		this.playlists["chronological"] = data;
+		this.playlists["top"] = data.filter(filterTop);
+		this.playlists["loved"] = data.filter(filterLoved).map(doubleDuration);
+
+		this.playlist = this.playlists["chronological"];
+
 		if (callback){
 			return callback();
 		}
 	});
+
+	function filterTop(song){
+		return song.totalPlayCount > 500;
+	}
+
+	function filterLoved(song){
+		return song.loved;
+	}
+	function doubleDuration(song){
+		song.duration = song.duration * 2;
+		return song;
+	}
 }
 
 Timeline.prototype.addBarGraph = function(bg, property){
@@ -507,22 +533,46 @@ Timeline.prototype.jumpRandom = function(){
 	this.jump(newIndex);
 };
 
-Timeline.prototype.changeMode = function(mode){
-	this.mode = mode;
-	console.log("new mode is " + mode);
-};
+Timeline.prototype.setPlayMode = function(mode, callback){
+	if (mode === this.mode){
+		console.log("same mode");
+		console.log(mode);
+		return;
+	}
 
-function setPlayPause(mode) {
-	let $btn = $("#btn-tl-playpause");
-	if (mode === "paused"){
-		$btn.attr("data-playing", "paused");
-		$btn.find("i").first().html("play_arrow");
+	//kill playing things
+	this.pause();
+	this.stop();
+
+	//change mode
+	this.mode = mode;
+	console.log("set mode: " + mode);
+
+	switch(mode){
+		case "loved":
+			this.setFullSongMode(true);
+			break;
+		case "top":
+			this.setFullSongMode(false);
+			break;
+		default:
+			this.setFullSongMode(false);
 	}
-	else {
-		$btn.attr("data-playing", "playing");
-		$btn.find("i").first().html("pause");
-	}
-}
+
+	//swap playlist
+	setPlayModeUI(mode);
+	this.playlist = this.playlists[mode];
+	this.offset = 0;
+	this.acc = 0;
+
+	this.date = new Date(this.current().week *1000);
+	this.updateDate();
+	this.loadSurrounding(() => {
+		if (callback){
+			callback();
+		}
+	});
+};
 
 Timeline.prototype.initYearbox = function initYearbox(){
 	let $yearbox = $("#yearbox");
@@ -531,5 +581,31 @@ Timeline.prototype.initYearbox = function initYearbox(){
 	for (let i = 2011; i <= curDate.getFullYear(); ++i){
 		let $link = $("<a>", {id: "year"+i, html: i}).on("click", this.jumpToYear.bind(this, i));
 		$yearbox.append($link);
+	}
+}
+
+function setPlayModeUI(mode) {
+	$(".onsen-extra button").removeClass("active");
+	switch(mode){
+		case "loved":
+			$("#btn-loved-onsen").addClass("active");
+			break;
+		case "top":
+			$("#btn-top-onsen").addClass("active");
+			break;
+		default:
+			$("#btn-time-onsen").addClass("active");
+	}
+}
+
+function setPlayPauseUI(mode) {
+	let $btn = $("#btn-tl-playpause");
+	if (mode === "paused"){
+		$btn.attr("data-playing", "paused");
+		$btn.find("i").first().html("play_arrow");
+	}
+	else {
+		$btn.attr("data-playing", "playing");
+		$btn.find("i").first().html("pause");
 	}
 }
