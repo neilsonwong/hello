@@ -33,6 +33,11 @@ $(function() {
         $("#btn-tl-next").on("click", timeline.manualNext.bind(timeline));
         $("#btn-tl-repeat").on("click", timeline.toggleFullSong.bind(timeline));
 
+        $("#btn-jump-random").on("click", timeline.jumpRandom.bind(timeline));
+        $("#btn-loved-onsen").on("click", timeline.changeMode.bind(timeline, "loved"));
+        $("#btn-top-onsen").on("click", timeline.changeMode.bind(timeline, "top"));
+        $("#btn-about-onsen").on("click", timeline.jumpRandom.bind(timeline));
+
         $(".door").on("click", openGates);
 
         $(".onsenLogo").on("mouseover", peek);

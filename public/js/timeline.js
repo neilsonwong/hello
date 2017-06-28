@@ -14,6 +14,7 @@ function Timeline() {
 	this.animations.push(this.animateLine.bind(this));
 	this.alive = true;
 	this.ready = false;
+	this.mode = "chronological";
 }
 
 Timeline.prototype.init = function(audioMaster, offset){
@@ -159,6 +160,8 @@ Timeline.prototype.updateDate = function(){
 		// "</span>",
 		this.date.getFullYear()
 	].join("."));
+	$("#yearbox a").removeClass("active");
+	$("#year"+this.date.getFullYear()).addClass("active");
 };
 
 Timeline.prototype.loadSurrounding = function(callback){
@@ -487,14 +490,9 @@ Timeline.prototype.animateLine = function(){
 }
 
 Timeline.prototype.jumpToYear = function(year){
-	console.log(year)
-
-	var lastDay = new Date(year, 0, 1, 0, 0, 0) - 1;
-
+	let lastDay = new Date(year, 0, 1, 0, 0, 0) - 1;
 	let i, firstWeek;
 	for(i = 0; i < this.playlist.length; ++i){
-		console.log(lastDay-1);
-		console.log(this.playlist[i].week * 1000);
 		if ((this.playlist[i].week * 1000) > lastDay){
 			firstWeek = i;
 			console.log("jumping to " + firstWeek)
@@ -502,7 +500,17 @@ Timeline.prototype.jumpToYear = function(year){
 			return;
 		}
 	}
-}
+};
+
+Timeline.prototype.jumpRandom = function(){
+	let newIndex = Math.round(Math.random() * this.playlist.length-1);
+	this.jump(newIndex);
+};
+
+Timeline.prototype.changeMode = function(mode){
+	this.mode = mode;
+	console.log("new mode is " + mode);
+};
 
 function setPlayPause(mode) {
 	let $btn = $("#btn-tl-playpause");
@@ -521,7 +529,7 @@ Timeline.prototype.initYearbox = function initYearbox(){
 	let curDate = new Date();
 	console.log(curDate.getFullYear());
 	for (let i = 2011; i <= curDate.getFullYear(); ++i){
-		let $link = $("<a>", {html: i}).on("click", this.jumpToYear.bind(this, i));
+		let $link = $("<a>", {id: "year"+i, html: i}).on("click", this.jumpToYear.bind(this, i));
 		$yearbox.append($link);
 	}
 }
