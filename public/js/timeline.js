@@ -127,8 +127,6 @@ Timeline.prototype.progressWeek = function(duration, step, divergence){
 	//figure out how much we need to step by, cuz first call
 	if (!step){
 		step = duration / 7;
-		// this.date = new Date(this.current().week *1000 - 86400000);
-		this.date = new Date(this.current().week *1000);
 	}
 	let wait = duration < step ? 0 : duration - step;
 
@@ -415,8 +413,8 @@ Timeline.prototype.getPlayList = function(callback){
 	$.get("onsen/playlist", (data) => {
 		console.log(data);
 		this.playlists["chronological"] = data;
-		this.playlists["top"] = data.filter(filterTop);
-		this.playlists["loved"] = data.filter(filterLoved).map(doubleDuration);
+		this.playlists["top"] = data.map(addIndex).filter(filterTop);
+		this.playlists["loved"] = data.map(addIndex).filter(filterLoved).map(doubleDuration);
 
 		this.playlist = this.playlists["chronological"];
 
@@ -434,6 +432,10 @@ Timeline.prototype.getPlayList = function(callback){
 	}
 	function doubleDuration(song){
 		song.duration = song.duration * 2;
+		return song;
+	}
+	function addIndex(song, idx){
+		song.origIndex = idx;
 		return song;
 	}
 }
@@ -459,15 +461,17 @@ Timeline.prototype.updateSongMetaData = function(){
 	$("#np-weekPlayCount").html("<span class=\"heavy\">" + this.current().playCount + "</span>" + "<span class=\"light\"> plays this week</span>");
 	$("#np-totalPlayCount").html("<span class=\"heavy\">" + this.current().totalPlayCount + "</span>" +"<span class=\"light\"> all time plays</span>");
 	let leWeek = new Date(this.current().week*1000);
+	this.date = leWeek;
 	let dateString = [
 		leWeek.getDate(),
         leWeek.getMonth()+1,
 		leWeek.getFullYear()
-	].join(".")
+	].join(".");
 	$("#np-week").html("<span class=\"light\">week of </span>" + "<span class=\"heave\">" + dateString + "</span>");
+	this.updateDate();
 
 	//get bg image
-	let url = "/onsen/cover/"+this.current().artist+"/"+this.current().title;
+	let url = "/onsen/cover/"+ (this.current().origIndex || this.offset);
 	$("#bg-cover").css("background-image", "url(\"" + url + "\")" ); 
 	$("#bg-blur").css("background-image", "url(\"" + url + "\")" ); 
 
