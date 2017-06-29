@@ -18,7 +18,7 @@ Visualizer2.prototype.get = function() {
 Visualizer2.prototype.run = function() {
 
     //if nothing shows up, up the fft size
-    this.analyser.fftSize = 256;
+    this.analyser.fftSize = 128;
     this.binCount = this.analyser.frequencyBinCount;
     this.dataArray = new Uint8Array(this.binCount);
 
@@ -55,12 +55,11 @@ Visualizer2.prototype.onResize = function(){
 };
 
 Visualizer2.prototype.onAnimate = function() {
-    console.log("animating v2");
     this.analyser.getByteFrequencyData(this.dataArray);
     this.canvasCtx.fillStyle = 'rgb(0, 0, 0)';
     this.clear();
 
-    let barWidth = (this.boxWidth / this.binCount) * 2.5;
+    let barWidth = (this.boxWidth / this.binCount);
     let barHeight;
     let x = 0;
 
@@ -72,8 +71,6 @@ Visualizer2.prototype.onAnimate = function() {
         else {
             this.canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
         }
-
-        console.log(this.boxHeight-barHeight/2);
 
         this.canvasCtx.fillRect(
             x,
