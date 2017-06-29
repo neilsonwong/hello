@@ -477,7 +477,12 @@ Timeline.prototype.updateSongMetaData = function(){
 	//preload next image
 	if (this.offset < this.playlists.length){
 		let img = new Image();
-		img.src = "/onsen/cover/"+ ((this.playlist[this.offset+1].origIndex) || (this.offset-1));
+		img.src = [location.protocol,
+			'//', 
+			location.host, 
+			"/onsen/cover/", 
+			((this.playlist[this.offset+1].origIndex) || (this.offset-1))].join("");
+		console.log("preloading " + img.src);
 	}
 
 	//set line colours
