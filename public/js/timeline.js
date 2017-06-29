@@ -23,6 +23,7 @@ Timeline.prototype.init = function(audioMaster, offset){
 	this.offset = offset || 0;
 
 	this.getPlayList(() => {
+		this.preloadImage(offset);
 		this.setPlayMode("chronological", offset || 0, () => {
 			this.ready = true;
 			requestAnimationFrame(this.animate.bind(this));
@@ -30,14 +31,14 @@ Timeline.prototype.init = function(audioMaster, offset){
 	});
 
 	this.initYearbox();
-    $(window).resize(this.onResize.bind(this));
+	$(window).resize(this.onResize.bind(this));
 }
 
 Timeline.prototype.exit = function(){
 	//stop a few things mainly
 	//stop resize listeners
 	console.log("exit timeline")
-    $(window).off("resize", Timeline.onResize);
+	$(window).off("resize", Timeline.onResize);
 
 	//stop audio playing
 	if (!this.stopped){
@@ -475,21 +476,25 @@ Timeline.prototype.updateSongMetaData = function(){
 	$("#bg-blur").css("background-image", "url(\"" + url + "\")" ); 
 
 	//preload next image
-	if (this.offset < this.playlist.length){
-		let img = new Image();
-		img.src = [location.protocol,
-			'//', 
-			location.host, 
-			"/onsen/cover/", 
-			((this.playlist[this.offset+1].origIndex) || (this.offset-1))].join("");
-		console.log("preloading " + img.src);
-	}
+	this.preloadImage(this.offset+1);
 
 	//set line colours
 	let lineColour = this.current().colour === "" ? "#333" : this.current().colour;
 	this.overline.css("background-color", lineColour);
 	$(".songColour").css("background-color", lineColour);
 	$(".songColourBorder").css("border-color", lineColour);
+};
+
+Timeline.prototype.preloadImage = function(offset){
+	if (offset < this.playlist.length){
+		let img = new Image();
+		img.src = [location.protocol,
+			'//', 
+			location.host, 
+			"/onsen/cover/", 
+			((this.playlist[offset].origIndex) || (this.offset))].join("");
+		console.log("preloading " + img.src);
+	}
 };
 
 Timeline.prototype.attachObject = function(){
