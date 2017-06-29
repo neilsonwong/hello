@@ -475,7 +475,7 @@ Timeline.prototype.updateSongMetaData = function(){
 	$("#bg-blur").css("background-image", "url(\"" + url + "\")" ); 
 
 	//preload next image
-	if (this.offset < this.playlists.length){
+	if (this.offset < this.playlist.length){
 		let img = new Image();
 		img.src = [location.protocol,
 			'//', 
