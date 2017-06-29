@@ -17,7 +17,7 @@ Visualizer2.prototype.get = function() {
 
 Visualizer2.prototype.run = function() {
 
-    //if nothing shows up, up the fft size
+    //num Bars = fftSize / 2
     this.analyser.fftSize = 128;
     this.binCount = this.analyser.frequencyBinCount;
     this.dataArray = new Uint8Array(this.binCount);
@@ -32,7 +32,6 @@ Visualizer2.prototype.clear = function() {
 Visualizer2.prototype.init = function() {
 
     //if nothing shows up, down the numOfBars
-    this.numOfBars = 128;
     this.boxWidth = this.screenWidth;
     this.boxHeight = Math.floor(this.screenHeight / 3);
 
@@ -47,11 +46,13 @@ Visualizer2.prototype.onResize = function(){
     this.screenHeight = $(window).height();
     this.screenWidth = $(window).width();
 
-    this.boxWidth = this.screenWidth / (this.numOfBars) - 1;
+    this.boxWidth = this.screenWidth;
     this.boxHeight = Math.floor(this.screenHeight / 3);
 
     this.visualizer.width = this.boxWidth;
     this.visualizer.height = this.boxHeight;
+
+    console.log("resizing v")
 };
 
 Visualizer2.prototype.onAnimate = function() {
@@ -72,12 +73,8 @@ Visualizer2.prototype.onAnimate = function() {
             this.canvasCtx.fillStyle = 'rgb(' + (barHeight+100) + ',50,50)';
         }
 
-        this.canvasCtx.fillRect(
-            x,
-            this.boxHeight-barHeight/2,
-            barWidth,
-            barHeight/2
-        );
+        this.canvasCtx.fillRect(x, this.boxHeight-barHeight,
+            barWidth, barHeight);
 
         x += barWidth + 1;
     }
