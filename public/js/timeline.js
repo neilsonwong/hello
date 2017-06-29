@@ -475,6 +475,12 @@ Timeline.prototype.updateSongMetaData = function(){
 	$("#bg-cover").css("background-image", "url(\"" + url + "\")" ); 
 	$("#bg-blur").css("background-image", "url(\"" + url + "\")" ); 
 
+	//preload next image
+	if (this.offset < this.playlists.length){
+		let img = new Image();
+		img.src = "/onsen/cover/"+ ((this.playlist[this.offset+1].origIndex) || (this.offset-1));
+	}
+
 	//set line colours
 	let lineColour = this.current().colour === "" ? "#333" : this.current().colour;
 	this.overline.css("background-color", lineColour);
