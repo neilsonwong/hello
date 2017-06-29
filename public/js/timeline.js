@@ -20,18 +20,17 @@ function Timeline() {
 
 Timeline.prototype.init = function(audioMaster, offset){
 	this.audioDevice = audioMaster;
-    $(window).resize(this.onResize.bind(this));
-
 	this.offset = offset || 0;
 
 	this.getPlayList(() => {
-		this.setPlayMode("chronological", () => {
+		this.setPlayMode("chronological", offset || 0, () => {
 			this.ready = true;
 			requestAnimationFrame(this.animate.bind(this));
 		});
 	});
 
 	this.initYearbox();
+    $(window).resize(this.onResize.bind(this));
 }
 
 Timeline.prototype.exit = function(){
@@ -543,11 +542,16 @@ Timeline.prototype.jumpRandom = function(){
 	this.jump(newIndex);
 };
 
-Timeline.prototype.setPlayMode = function(mode, callback){
+Timeline.prototype.setPlayMode = function(mode, offset, callback){
 	if (mode === this.mode){
 		console.log("same mode");
 		console.log(mode);
 		return;
+	}
+
+	if (typeof offset === "function"){
+		offset = 0;
+		callback = offset;
 	}
 
 	//kill playing things
@@ -572,7 +576,7 @@ Timeline.prototype.setPlayMode = function(mode, callback){
 	//swap playlist
 	setPlayModeUI(mode);
 	this.playlist = this.playlists[mode];
-	this.offset = 0;
+	this.offset = offset;
 	this.acc = 0;
 
 	this.date = new Date(this.current().week *1000);
