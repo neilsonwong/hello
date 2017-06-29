@@ -23,7 +23,7 @@ Timeline.prototype.init = function(audioMaster, offset){
 	this.offset = offset || 0;
 
 	this.getPlayList(() => {
-		this.preloadImage(offset);
+		this.preloadImage(this.offset);
 		this.setPlayMode("chronological", offset || 0, () => {
 			this.ready = true;
 			requestAnimationFrame(this.animate.bind(this));
@@ -478,11 +478,18 @@ Timeline.prototype.updateSongMetaData = function(){
 	//preload next image
 	this.preloadImage(this.offset+1);
 
+	function genRandomColour(){
+		return '#'+ Math.floor(Math.random()*16777215).toString(16);
+	}
+
 	//set line colours
-	let lineColour = this.current().colour === "" ? "#333" : this.current().colour;
+	let lineColour = (this.current().colour === "" || this.current().colour === undefined) ? genRandomColour() : this.current().colour;
+	this.themeColour = lineColour;
+	console.log("the colour is " + lineColour);
 	this.overline.css("background-color", lineColour);
 	$(".songColour").css("background-color", lineColour);
 	$(".songColourBorder").css("border-color", lineColour);
+
 };
 
 Timeline.prototype.preloadImage = function(offset){
@@ -505,6 +512,7 @@ Timeline.prototype.attachObject = function(){
 		if (arguments[i]["onAnimate"] !== undefined){
 			this.animations.push(arguments[i].onAnimate.bind(arguments[i]));
 		}
+		arguments[i].parent = this;
 	}
 }
 

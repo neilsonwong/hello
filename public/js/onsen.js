@@ -16,7 +16,7 @@ $(function() {
         let bg2 = new BarGraph(document.querySelector(".artistBars"), {sortRight: true});
 
         audioMaster = new Audio(audioCtx);
-        visualizer = new Visualizer(audioCtx);
+        visualizer = new Visualizer2(audioCtx);
 
         audioMaster.inject(visualizer.get());
         timeline.attachObject(visualizer, bg, bg2);
