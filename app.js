@@ -13,6 +13,7 @@ let Onsen = require("onsenbackend")(
     config.beginningOfTime,
     config.localMusicDir,
     config.onsenDataLocation);
+let weekly = [];
 
 app.use(favicon(__dirname + '/public/favicon.ico'));
 
@@ -80,10 +81,19 @@ app.get('/onsen/playlist', function(req, res){
     });
 });
 
-app.get('/onsen/cover/:artist/:song', function(req, res){
-    console.log(req.params.artist);
-    console.log(req.params.song);
-    let hashed = utils.hash(req.params.artist + " - " + req.params.song);
+app.get('/onsen/cover/:weekid', function(req, res){
+    if (req.params.weekid >= weekly.length){
+        try {
+            weekly = require(path.join(config.onsenDataLocation, "weekly"));
+        }
+        catch(e){
+            console.log("couldn't find weekly");
+            return;
+        }
+    }
+    let artist = weekly[req.params.weekid].artist;
+    let title = weekly[req.params.weekid].title;
+    let hashed = utils.hash(artist + " - " + title);
     utils.matchFile(path.join(__dirname, 'public', 'images', 'covers'), hashed)
         .then(cover => {
             if (cover === null){
