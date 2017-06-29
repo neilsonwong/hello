@@ -816,10 +816,12 @@ body {
 
 .left-gate.peek {
     left: -10px;
+    box-shadow: 0 0 10px #999;
 }
 
 .right-gate.peek {
     left: calc(50vw + 10px);
+    box-shadow: 0 0 10px #999;
 }
 
 .door.peek .onsenLogo {
