@@ -4,25 +4,41 @@ function BarGraph(container, options){
 	this.dataIndices = [];
 	this.container = container;
 	this.screenHeight = $(window).height();
-    this.screenWidth = $(window).width();
-    this.numOfBars = 12;
+	this.screenWidth = $(window).width();
+	this.numOfBars = 12;
 	this.sortRight = (options && options.sortRight) || false;
 	this.setupBars();
 }
 
 BarGraph.prototype.setupBars = function(){
-    this.barWidth = ((this.screenWidth / 3) / this.numOfBars) - 10;
-    this.barMaxHeight = Math.floor(this.screenHeight / 4);
+	this.barWidth = ((this.screenWidth / 3) / this.numOfBars) - 10;
+	this.barMaxHeight = Math.floor(this.screenHeight / 4);
 
-    let w = this.barWidth + "px";
-    let h = this.barMaxHeight + "px";
+	let w = this.barWidth + "px";
+	let h = this.barMaxHeight + "px";
 
-	let bar, wrapper, val, tooltip;
-    for (let i = 0; i < this.numOfBars; i++) {
-		barWrapper = document.createElement('div');
-		bar = document.createElement('div');
-		val = document.createElement('div');
-		tooltip = document.createElement('div');
+	let bar, barWrapper, wrapper, val, tooltip;
+
+	function fn(e) {
+		let $tt = $(this.getElementsByClassName("barTooltip"));
+		let windowWidth = $(window).width();
+		let fakeElementWidth = Math.max($tt.width(), 100);
+		if (e.pageX + fakeElementWidth > windowWidth - 50){
+			$tt.css("right", (windowWidth - e.pageX + 10) + "px");
+			$tt.css("left", "");
+		}
+		else {
+			$tt.css("left", e.pageX + 10 +"px");
+			$tt.css("right", "");
+		}
+		$tt.css("top", e.pageY + "px");
+	}
+
+	for (let i = 0; i < this.numOfBars; i++) {
+		barWrapper = document.createElement("div");
+		bar = document.createElement("div");
+		val = document.createElement("div");
+		tooltip = document.createElement("div");
 
 		barWrapper.className = "barWrap";
 		barWrapper.style.height = 0;
@@ -30,55 +46,40 @@ BarGraph.prototype.setupBars = function(){
 		bar.className = "bar";
 		bar.style.width = w;
 		bar.style.height = h;
-        bar.style[prefix.css + 'transform'] = ["scaleY(0) translate3d(0,0,0)"];
+		bar.style["transform"] = ["scaleY(0) translate3d(0,0,0)"];
 
 		val.className = "barVal";
 		val.style.width = w;
 
-		tooltip.className = "barTooltip"
+		tooltip.className = "barTooltip";
 
 		barWrapper.appendChild(bar);
 		barWrapper.appendChild(val);
 		barWrapper.appendChild(tooltip);
-	    this.container.appendChild(barWrapper);
+		this.container.appendChild(barWrapper);
 
 		//bind tooltip events
-		barWrapper.addEventListener('mousemove', fn, false);
+		barWrapper.addEventListener("mousemove", fn, false);
 
-		function fn(e) {
-			let $tt = $(this.getElementsByClassName("barTooltip"));
-			let windowWidth = $(window).width();
-			let fakeElementWidth = Math.max($tt.width(), 100);
-			if (e.pageX + fakeElementWidth > windowWidth - 50){
-				$tt.css("right", (windowWidth - e.pageX + 10) + "px");
-				$tt.css("left", "");
-			}
-			else {
-				$tt.css("left", e.pageX + 10 +"px");
-				$tt.css("right", "");
-			}
-			$tt.css("top", e.pageY + "px");
-		}
 	}
 	this.bars = this.container.getElementsByClassName("bar");
 	this.wrappers = this.container.getElementsByClassName("barWrap");
 	this.vals = this.container.getElementsByClassName("barVal");
 	this.tooltips = this.container.getElementsByClassName("barTooltip");
-}
+};
 
 BarGraph.prototype.onResize = function(){
-    console.log("resizing")
-    this.screenHeight = $(window).height();
-    this.screenWidth = $(window).width();
-    this.barWidth = ((this.screenWidth / 3) / this.numOfBars) - 10;
-    this.barMaxHeight = Math.floor(this.screenHeight / 4);
+	this.screenHeight = $(window).height();
+	this.screenWidth = $(window).width();
+	this.barWidth = ((this.screenWidth / 3) / this.numOfBars) - 10;
+	this.barMaxHeight = Math.floor(this.screenHeight / 4);
 
-    let w = this.barWidth + "px";
-    let h = this.barMaxHeight + "px";
+	let w = this.barWidth + "px";
+	let h = this.barMaxHeight + "px";
 
-    $(this.container).find(".bar").css("width",w).css("height", h);
-    $(this.container).find(".barVal").css("width",w);
-    $(this.container).css("height", h);
+	$(this.container).find(".bar").css("width",w).css("height", h);
+	$(this.container).find(".barVal").css("width",w);
+	$(this.container).css("height", h);
 	this.redraw();
 };
 
@@ -87,12 +88,12 @@ BarGraph.prototype.add = function(item, change, extras){
 
 	//add to data indexes
 	if (!(item in this.data)){
-		console.log("pushing " + item)
+		log.info("pushing " + item);
 		this.dataIndices.push(item);
 	}
 
 	if (extras !== undefined){
-		for (extra in extras){
+		for (let extra in extras){
 			this.extras[item][extra] = extras[extra];
 		}
 	}
@@ -115,7 +116,7 @@ BarGraph.prototype.redraw = function(){
 	let vals = this.vals;
 	let tooltips = this.tooltips;
 	let wrappers = this.wrappers;
-	let index, key, val, magnitude, shiftUp;
+	let index, key, val, magnitude, shiftUp, wrapHeight;
 
 	for (let j = 0; j < this.numOfBars; j++) {
 		index = this.sortRight ? this.numOfBars -1 - j : j;
@@ -125,21 +126,21 @@ BarGraph.prototype.redraw = function(){
 		shiftUp = (-1)*(1-magnitude) * this.barMaxHeight;
 		wrapHeight = magnitude * this.barMaxHeight;
 
-        bars[j].style[prefix.css + 'transform'] = ["scaleY(", magnitude, ") translate3d(0,0,0)"].join("");
-        bars[j].style['opacity'] = 1 - index * 0.075;
+		bars[j].style["transform"] = ["scaleY(", magnitude, ") translate3d(0,0,0)"].join("");
+		bars[j].style["opacity"] = 1 - index * 0.075;
 
-        vals[j].style[prefix.css + 'transform'] = ["translateY(", shiftUp, "px)"].join("");
-        vals[j].innerHTML = val || "";
+		vals[j].style["transform"] = ["translateY(", shiftUp, "px)"].join("");
+		vals[j].innerHTML = val || "";
 
-        tooltips[j].innerHTML = val ? key + "<br />" + val : "" ;
+		tooltips[j].innerHTML = val ? key + "<br />" + val : "" ;
 
 		wrappers[j].style["height"] = val ? wrapHeight + "px" : "0";
 
-        $(bars[j])
-        	.attr("data-key", key)
-        	.attr("data-value", val);
+		$(bars[j])
+			.attr("data-key", key)
+			.attr("data-value", val);
 
-        //check if image data is included
-        
-    }
+		//check if image data is included
+		
+	}
 };

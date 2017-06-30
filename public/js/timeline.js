@@ -32,12 +32,12 @@ Timeline.prototype.init = function(audioMaster, offset){
 
 	this.initYearbox();
 	$(window).resize(this.onResize.bind(this));
-}
+};
 
 Timeline.prototype.exit = function(){
 	//stop a few things mainly
 	//stop resize listeners
-	console.log("exit timeline")
+	log.info("exit timeline");
 	$(window).off("resize", Timeline.onResize);
 
 	//stop audio playing
@@ -48,7 +48,7 @@ Timeline.prototype.exit = function(){
 
 	//stop animations
 	this.alive = false;
-}
+};
 
 Timeline.prototype.setFullSongMode = function(mode){
 	this.fullSongMode = mode;
@@ -94,14 +94,14 @@ Timeline.prototype.toggleFullSong = function(){
 
 Timeline.prototype.start = function(){
 	if (this.bufferingAudio){
-		console.log("still buffering");
+		log.info("still buffering");
 		return;
 	}
 	this.stopped = false;
 	this.addInfo();
 	this.play();
 	this.progressWeek(this.current().duration);
-}
+};
 
 Timeline.prototype.progressWeek = function(duration, step, divergence){
 	//if we are done with this week, go to the next
@@ -118,7 +118,7 @@ Timeline.prototype.progressWeek = function(duration, step, divergence){
 	let total = this.current().duration;
 	let elapsed = Date.now() - this.playPauseTime;
 	if (elapsed >= total){
-		console.log("next week!");
+		log.debug("next week!");
 		this.acc = 0;
 		this.next();
 		return;
@@ -135,7 +135,7 @@ Timeline.prototype.progressWeek = function(duration, step, divergence){
 		this.incDate();
 		this.progressWeek(wait, step, divergence);
 	}).bind(this, wait, step, this.divergence), step);
-}
+};
 
 Timeline.prototype.incDate = function(){
 	if (this.stopped){
@@ -143,7 +143,7 @@ Timeline.prototype.incDate = function(){
 	}
 	this.date.setDate(this.date.getDate()+1);
 	this.updateDate();
-}
+};
 
 Timeline.prototype.regressWeek = function(){
 	//this current should be regressed already
@@ -157,7 +157,7 @@ Timeline.prototype.updateDate = function(){
 	$(".dateBox").html([
 		this.date.getDate(),
 		// "<span class=\"heavy\">" +
-        (this.date.getMonth()+1),
+		(this.date.getMonth()+1),
 		// "</span>",
 		this.date.getFullYear()
 	].join("."));
@@ -166,7 +166,6 @@ Timeline.prototype.updateDate = function(){
 };
 
 Timeline.prototype.loadSurrounding = function(callback){
-	console.log("load surrounding called")
 	//turn on buffering mode
 	this.bufferingMode(true);
 
@@ -186,14 +185,14 @@ Timeline.prototype.loadSurrounding = function(callback){
 	this.load(tbl, () => {
 		this.bufferingMode(false);
 		if (callback){
-			console.log("calling callback from loadSur")
+			log.debug("calling callback from loadSur");
 			return callback();
 		}
 	});
 };
 
 Timeline.prototype.load = function(url, callback){
-	console.log("load called")
+	log.debug("load called");
 	if (!Array.isArray(url)){
 		url = [url];
 	}
@@ -201,7 +200,7 @@ Timeline.prototype.load = function(url, callback){
 	//build new array of songs that have not been loaded
 	url = url.filter((u) => {
 		if (this.urlSet.has(u)){
-			console.log("already loaded " + u);
+			log.debug("already loaded " + u);
 			return false;
 		}
 		console.log("loading " + u);
@@ -211,11 +210,11 @@ Timeline.prototype.load = function(url, callback){
 
 	this.audioDevice.load(url, () => {
 		url.forEach( e =>  {
-			console.log("loaded " + e);
+			log.debug("loaded " + e);
 		});
 
 		if (callback){
-			console.log("calling callback from load")
+			log.debug("calling callback from load");
 			return callback();
 		}
 	});
@@ -275,14 +274,14 @@ Timeline.prototype.manualPlayPause = function(){
 		this.pause();
 		this.stop();
 		this.elapsed = elapsed;
-		console.log("saving elapsed as " + this.elapsed);
+		log.debug("saving elapsed as " + this.elapsed);
 		//timeout playpause til music stops
 		this.debouncing = true;
 		setTimeout(() => {
 			this.debouncing = false;
 		} , 1100);
 	}
-}
+};
 
 Timeline.prototype.next = function(){
 	if (this.bufferingAudio){
@@ -308,7 +307,7 @@ Timeline.prototype.next = function(){
 	this.loadSurrounding();
 	this.play();
 	this.progressWeek(this.current().duration);
-}
+};
 
 Timeline.prototype.prev = function(){
 	if (this.bufferingAudio){
@@ -329,7 +328,7 @@ Timeline.prototype.prev = function(){
 	this.loadSurrounding();
 	this.play();
 	this.regressWeek();
-}
+};
 
 Timeline.prototype.jump = function(index){
 	//actions to stop current
@@ -373,7 +372,7 @@ Timeline.prototype.manualPrev = function(){
 
 Timeline.prototype.current = function(){
 	return this.playlist[this.offset];
-}
+};
 
 Timeline.prototype.getMp3Url = function(i){
 	return this.fullSongMode ? this.playlist[i].url : "/cut/" + (this.playlist[i].url).substring(5);
@@ -396,18 +395,18 @@ Timeline.prototype.nextUrl = function(){
 		return null;
 	}
 	return this.getMp3Url(this.offset+1);
-}
+};
 
 Timeline.prototype.prevUrl = function(){
 	if (this.offset <= 0){
 		return this.getMp3Url(0);
 	}
 	return this.getMp3Url(this.offset-1);
-}
+};
 
 Timeline.prototype.stop = function(){
 	this.stopped = true;
-}
+};
 
 Timeline.prototype.getPlayList = function(callback){
 	$.get("onsen/playlist", (data) => {
@@ -438,11 +437,11 @@ Timeline.prototype.getPlayList = function(callback){
 		song.origIndex = idx;
 		return song;
 	}
-}
+};
 
 Timeline.prototype.addBarGraph = function(bg, property){
 	this.graphs[property] = bg;
-}
+};
 
 Timeline.prototype.addInfo = function(){
 	Object.keys(this.graphs).forEach((property) => {
@@ -453,7 +452,7 @@ Timeline.prototype.addInfo = function(){
 		}
 	});
 	this.updateSongMetaData();
-}
+};
 
 Timeline.prototype.updateSongMetaData = function(){
 	$("#np-title").html(this.current().title);
@@ -464,7 +463,7 @@ Timeline.prototype.updateSongMetaData = function(){
 	this.date = leWeek;
 	let dateString = [
 		leWeek.getDate(),
-        leWeek.getMonth()+1,
+		leWeek.getMonth()+1,
 		leWeek.getFullYear()
 	].join(".");
 	$("#np-week").html("<span class=\"light\">week of </span>" + "<span class=\"heave\">" + dateString + "</span>");
@@ -479,7 +478,7 @@ Timeline.prototype.updateSongMetaData = function(){
 	this.preloadImage(this.offset+1);
 
 	function genRandomColour(){
-		return '#'+ Math.floor(Math.random()*16777215).toString(16);
+		return "#" + Math.floor(Math.random()*16777215).toString(16);
 	}
 
 	//set line colours
@@ -496,11 +495,11 @@ Timeline.prototype.preloadImage = function(offset){
 	if (offset < this.playlist.length){
 		let img = new Image();
 		img.src = [location.protocol,
-			'//', 
+			"//", 
 			location.host, 
 			"/onsen/cover/", 
 			((this.playlist[offset].origIndex) || (this.offset))].join("");
-		console.log("preloading " + img.src);
+		log.debug("preloading " + img.src);
 	}
 };
 
@@ -514,7 +513,7 @@ Timeline.prototype.attachObject = function(){
 		}
 		arguments[i].parent = this;
 	}
-}
+};
 
 Timeline.prototype.onResize = function(){
 	this.width = $(window).width();
@@ -528,7 +527,7 @@ Timeline.prototype.animate = function(){
 	if (this.alive){
 		requestAnimationFrame(this.animate.bind(this));
 	}
-}
+};
 
 Timeline.prototype.animateLine = function(){
 	//set width
@@ -540,7 +539,7 @@ Timeline.prototype.animateLine = function(){
 		//set colour
 		this.overline.css("transform", ["scaleX(", progress, ") translate3d(0,0,0)"].join(""));
 	}
-}
+};
 
 Timeline.prototype.jumpToYear = function(year){
 	let lastDay = new Date(year, 0, 1, 0, 0, 0) - 1;
@@ -548,7 +547,7 @@ Timeline.prototype.jumpToYear = function(year){
 	for(i = 0; i < this.playlist.length; ++i){
 		if ((this.playlist[i].week * 1000) > lastDay){
 			firstWeek = i;
-			console.log("jumping to " + firstWeek)
+			log.debug("jumping to " + firstWeek);
 			this.jump(firstWeek);
 			return;
 		}
@@ -614,7 +613,7 @@ Timeline.prototype.initYearbox = function initYearbox(){
 		let $link = $("<a>", {id: "year"+i, html: i}).on("click", this.jumpToYear.bind(this, i));
 		$yearbox.append($link);
 	}
-}
+};
 
 function setPlayModeUI(mode) {
 	$(".onsen-extra button").removeClass("active");

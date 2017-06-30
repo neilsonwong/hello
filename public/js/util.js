@@ -16,7 +16,7 @@ $(function () {
 			$("#page").html(body);
 
 			if (($("#"+name).length !== 0)){
-				console.log("triggering " + name)
+				console.log("triggering " + name);
 				$("body").trigger("init-" + name);
 				// $("#"+name).trigger("init");
 			}
@@ -34,10 +34,10 @@ $(function () {
 
 			//check if already on this page
 			if (pageName === $("body").attr("id")){
-				console.log("already on " + partial)
+				log.info("already on " + partial);
 			}
 			else {
-				console.log("loading " + partial)
+				log.info("loading " + partial);
 				window.history.pushState({
 					location: partial,
 					name: pageName} , pageName, partial);
