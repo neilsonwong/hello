@@ -58,6 +58,13 @@ app.get("/blog", function(req, res){
 	});
 });
 
+app.get('/ow', function(req, res){
+    res.render("pages/index", {
+        page: "owtraining",
+        title: "overwatch training" 
+    });
+});
+
 let renderPartials = function(req, res){
 	console.log("getting partial " + req.params.page);
 	res.render("partials/"+req.params.page, {
