@@ -58,10 +58,22 @@ $(function() {
     function start(){
         console.log("start called");
         let chain = Promise.resolve();
+        chain = chain.then(sayWithDelay.bind(null, "starting in 10 seconds", 10000));
         for (let i = 0; i < PLAYLIST.length; ++i){
             chain = chain.then(handleItem.bind(null, PLAYLIST[i]));
         }
+        chain = chain.then(sayWithDelay.bind(null, "training done", 1));
     }
+
+    function sayWithDelay(thing, delay){
+        return new Promise((resolve, reject) => {
+            sayStuff(thing);
+            setTimeout(() => {
+                resolve(true);
+            }, delay) 
+        });
+    }
+
     function handleItem(item){
         return new Promise((resolve, reject) => {
             sayStuff(item.description);
