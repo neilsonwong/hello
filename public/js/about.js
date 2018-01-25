@@ -8,8 +8,8 @@ $(function () {
 		console.log(bg);
 
 		//set css class bgimages
-		$(".about_bg").css("background-image", " url(\"/images/llbg/" + bg + ".png\")");
-		$(".about_chara").css("background-image", " url(\"/images/maki/" + maki + ".png\")");
+		$(".about_bg").css("background-image", "linear-gradient( rgba(0,0,0,0.1), rgba(0,0,0,0.25) ), url(\"/images/llbg/" + bg + ".png\")");
+		$(".about_chara").css("background-image", "url(\"/images/maki/" + maki + ".png\")");
 	});
 });
 
