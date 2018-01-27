@@ -360,6 +360,7 @@ body {
 
 .about_bg {
     height: 100vh;
+    background-size: cover;
     /*width: 100vw;*/
     /*overflow: auto;*/
     /*background-size: 100%;*/
@@ -370,9 +371,9 @@ body {
     background-position: center;
 }
 
-.about_llbg {
+/*.about_llbg {
     background-size: cover;
-}
+}*/
 
 .about_me {
     position: relative;
