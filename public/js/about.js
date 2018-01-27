@@ -3,7 +3,7 @@ $(function () {
 		//init about page vars
 		let maki = getRandomInt(0, 10);
 		let bg = getRandomInt(0, 24);
-		let lbg = getRandomInt(0, 6);
+		let lbg = getRandomInt(0, 7);
 		let me = getRandomInt(0, 1);
 
 		//set css class bgimages
