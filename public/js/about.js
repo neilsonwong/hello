@@ -1,15 +1,17 @@
 $(function () {
 	$("body").on("init-about", function(){
 		//init about page vars
-		let maki = getRandomInt(0, 9);
+		let maki = getRandomInt(0, 10);
 		let bg = getRandomInt(0, 24);
-
-		console.log(maki);
-		console.log(bg);
+		let lbg = getRandomInt(0, 6);
+		let me = getRandomInt(0, 1);
 
 		//set css class bgimages
 		$(".about_bg").css("background-image", "linear-gradient( rgba(0,0,0,0.1), rgba(0,0,0,0.25) ), url(\"/images/llbg/" + bg + ".png\")");
 		$(".about_chara").css("background-image", "url(\"/images/maki/" + maki + ".png\")");
+
+		$(".about_landscape").css("background-image", "linear-gradient( rgba(0,0,0,0.1), rgba(0,0,0,0.25) ), url(\"/images/landscape/" + lbg + ".jpg\")");
+		// $(".about_me").css("background-image", "url(\"/images/me/" + me + ".png\")");
 	});
 });
 
