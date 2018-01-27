@@ -355,14 +355,16 @@ body {
 }
 
 .about_bubble {
+    position: absolute;
     justify-content: flex-end;
 }
 
 .about_bg {
     height: 100vh;
     background-size: cover;
+    overflow: auto;
+    position: relative;
     /*width: 100vw;*/
-    /*overflow: auto;*/
     /*background-size: 100%;*/
     /*background-attachment: fixed;*/
 }
@@ -388,7 +390,7 @@ body {
 
 
 .about_chara {
-    position: relative;
+    position: absolute;
     bottom: 0;
     left: 0;
     width: 50%;
