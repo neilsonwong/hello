@@ -1,4 +1,5 @@
 $(function () {
+	let origKeydown;
 	$("body").on("init-about", function(){
 		//init about page vars
 		let maki = getRandomInt(0, 10);
@@ -14,45 +15,54 @@ $(function () {
 		// $(".about_me").css("background-image", "url(\"/images/me/" + me + ".png\")");
 
 		//override arrow keys
-		var scrollMutex = false;
-        $(document).on({
-			'keydown': function(e) {
-				if (scrollMutex){
-					return;
-				}
-				scrollMutex = true;
-                //make sure this key actually scrolls the page
-                switch (e.which) {
-                    case 34:
-                    case 35:
-                    case 40:
-                        direction = 1;
-                        break;
-                    case 33:
-                    case 36:
-                    case 38:
-                        direction = -1;
-                        break;
-                    default:
-                        //we don't care so lets let it run its natural course
-                        return;
-                }
-
-                e.preventDefault();
-                e.stopPropagation();
-
-				scrollPage(direction);
-            }
-        });
-
-        function scrollPage(direction) {
-            var destination = (direction > 0) ? window.innerHeight : 0;
-			$('.viewport').animate({'scrollTop': destination }, 500, () => { scrollMutex = false; });
-            return;
-        }
+		$viewport = $(".viewport");
+        $(document).on({ "keydown": handleScrollEvent });
 	});
-});
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+	$("body").on("exit-about", function(){
+		$(document).off("keydown", handleScrollEvent);
+	});
+
+	function getRandomInt(min, max) {
+		return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+
+	let scrollMutex = false;
+	let $viewport;
+	function handleScrollEvent(e) {
+		if (scrollMutex){
+			return;
+		}
+		scrollMutex = true;
+
+		let destination;
+		//make sure this key actually scrolls the page
+		switch (e.which) {
+			case 34:
+			case 35:
+			case 40:
+				destination = window.innerHeight;
+				break;
+			case 33:
+			case 36:
+			case 38:
+				destination = 0;
+				break;
+			default:
+				//we don't care so lets let it run its natural course
+				scrollMutex = false;
+				return;
+		}
+
+		//if we are already at the right spot, don't scroll
+		if ($viewport.scrollTop() === destination){
+			scrollMutex = false;
+			return;
+		}
+
+		e.preventDefault();
+		e.stopPropagation();
+
+		$viewport.animate({"scrollTop": destination }, 500, () => { scrollMutex = false; });
+	}
+});
