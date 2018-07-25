@@ -1,0 +1,27 @@
+/* kotobomb */
+.kotobomb {
+    position: fixed;
+    display: block;
+    left: 0;
+    bottom: 0;
+}
+
+.kotobomb img {
+    display: block;
+    max-width:300px;
+    height:auto;
+    position:relative;
+}
+
+.kotobomb.hiding > img {
+    transition: 0.2s;
+    left: -200px;
+    bottom: -200px;
+}
+
+.kotobomb:hover > img {
+    transition: 0.2s;
+    left: 0;
+    bottom: 0;
+    cursor: pointer;
+}

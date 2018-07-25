@@ -1,0 +1,69 @@
+.loveLiveText {
+    margin: auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.row {
+    padding-top: 0.25em;
+    padding-bottom: 0.25em;
+    display: inline-block;
+}
+
+/* fonts */
+.jp {
+    font-weight: 400;
+    font-family: 'Utsukushi';
+    letter-spacing: -0.06em;
+    font-size: 6em;
+}
+
+.en {
+    font-weight: 100;
+    letter-spacing: 0.16em;
+    font-size: 5.75em;
+}
+
+@media (max-width: 1000px) {
+    .large.jp {
+        font-size: 5.2em;
+        letter-spacing: -0.13em;
+    }
+
+    .large.en {
+        font-size: 4.75em;
+    }
+}
+
+.multicolour span:nth-child(1) {
+    color: rgb(235, 116, 60);
+}
+.multicolour span:nth-child(2) {
+    color: rgb(84, 166, 216);
+}
+.multicolour span:nth-child(3) {
+    color: rgb(146, 146, 146);
+}
+.multicolour span:nth-child(4) {
+    color: rgb(37, 83, 169);
+}
+.multicolour span:nth-child(5) {
+    color: rgb(246, 205, 56);
+}
+.multicolour span:nth-child(6) {
+    color: rgb(200, 34, 44);
+}
+.multicolour span:nth-child(7) {
+    color: rgb(92, 56, 141);
+}
+.multicolour span:nth-child(8) {
+    color: rgb(130, 167, 59);
+}
+.multicolour span:nth-child(9) {
+    color: rgb(194, 78, 127);
+}
+.multicolour span:nth-child(10) {
+    color: rgb(236, 0, 140);
+}
