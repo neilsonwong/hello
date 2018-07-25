@@ -1,0 +1,28 @@
+.nav {
+    z-index: 99;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.nav > ul {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0;
+}
+
+.nav > ul > li {
+    display: block;
+    padding: 0px 10px;
+}
+
+.nav a {
+    font-size: 2em;
+    text-decoration: none;
+    color: #666666;
+    cursor: pointer;
+    white-space: nowrap;
+}
