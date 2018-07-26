@@ -7,6 +7,7 @@ import './index.css';
 import Welcome from './components/pages/Welcome';
 import About from './components/pages/About';
 import LoveLive from './components/pages/LoveLive';
+import Lost from './components/pages/Lost';
 
 import NavBar from './components/common/NavBar';
 
@@ -23,16 +24,12 @@ class App extends React.Component {
             <Route exact path='/about' component={About} />
             <Route exact path='/llsif' component={LoveLive} />
 
-            <Route component={NoMatch}/>
+            <Route component={Lost}/>
           </Switch>
         </div>
       </div>
     );
   }
-}
-
-function NoMatch(){
-  return (<div>No Match</div>);
 }
 
 ReactDOM.render(

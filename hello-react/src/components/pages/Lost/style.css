@@ -1,0 +1,21 @@
+.lost .fullImage {
+	background-position: center;
+	opacity: 0.3;
+}
+
+.noPage > h1 {
+	position: fixed;
+	margin: 0;
+	bottom: 50px;
+	left: 50px;
+	font-weight: 600;
+	font-size: 5em;
+}
+
+.noPage .huge {
+	font-size: 2em;
+}
+
+.noPage span {
+	display:block;
+}
