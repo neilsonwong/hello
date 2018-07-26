@@ -14,13 +14,8 @@ function RainbowText(props) {
 }
 
 function ThinBoldText(props) {
-  let text = props.value;
-  //default black color if not specified
-  let style = {
-    color: props.color || '#000000',
-  };
   return (
-    <div className='large en row' style={style}>{text}</div>
+    <div className='large en row'>{props.value}</div>
   );
 }
 
@@ -28,7 +23,7 @@ export default function LoveLiveStyleDualText(props) {
   return (
     <div className="loveLiveText">
       <RainbowText value={props.jp} />
-      <ThinBoldText value={props.en} color={props.color}/>
+      <ThinBoldText value={props.en} />
     </div>
   );
 }

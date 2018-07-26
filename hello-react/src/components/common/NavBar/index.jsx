@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 import './style.css';
 
@@ -15,7 +16,7 @@ export default class NavBar extends React.Component {
 
   render() {
     let links = this.items.map((item, index) => {
-      return (<NavLink href={item.href} text={item.text} key={index}/>);
+      return (<NavItem href={item.href} text={item.text} key={index} />);
     });
     return (
       <nav className='nav'>
@@ -27,10 +28,10 @@ export default class NavBar extends React.Component {
   }
 }
 
-function NavLink(props) {
+function NavItem(props) {
   return (
     <li>
-      <a href={props.href}>{props.text}</a>
+      <NavLink to={props.href}>{props.text}</NavLink>
     </li>
   );
 }
