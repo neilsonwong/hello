@@ -4,7 +4,11 @@
     "text": "hello"
   },
   {
-    "href":"/ll",
-    "text": "love live"
+    "href":"/about",
+    "text": "about"
+  },
+  {
+    "href":"/llsif",
+    "text": "LoveLive"
   }
 ]
