@@ -1,9 +1,9 @@
-.lost .fullImage {
+.lost .full-image {
 	background-position: center;
-	opacity: 0.3;
+	opacity: 0.5;
 }
 
-.noPage > h1 {
+.no-page > h1 {
 	position: fixed;
 	margin: 0;
 	bottom: 50px;
@@ -12,10 +12,10 @@
 	font-size: 5em;
 }
 
-.noPage .huge {
+.no-page .huge {
 	font-size: 2em;
 }
 
-.noPage span {
-	display:block;
+.no-page span {
+	display: block;
 }

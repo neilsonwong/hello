@@ -21,7 +21,7 @@ function ThinBoldText(props) {
 
 export default function LoveLiveStyleDualText(props) {
   return (
-    <div className="loveLiveText">
+    <div className="love-live-text">
       <RainbowText value={props.jp} />
       <ThinBoldText value={props.en} />
     </div>

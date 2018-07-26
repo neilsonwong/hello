@@ -1,5 +1,7 @@
 .welcome {
     background-color: black;
+    height: 100vh; 
+    overflow: hidden;
 }
 
 .welcome .en {

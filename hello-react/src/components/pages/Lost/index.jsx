@@ -9,7 +9,7 @@ export default function Lost(props) {
   return (
   	<div className='lost'>
 	  <FullImage image={lostImage} />
-	  <div className='noPage'>
+	  <div className='no-page'>
 	    <h1>
 	      <span className='huge'>404</span>
 	      <span>page not found</span>

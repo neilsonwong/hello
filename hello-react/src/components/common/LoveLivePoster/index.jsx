@@ -7,7 +7,7 @@ import './style.css';
 
 export default function LoveLivePoster(props) {
   return (
-    <div className={props.name + ' loveLivePoster'}>
+    <div className={props.name + ' love-live-poster'}>
       <LoveLiveStyleDualText jp={props.jp} en={props.en} />
       <Kotobomb />
     </div>
