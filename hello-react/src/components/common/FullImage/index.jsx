@@ -4,7 +4,7 @@ import './style.css';
 
 export default function FullImage(props){
  let style = {
-    'background-image': `url('${props.image}'), linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.25))`,
+    'backgroundImage': `url('${props.image}'), linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.25))`,
   };
 
   //big difference between parallax and non parallax case

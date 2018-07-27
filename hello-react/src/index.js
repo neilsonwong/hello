@@ -5,7 +5,6 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import './index.css';
 
 import Welcome from './components/pages/Welcome';
-import About from './components/pages/About';
 import LoveLive from './components/pages/LoveLive';
 import Lost from './components/pages/Lost';
 
@@ -21,7 +20,7 @@ class App extends React.Component {
         <div className='content'>
           <Switch>
             <Route exact path='/' component={Welcome} />
-            <Route exact path='/about' component={About} />
+            <Route exact path='/about' component={Welcome} />
             <Route exact path='/llsif' component={LoveLive} />
 
             <Route component={Lost}/>

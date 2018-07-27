@@ -1,7 +1,7 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 
 import LoveLivePoster from '../../common/LoveLivePoster';
+import About from '../About';
 
 import './style.css';
 
@@ -9,91 +9,58 @@ export default class Welcome extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      distance: 0.1,
-      opacity: 0.1,
-      rotation: 0
+      scrolled: 0
     };
+
+    this.handleWheel = this.handleWheel.bind(this);
   }
 
   componentDidMount() {
     document.title = 'Welcome';
-    this.scrollListener = this.handleScroll.bind(this);
-    document.addEventListener("mousewheel", this.scrollListener);
   }
 
-  componentWillUnmount() {
-    this.cleanUp();
-  }
+  handleWheel(event){
+    let delta = event.deltaY;
 
-  cleanUp(){
-    if (this.scrollListener){
-      document.removeEventListener("mousewheel", this.scrollListener);
-      this.scrollListener = null;
-    }
-  }
+    event.preventDefault();
+    event.stopPropagation();
 
-  handleScroll(e){
-    //native js event handler !!!
-    e.preventDefault();
-    e.stopPropagation();
+    console.log(delta);
 
-    if (e.deltaY > 0){
-      if (this.state.distance <= 1){
-        this.setState(prevState => ({
-          distance: prevState.distance + 0.1,
-          opacity: Math.min(1, prevState.opacity + 0.1),
-        }));
-      }
-      else if (this.state.distance <= 2.1){
-        this.setState(prevState => ({
-          distance: prevState.distance + 0.1,
-          rotation: Math.min(180, prevState.rotation + 18),
-        }));
-      }
-      else if (!this.state.fireworks) {
-        this.setState(prevState => ({
-          fireworks: true
-        }));
-      }
-    }
-  }
-
-  fireworks(){
-    //fire the fireworks
-
-    //redirect the page
+    // if (event.deltaY > 0){
+      this.setState(prevState => ({
+        scrolled: prevState.scrolled + delta
+      }));
+    // }
   }
 
   render(){
-    //redirect to about page
-    if (this.state.fireworks <= 0) {
-      let aboutPath = { pathname: '/about' };
-      this.cleanUp();
-      return (
-        <Redirect to={aboutPath} />
-      );
-    }
-
     let styles = {
-      opacity: this.state.opacity,
-      transform: `rotate(${this.state.rotation}deg)`,
+      transform: `translateY(${-1 * (this.state.scrolled)}px)`
     };
 
     return (
-      <div>
-        <LoveLivePoster name="welcome" jp="みんなさんこんにちわ" en="Hello everyone." />
-        <div className="arrow-box" >
-          <div style={styles}>
-            <div className="arrow-down bounce"></div>
-          </div>
-          <div style={styles}>
-            <div className="arrow-down bounce"></div>
-          </div>
-          <div style={styles}>
-            <div className="arrow-down bounce"></div>
-          </div>
+      <div name="index" onWheel={this.handleWheel}>
+        <div name="Welcome" style={styles} >
+          <LoveLivePoster name="welcome" jp="みんなさんこんにちわ" en="Hello everyone." />
+          <ArrowBox number={3} />
         </div>
+        <About />
       </div>
     );
   }
+}
+
+function ArrowBox(props){
+  let arrows = new Array(props.number).map(() => (
+    <div style={props.style}>
+      <div className="arrow-down bounce"></div>
+    </div>
+  ));
+
+  return (
+    <div className="arrow-box">
+      {arrows}
+    </div>
+  );
 }
