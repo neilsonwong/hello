@@ -31,7 +31,7 @@ export default class NavBar extends React.Component {
 function NavItem(props) {
   return (
     <li>
-      <NavLink to={props.href}>{props.text}</NavLink>
+      <NavLink to={props.href} exact={true}>{props.text}</NavLink>
     </li>
   );
 }

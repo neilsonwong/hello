@@ -37,3 +37,7 @@
     color: #CCC;
     border-bottom: 1px solid #ccc;
 }
+
+.nav a.active {
+    border-bottom: 1px solid #ccc;
+}
