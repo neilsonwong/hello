@@ -10,6 +10,12 @@ import ParallaxWrapper from '../../common/ParallaxWrapper';
 import './style.css';
 
 export default class Lost extends React.Component {
+  constructor(props){
+    super(props);
+    this.landscapeIndex = Math.floor(Math.random() * (8));
+    this.llbgIndex = Math.floor(Math.random() * (25));
+  }
+
   componentDidMount(){
     document.title = 'About';
   }
@@ -18,11 +24,11 @@ export default class Lost extends React.Component {
     return (
       <div className="about">
         <ParallaxWrapper>
-          <Landscape parallax={true} />
+          <Landscape parallax={true} index={this.landscapeIndex} />
             <ParallaxDiv>
               <div className="boring">boring</div>
             </ParallaxDiv>
-          <SIFBackground parallax={true} />
+          <SIFBackground parallax={true} index={this.llbgIndex} />
           <MakiRoll />
         </ParallaxWrapper>
       </div>

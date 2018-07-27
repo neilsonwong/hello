@@ -40,8 +40,8 @@ export default class Welcome extends React.Component {
     };
 
     return (
-      <div name="index" onWheel={this.handleWheel}>
-        <div name="Welcome" style={styles} >
+      <div name="index">
+        <div name="Welcome" style={styles} onWheel={this.handleWheel} >
           <LoveLivePoster name="welcome" jp="みんなさんこんにちわ" en="Hello everyone." />
           <ArrowBox number={3} />
         </div>
