@@ -4,6 +4,12 @@ import LoveLivePoster from '../../common/LoveLivePoster';
 
 import './style.css';
 
-export default function Welcome() {
-  return (<LoveLivePoster name='welcome' jp='みんなさんこんにちわ' en='Hello everyone.' />);
+export default class Welcome extends React.Component {
+  componentDidMount(){
+    document.title = 'Welcome';
+  }
+
+  render(){
+    return (<LoveLivePoster name="welcome" jp="みんなさんこんにちわ" en="Hello everyone." />);
+  }
 }

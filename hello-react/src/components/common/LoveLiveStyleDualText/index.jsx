@@ -7,7 +7,7 @@ function RainbowText(props) {
   let spans = words.map((c, i) => (<span key={i}>{c}</span>));
 
   return (
-    <div className='large jp row multicolour' >
+    <div className="large jp row multicolour" >
       {spans}
     </div>
   );
@@ -15,7 +15,7 @@ function RainbowText(props) {
 
 function ThinBoldText(props) {
   return (
-    <div className='large en row'>{props.value}</div>
+    <div className="large en row">{props.value}</div>
   );
 }
 
