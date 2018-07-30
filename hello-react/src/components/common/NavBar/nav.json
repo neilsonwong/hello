@@ -14,5 +14,13 @@
   {
     "href":"/lost",
     "text": "lost"
+  },
+  {
+    "href":"/red",
+    "text": "red"
+  },
+  {
+    "href":"/blue",
+    "text": "blue"
   }
 ]
