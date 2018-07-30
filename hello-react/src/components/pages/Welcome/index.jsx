@@ -1,21 +1,21 @@
 import React from 'react';
 
 import LoveLivePoster from '../../common/LoveLivePoster';
-import About from '../About';
+import ArrowBox from '../../common/ArrowBox';
 
 import './style.css';
 
-export default class Welcome extends React.Component {
-  constructor(props) {
+export default class LoveLive extends React.Component {
+  constructor(props){
     super(props);
     this.state = { 
-      scrolled: 0
+      scrolled: 0.1
     };
 
     this.handleWheel = this.handleWheel.bind(this);
   }
 
-  componentDidMount() {
+  componentDidMount(){
     document.title = 'Welcome';
   }
 
@@ -25,42 +25,25 @@ export default class Welcome extends React.Component {
     event.preventDefault();
     event.stopPropagation();
 
-    console.log(delta);
-
-    // if (event.deltaY > 0){
+    if (delta > 0){
       this.setState(prevState => ({
-        scrolled: prevState.scrolled + delta
+        scrolled: prevState.scrolled + 0.1
       }));
-    // }
+    }
   }
 
   render(){
     let styles = {
-      transform: `translateY(${-1 * (this.state.scrolled)}px)`
+      opacity: this.state.scrolled
     };
 
     return (
-      <div name="index">
-        <div name="Welcome" style={styles} onWheel={this.handleWheel} >
-          <LoveLivePoster name="welcome" jp="みんなさんこんにちわ" en="Hello everyone." />
+      <div className="welcome" onWheel={this.handleWheel} >
+        <LoveLivePoster name="welcome-poster" jp="みんなさんこんにちわ" en="Hello everyone." />
+        <div style={styles}>
           <ArrowBox number={3} />
         </div>
-        <About />
       </div>
     );
   }
-}
-
-function ArrowBox(props){
-  let arrows = new Array(props.number).map(() => (
-    <div style={props.style}>
-      <div className="arrow-down bounce"></div>
-    </div>
-  ));
-
-  return (
-    <div className="arrow-box">
-      {arrows}
-    </div>
-  );
 }
