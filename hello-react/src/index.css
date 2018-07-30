@@ -17,34 +17,8 @@ body {
     overflow: hidden;
 }
 
-/*
-.slide-enter {
-  transform: translateY(100%);
-}
-
-.slide-enter.slide-enter-active {
-  transform: translateY(0%);
-  transition: transform 500ms ease-in;
-}
-*/
-
-
-.fade-exit {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-}
-
-.fade-exit.fade-exit-active {
-  transform: translateY(-100%);
-  transition: all 500ms ease-out;
-}
-
 .fade-enter {
   opacity: 0;
-  /*z-index: 1;*/
 }
 
 .fade-enter.fade-enter-active {

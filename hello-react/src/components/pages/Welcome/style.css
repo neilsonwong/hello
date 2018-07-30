@@ -6,11 +6,15 @@
 	color: #FFFFFF;
 }
 
-.welcome .arrow-down {
-
+.welcome.fade-exit {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
 }
 
-.welcome.getting-out {
+.welcome.fade-exit.fade-exit-active {
   transform: translateY(-100%);
-  transition: all 1s ease-out;
+  transition: all 1000ms ease-out;
 }
