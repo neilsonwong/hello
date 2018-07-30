@@ -9,8 +9,7 @@
 	height: 100vh;
 }
 
-.parallax-moving-img,
-.parallax-img::after {
+.parallax-moving-img {
 	content: ' ';
 	position: absolute;
 	top: 0;
