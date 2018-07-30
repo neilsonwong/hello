@@ -1,6 +1,10 @@
+.lost {
+	background-color: #FFFFFF;
+}
+
 .lost .full-image {
 	background-position: center;
-	opacity: 0.5;
+	opacity: 1;
 }
 
 .no-page > h1 {
