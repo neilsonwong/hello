@@ -10,4 +10,3 @@ export default function Landscape(props){
     <FullImage className="landscape" image={image} parallax={props.parallax} />
   );
 }
-Math.floor(Math.random() * (8))
