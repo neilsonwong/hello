@@ -22,7 +22,7 @@ const App = withRouter(({ location }) => (
         <CSSTransition 
           key={location.key}
           classNames='fade'
-          timeout={2000}
+          timeout={1000}
         >
           <Switch location={location}>
             <Route exact path='/' component={Welcome} />

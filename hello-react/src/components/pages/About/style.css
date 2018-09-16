@@ -1,4 +1,11 @@
 .boring {
 	background: white;
 	height: 50vh;
+	width: 100vw;
+	position: relative;
+	top: 80vh;
+	perspective: 20px;
+}
+
+.about {
 }

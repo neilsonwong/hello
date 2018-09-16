@@ -30,6 +30,10 @@ export default class LoveLive extends React.Component {
         scrolled: prevState.scrolled + 0.1
       }));
     }
+
+    if (this.state.scrolled >= 1) {
+      this.props.history.push("/about");
+    }
   }
 
   render(){

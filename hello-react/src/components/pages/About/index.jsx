@@ -23,14 +23,9 @@ export default class Lost extends React.Component {
   render(){
     return (
       <div className="about">
-        <ParallaxWrapper>
-          <Landscape parallax={true} index={this.landscapeIndex} />
-            <ParallaxDiv>
-              <div className="boring">boring</div>
-            </ParallaxDiv>
-          <SIFBackground parallax={true} index={this.llbgIndex} />
-          <MakiRoll />
-        </ParallaxWrapper>
+        <Landscape index={this.landscapeIndex} />
+        <SIFBackground index={this.llbgIndex} />
+        <MakiRoll />
       </div>
     );
   }

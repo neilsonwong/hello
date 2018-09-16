@@ -14,9 +14,10 @@ body {
     font-family: 'Futura Light', 'Josefin Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
+/*
 .fade-enter {
   opacity: 0;
 }
@@ -26,6 +27,17 @@ body {
   transition: opacity 500ms ease-in;
 }
 
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit.fade-exit-active {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
+}
+*/
+
+/* only here for full colour pages testing purposes */
 .full-colour {
 	width: 100vw;
 	height: 100vh;
